@@ -8,7 +8,6 @@
 
 .fontCard:hover {
   background-color: #f1f1f1;
-  cursor: pointer;
 }
 
 .fontName {
@@ -19,4 +18,14 @@
 .fontText {
   font-size: 25px;
   line-height: 30px;
+}
+
+.fontInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.togglePinned {
+  cursor: pointer;
 }

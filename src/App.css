@@ -3,13 +3,12 @@ body {
   margin: 0;
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
-}
-
 p {
   margin: 0;
   text-align: start;
+}
+
+h1,
+h2 {
+  margin: 0;
 }

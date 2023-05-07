@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontData } from "../types/FontData";
 import FontCard from "./FontCard";
 import classes from "./FontList.module.css";
 
-const FontList: React.FC<{ text: string }> = ({ text }) => {
+const FontList: React.FC = () => {
   const [fontList, setFontList] = useState<FontData[]>([]);
   const [fontNameList, setFontNameList] = useState<string[]>([]);
 
@@ -19,6 +19,10 @@ const FontList: React.FC<{ text: string }> = ({ text }) => {
     }
   };
 
+  useEffect(() => {
+    logFontData();
+  }, []);
+
   return (
     <>
       <button onClick={logFontData}>Get Font List</button>
@@ -30,7 +34,6 @@ const FontList: React.FC<{ text: string }> = ({ text }) => {
           return (
             <FontCard
               key={fontName}
-              text={text}
               family={fontData.family}
               fullName={fontData.fullName}
             />
