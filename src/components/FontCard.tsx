@@ -1,27 +1,23 @@
+import classes from "./FontCard.module.css";
+
 type FontCardProps = {
   text: string;
   family: string;
-  styles: string[];
   fullName: string;
 };
 
-const FontCard: React.FC<FontCardProps> = ({
-  text,
-  family,
-  styles,
-  fullName,
-}) => {
+const FontCard: React.FC<FontCardProps> = ({ text, family, fullName }) => {
   return (
-    <div
-      key={fullName}
-      style={{
-        fontFamily: family,
-        fontWeight: styles[0],
-        border: "1px solid white",
-      }}
-    >
-      <p>{family}</p>
-      <p>{text}</p>
+    <div key={fullName} className={classes.fontCard}>
+      <p className={classes.fontName}>{family}</p>
+      <p
+        className={classes.fontText}
+        style={{
+          fontFamily: family,
+        }}
+      >
+        {text}
+      </p>
     </div>
   );
 };

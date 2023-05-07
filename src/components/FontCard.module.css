@@ -1,0 +1,22 @@
+.fontCard {
+  width: 300px;
+  outline: 1px solid black;
+  padding: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.fontCard:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.fontName {
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.fontText {
+  font-size: 25px;
+  line-height: 30px;
+}

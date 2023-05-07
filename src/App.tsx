@@ -6,7 +6,7 @@ function App() {
   const [text, setText] = useState("Hello, World!");
 
   return (
-    <>
+    <div>
       <h1>Local Font Emulator</h1>
       <input
         type="text"
@@ -14,7 +14,7 @@ function App() {
         onChange={(e) => setText(e.target.value)}
       />
       <FontList text={text} />
-    </>
+    </div>
   );
 }
 

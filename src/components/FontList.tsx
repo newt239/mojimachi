@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { FontData } from "../types/FontData";
+import FontCard from "./FontCard";
+import classes from "./FontList.module.css";
 
 const FontList: React.FC<{ text: string }> = ({ text }) => {
   const [fontList, setFontList] = useState<FontData[]>([]);
+  const [fontNameList, setFontNameList] = useState<string[]>([]);
 
   const logFontData = async () => {
+    setFontList([]);
+    setFontNameList([]);
     try {
       const availableFonts: FontData[] = await window.queryLocalFonts();
       setFontList(availableFonts);
-      for (const fontData of availableFonts) {
-        console.log(fontData.postscriptName);
-        console.log(fontData.fullName);
-        console.log(fontData.family);
-        console.log(fontData.style);
-      }
+      setFontNameList([...new Set(availableFonts.map((font) => font.family))]);
     } catch (err) {
       console.error(err);
     }
@@ -22,22 +22,21 @@ const FontList: React.FC<{ text: string }> = ({ text }) => {
   return (
     <>
       <button onClick={logFontData}>Get Font List</button>
-      {fontList.map((fontData) => (
-        <div
-          key={fontData.postscriptName}
-          style={{
-            fontFamily: fontData.family,
-            fontWeight: fontData.style,
-            border: "1px solid white",
-          }}
-        >
-          <p>{fontData.postscriptName}</p>
-          <p>{fontData.fullName}</p>
-          <p>{fontData.family}</p>
-          <p>{fontData.style}</p>
-          <p>{text}</p>
-        </div>
-      ))}
+      <div className={classes.cardGrid}>
+        {fontNameList.map((fontName) => {
+          const fontData = fontList.find(
+            (font) => font.family === fontName
+          ) as FontData;
+          return (
+            <FontCard
+              key={fontName}
+              text={text}
+              family={fontData.family}
+              fullName={fontData.fullName}
+            />
+          );
+        })}
+      </div>
     </>
   );
 };
