@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import EachFont from "./EachFont";
 import FontList from "./FontList";
 import Header from "./Header";
 import SideBar from "./SideBar";
@@ -15,6 +16,9 @@ const Wrapper = () => {
             <Route path="/">
               <Route index element={<FontList />} />
               <Route path="pinned" element={<FontList pinned />} />
+              <Route path="font">
+                <Route path=":fontFamily" element={<EachFont />} />
+              </Route>
             </Route>
           </Routes>
         </div>

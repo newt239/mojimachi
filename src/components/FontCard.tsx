@@ -1,4 +1,5 @@
 import { useAtom, useAtomValue } from "jotai";
+import { Link } from "react-router-dom";
 import { pinnedFontsAtom, textAtom } from "../jotai/atoms";
 import classes from "./FontCard.module.css";
 
@@ -14,7 +15,9 @@ const FontCard: React.FC<FontCardProps> = ({ family, fullName }) => {
   return (
     <div key={fullName} className={classes.fontCard}>
       <div className={classes.fontInfo}>
-        <p className={classes.fontName}>{family}</p>
+        <Link to={`/font/${family}`}>
+          <p className={classes.fontName}>{family}</p>
+        </Link>
         <input
           className={classes.togglePinned}
           type="checkbox"
