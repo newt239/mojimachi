@@ -7,7 +7,7 @@ import classes from "./Wrapper.module.css";
 
 const Wrapper = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <div className={classes.wrapper}>
         <SideBar />
         <div className={classes.main}>
