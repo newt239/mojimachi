@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+#root {
+  height: 100vh;
+}
+
 p {
   margin: 0;
   text-align: start;

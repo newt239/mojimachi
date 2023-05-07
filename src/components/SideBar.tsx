@@ -1,4 +1,5 @@
 import { useAtom, useAtomValue } from "jotai";
+import { Link } from "react-router-dom";
 import { pinnedFontsAtom, textAtom } from "../jotai/atoms";
 import classes from "./SideBar.module.css";
 
@@ -16,7 +17,9 @@ const SideBar: React.FC = () => {
       />
       {pinnedFonts.length > 0 && (
         <div className={classes.pinnedFontSection}>
-          <h2>Pinned Fonts</h2>
+          <Link to="/pinned">
+            <h2>Pinned Fonts</h2>
+          </Link>
           <ul className={classes.pinnedFontList}>
             {pinnedFonts.map((font) => (
               <li key={font}>{font}</li>

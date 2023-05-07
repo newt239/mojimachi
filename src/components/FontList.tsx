@@ -1,9 +1,14 @@
+import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { pinnedFontsAtom } from "../jotai/atoms";
 import { FontData } from "../types/FontData";
 import FontCard from "./FontCard";
 import classes from "./FontList.module.css";
 
-const FontList: React.FC = () => {
+const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
+  const location = useLocation();
+  const pinnedFonts = useAtomValue(pinnedFontsAtom);
   const [fontList, setFontList] = useState<FontData[]>([]);
   const [fontNameList, setFontNameList] = useState<string[]>([]);
 
@@ -12,8 +17,18 @@ const FontList: React.FC = () => {
     setFontNameList([]);
     try {
       const availableFonts: FontData[] = await window.queryLocalFonts();
-      setFontList(availableFonts);
-      setFontNameList([...new Set(availableFonts.map((font) => font.family))]);
+      if (pinned) {
+        setFontList(
+          availableFonts.filter((font) => pinnedFonts.includes(font.family))
+        );
+        setFontNameList(pinnedFonts);
+        return;
+      } else {
+        setFontList(availableFonts);
+        setFontNameList([
+          ...new Set(availableFonts.map((font) => font.family)),
+        ]);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -21,7 +36,7 @@ const FontList: React.FC = () => {
 
   useEffect(() => {
     logFontData();
-  }, []);
+  }, [location.pathname, pinnedFonts]);
 
   return (
     <>
