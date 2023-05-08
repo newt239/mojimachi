@@ -1,3 +1,4 @@
+import { Paper, Switch } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { Link } from "react-router-dom";
 import { pinnedFontsAtom, textAtom } from "../jotai/atoms";
@@ -13,14 +14,13 @@ const FontCard: React.FC<FontCardProps> = ({ family, fullName }) => {
   const [pinnedFonts, setPinnedFonts] = useAtom(pinnedFontsAtom);
 
   return (
-    <div key={fullName} className={classes.fontCard}>
+    <Paper shadow="xs" p="md" w={300}>
       <div className={classes.fontInfo}>
         <Link to={`/font/${family}`}>
           <p className={classes.fontName}>{family}</p>
         </Link>
-        <input
-          className={classes.togglePinned}
-          type="checkbox"
+        <Switch
+          color="orange"
           checked={pinnedFonts.includes(family)}
           onChange={(e) => {
             if (e.target.checked) {
@@ -39,7 +39,7 @@ const FontCard: React.FC<FontCardProps> = ({ family, fullName }) => {
       >
         {text}
       </p>
-    </div>
+    </Paper>
   );
 };
 

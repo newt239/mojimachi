@@ -1,13 +1,12 @@
+import { Button } from "@mantine/core";
 import { useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import { pinnedFontsAtom } from "../jotai/atoms";
 import { FontData } from "../types/FontData";
 import FontCard from "./FontCard";
 import classes from "./FontList.module.css";
 
 const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
-  const location = useLocation();
   const pinnedFonts = useAtomValue(pinnedFontsAtom);
   const [fontList, setFontList] = useState<FontData[]>([]);
   const [fontNameList, setFontNameList] = useState<string[]>([]);
@@ -34,13 +33,11 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
     }
   };
 
-  useEffect(() => {
-    logFontData();
-  }, [location.pathname, pinnedFonts]);
-
   return (
     <>
-      <button onClick={logFontData}>Get Font List</button>
+      <Button color="orange" onClick={logFontData}>
+        Get Font List
+      </Button>
       <div className={classes.cardGrid}>
         {fontNameList.map((fontName) => {
           const fontData = fontList.find(

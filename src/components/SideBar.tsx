@@ -1,17 +1,24 @@
+import { Navbar, Textarea } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 import { Link } from "react-router-dom";
-import { pinnedFontsAtom, textAtom } from "../jotai/atoms";
+import { openedAtom, pinnedFontsAtom, textAtom } from "../jotai/atoms";
 import classes from "./SideBar.module.css";
 
 const SideBar: React.FC = () => {
   const [text, setText] = useAtom(textAtom);
   const pinnedFonts = useAtomValue(pinnedFontsAtom);
+  const opened = useAtomValue(openedAtom);
 
   return (
-    <div className={classes.sideBar}>
-      <input
-        className={classes.textInput}
-        type="text"
+    <Navbar
+      hiddenBreakpoint="sm"
+      hidden={!opened}
+      width={{ sm: 200, lg: 300 }}
+      p="sm"
+    >
+      <Textarea
+        label="表示するテキスト"
+        autosize
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
@@ -27,7 +34,7 @@ const SideBar: React.FC = () => {
           </ul>
         </div>
       )}
-    </div>
+    </Navbar>
   );
 };
 
