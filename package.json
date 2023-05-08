@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@mantine/core": "^6.0.10",
+    "@mantine/hooks": "^6.0.10",
+    "add": "^2.0.6",
     "jotai": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
