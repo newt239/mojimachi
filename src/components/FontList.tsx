@@ -35,23 +35,20 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
 
   return (
     <>
-      <Button color="orange" onClick={logFontData}>
-        Get Font List
-      </Button>
-      <div className={classes.cardGrid}>
-        {fontNameList.map((fontName) => {
-          const fontData = fontList.find(
-            (font) => font.family === fontName
-          ) as FontData;
-          return (
-            <FontCard
-              key={fontName}
-              family={fontData.family}
-              fullName={fontData.fullName}
-            />
-          );
-        })}
-      </div>
+      {fontNameList.length === 0 ? (
+        <Button color="orange" onClick={logFontData}>
+          Get Font List
+        </Button>
+      ) : (
+        <div className={classes.cardGrid}>
+          {fontNameList.map((fontName) => {
+            const fontData = fontList.find(
+              (font) => font.family === fontName
+            ) as FontData;
+            return <FontCard key={fontName} family={fontData.family} />;
+          })}
+        </div>
+      )}
     </>
   );
 };

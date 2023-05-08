@@ -6,10 +6,9 @@ import classes from "./FontCard.module.css";
 
 type FontCardProps = {
   family: string;
-  fullName: string;
 };
 
-const FontCard: React.FC<FontCardProps> = ({ family, fullName }) => {
+const FontCard: React.FC<FontCardProps> = ({ family }) => {
   const text = useAtomValue(textAtom);
   const [pinnedFonts, setPinnedFonts] = useAtom(pinnedFontsAtom);
 
