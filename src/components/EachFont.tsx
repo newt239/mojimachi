@@ -8,7 +8,8 @@ const EachFont: React.FC = () => {
   const [fonts, setFonts] = useState<FontData[]>([]);
 
   const loadFontData = async () => {
-    const availableFonts = await window.queryLocalFonts({
+    if (!fontFamily) return;
+    const availableFonts: FontData[] = await window.queryLocalFonts({
       families: [fontFamily],
     });
     const filledFonts = availableFonts.filter((font) =>
