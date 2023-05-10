@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { AppShell } from "@mantine/core";
 
@@ -9,25 +9,23 @@ import SideBar from "./SideBar";
 
 const Wrapper = () => {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <AppShell
-        navbarOffsetBreakpoint="sm"
-        asideOffsetBreakpoint="sm"
-        padding="md"
-        navbar={<SideBar />}
-        header={<Header />}
-      >
-        <Routes>
-          <Route path="/">
-            <Route index element={<FontList />} />
-            <Route path="pinned" element={<FontList pinned />} />
-            <Route path="font">
-              <Route path=":fontFamily" element={<EachFont />} />
-            </Route>
+    <AppShell
+      navbarOffsetBreakpoint="sm"
+      asideOffsetBreakpoint="sm"
+      padding="md"
+      navbar={<SideBar />}
+      header={<Header />}
+    >
+      <Routes>
+        <Route path="/">
+          <Route index element={<FontList />} />
+          <Route path="pinned" element={<FontList pinned />} />
+          <Route path="font">
+            <Route path=":fontFamily" element={<EachFont />} />
           </Route>
-        </Routes>
-      </AppShell>
-    </BrowserRouter>
+        </Route>
+      </Routes>
+    </AppShell>
   );
 };
 

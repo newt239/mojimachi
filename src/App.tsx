@@ -1,15 +1,18 @@
 import { MantineProvider } from "@mantine/core";
 
+import { BrowserRouter } from "react-router-dom";
 import ScrollTop from "~/components/ScrollTop";
 import Wrapper from "~/components/Wrapper";
 import "./App.css";
 
 function App() {
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <ScrollTop />
-      <Wrapper />
-    </MantineProvider>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <Wrapper />
+      </MantineProvider>
+    </BrowserRouter>
   );
 }
 
