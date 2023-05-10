@@ -1,5 +1,7 @@
-import { AppShell } from "@mantine/core";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import { AppShell } from "@mantine/core";
+
 import EachFont from "./EachFont";
 import FontList from "./FontList";
 import Header from "./Header";

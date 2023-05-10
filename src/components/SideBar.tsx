@@ -1,7 +1,11 @@
-import { Navbar, Textarea } from "@mantine/core";
-import { useAtom, useAtomValue } from "jotai";
 import { Link } from "react-router-dom";
+
+import { Navbar, Textarea } from "@mantine/core";
+
+import { useAtom, useAtomValue } from "jotai";
+
 import { openedAtom, pinnedFontsAtom, textAtom } from "../jotai/atoms";
+
 import classes from "./SideBar.module.css";
 
 const SideBar: React.FC = () => {

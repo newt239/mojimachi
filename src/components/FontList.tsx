@@ -1,8 +1,12 @@
-import { Button } from "@mantine/core";
-import { useAtomValue } from "jotai";
 import { useState } from "react";
+
+import { Button } from "@mantine/core";
+
+import { useAtomValue } from "jotai";
+
 import { pinnedFontsAtom } from "../jotai/atoms";
 import { FontData } from "../types/FontData";
+
 import FontCard from "./FontCard";
 import classes from "./FontList.module.css";
 

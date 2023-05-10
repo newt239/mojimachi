@@ -1,7 +1,11 @@
-import { Paper, Switch } from "@mantine/core";
-import { useAtom, useAtomValue } from "jotai";
 import { Link } from "react-router-dom";
+
+import { Paper, Switch } from "@mantine/core";
+
+import { useAtom, useAtomValue } from "jotai";
+
 import { pinnedFontsAtom, textAtom } from "../jotai/atoms";
+
 import classes from "./FontCard.module.css";
 
 type FontCardProps = {

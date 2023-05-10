@@ -1,7 +1,11 @@
-import { Burger, Header as MantineHeader, MediaQuery } from "@mantine/core";
-import { useAtom } from "jotai";
 import { Link } from "react-router-dom";
+
+import { Burger, Header as MantineHeader, MediaQuery } from "@mantine/core";
+
+import { useAtom } from "jotai";
+
 import { openedAtom } from "../jotai/atoms";
+
 import classes from "./Header.module.css";
 
 const Header: React.FC = () => {

@@ -1,4 +1,5 @@
 import { MantineProvider } from "@mantine/core";
+
 import "./App.css";
 import Wrapper from "./components/Wrapper";
 
