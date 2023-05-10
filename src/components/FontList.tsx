@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button } from "@mantine/core";
+import { Button, Grid } from "@mantine/core";
 
 import { useAtomValue } from "jotai";
 
@@ -8,7 +8,6 @@ import { pinnedFontsAtom } from "../jotai/atoms";
 import { FontData } from "../types/FontData";
 
 import FontCard from "./FontCard";
-import classes from "./FontList.module.css";
 
 const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
   const pinnedFonts = useAtomValue(pinnedFontsAtom);
@@ -44,14 +43,18 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
           Get Font List
         </Button>
       ) : (
-        <div className={classes.cardGrid}>
+        <Grid m={4}>
           {fontNameList.map((fontName) => {
             const fontData = fontList.find(
               (font) => font.family === fontName
             ) as FontData;
-            return <FontCard key={fontName} family={fontData.family} />;
+            return (
+              <Grid.Col lg={3} md={4} sm={6} xs={12}>
+                <FontCard key={fontName} family={fontData.family} />
+              </Grid.Col>
+            );
           })}
-        </div>
+        </Grid>
       )}
     </>
   );

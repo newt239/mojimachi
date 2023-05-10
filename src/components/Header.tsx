@@ -13,8 +13,6 @@ import { GithubLogo } from "phosphor-react";
 
 import { openedAtom } from "~/jotai/atoms";
 
-import classes from "./Header.module.css";
-
 const Header: React.FC = () => {
   const [opened, setOpened] = useAtom(openedAtom);
 
@@ -30,7 +28,7 @@ const Header: React.FC = () => {
           />
         </MediaQuery>
         <Link to="/">
-          <h1 className={classes.siteName}>Local Font Emulator</h1>
+          <h1>Local Font Emulator</h1>
         </Link>
         <ActionIcon
           component="a"

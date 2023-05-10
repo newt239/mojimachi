@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 
-import { Paper, Switch } from "@mantine/core";
+import { Flex, Paper, ScrollArea, Switch, Text } from "@mantine/core";
 
 import { useAtom, useAtomValue } from "jotai";
 
 import { pinnedFontsAtom, textAtom } from "~/jotai/atoms";
-
-import classes from "./FontCard.module.css";
 
 type FontCardProps = {
   family: string;
@@ -17,10 +15,10 @@ const FontCard: React.FC<FontCardProps> = ({ family }) => {
   const [pinnedFonts, setPinnedFonts] = useAtom(pinnedFontsAtom);
 
   return (
-    <Paper shadow="xs" p="md" w={300}>
-      <div className={classes.fontInfo}>
+    <Paper shadow="xs" p="md" w="100%">
+      <Flex align="center" justify="space-between">
         <Link to={`/font/${family}`}>
-          <p className={classes.fontName}>{family}</p>
+          <p>{family}</p>
         </Link>
         <Switch
           color="orange"
@@ -33,15 +31,18 @@ const FontCard: React.FC<FontCardProps> = ({ family }) => {
             }
           }}
         />
-      </div>
-      <p
-        className={classes.fontText}
-        style={{
-          fontFamily: family,
-        }}
-      >
-        {text}
-      </p>
+      </Flex>
+      <ScrollArea h="20vh" w="100%" offsetScrollbars>
+        <Text
+          fz="lg"
+          sx={{ whiteSpace: "pre-wrap" }}
+          style={{
+            fontFamily: family,
+          }}
+        >
+          {text}
+        </Text>
+      </ScrollArea>
     </Paper>
   );
 };
