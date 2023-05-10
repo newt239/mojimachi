@@ -1,11 +1,15 @@
+import { Box, ScrollArea, Stack, Text, Title } from "@mantine/core";
+import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { textAtom } from "~/jotai/atoms";
 
 import { FontData } from "~/types/FontData";
 
 const EachFont: React.FC = () => {
   const { fontFamily } = useParams();
   const [fonts, setFonts] = useState<FontData[]>([]);
+  const text = useAtomValue(textAtom);
 
   const loadFontData = async () => {
     if (!fontFamily) return;
@@ -27,14 +31,29 @@ const EachFont: React.FC = () => {
     <div>
       {fonts.length > 0 && (
         <>
-          <h2>{fonts[0].family}</h2>
-          <ul>
+          <Title order={2} fz={75} mb={100}>
+            {fonts[0].family}
+          </Title>
+
+          <Stack>
             {fonts.map((font) => (
-              <li key={font.fullName} style={{ fontFamily: font.fullName }}>
-                {font.fullName}
-              </li>
+              <Box key={font.fullName}>
+                <Title order={3}>{font.fullName}</Title>
+                <ScrollArea>
+                  <Text
+                    fz={50}
+                    sx={{ whiteSpace: "nowrap" }}
+                    style={{
+                      fontFamily: font.fullName,
+                      fontWeight: font.style,
+                    }}
+                  >
+                    {text}
+                  </Text>
+                </ScrollArea>
+              </Box>
             ))}
-          </ul>
+          </Stack>
         </>
       )}
     </div>
