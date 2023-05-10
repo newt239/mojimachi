@@ -22,6 +22,7 @@ specifiers:
   react-router-dom: ^6.11.1
   typescript: ^5.0.2
   vite: ^4.3.2
+  vite-tsconfig-paths: ^4.2.0
 
 dependencies:
   '@emotion/react': 11.11.0_s3k22s5ab4eu26xuel7hiaraxy
@@ -47,6 +48,7 @@ devDependencies:
   eslint-plugin-unused-imports: 2.0.0_zbdl5dxhh5hq44amyxynnvaatm
   typescript: 5.0.4
   vite: 4.3.5_@types+node@20.1.0
+  vite-tsconfig-paths: 4.2.0_j3n3bmbdtt5x6j7a7ljkizyfq4
 
 packages:
 
@@ -1739,6 +1741,10 @@ packages:
       slash: 3.0.0
     dev: true
 
+  /globrex/0.1.2:
+    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+    dev: true
+
   /gopd/1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -2528,6 +2534,19 @@ packages:
       is-number: 7.0.0
     dev: true
 
+  /tsconfck/2.1.1_typescript@5.0.4:
+    resolution: {integrity: sha512-ZPCkJBKASZBmBUNqGHmRhdhM8pJYDdOXp4nRgj/O0JwUwsMq50lCDRQP/M5GBNAA0elPrq4gAeu4dkaVCuKWww==}
+    engines: {node: ^14.13.1 || ^16 || >=18}
+    hasBin: true
+    peerDependencies:
+      typescript: ^4.3.5 || ^5.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 5.0.4
+    dev: true
+
   /tsconfig-paths/3.14.2:
     resolution: {integrity: sha512-o/9iXgCYc5L/JxCHPe3Hvh8Q/2xm5Z+p18PESBU6Ff33695QnCHBEjcytY2q19ua7Mbl/DavtBOLq+oG0RCL+g==}
     dependencies:
@@ -2661,6 +2680,23 @@ packages:
       react: 18.2.0
       tslib: 2.5.0
     dev: false
+
+  /vite-tsconfig-paths/4.2.0_j3n3bmbdtt5x6j7a7ljkizyfq4:
+    resolution: {integrity: sha512-jGpus0eUy5qbbMVGiTxCL1iB9ZGN6Bd37VGLJU39kTDD6ZfULTTb1bcc5IeTWqWJKiWV5YihCaibeASPiGi8kw==}
+    peerDependencies:
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      debug: 4.3.4
+      globrex: 0.1.2
+      tsconfck: 2.1.1_typescript@5.0.4
+      vite: 4.3.5_@types+node@20.1.0
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: true
 
   /vite/4.3.5_@types+node@20.1.0:
     resolution: {integrity: sha512-0gEnL9wiRFxgz40o/i/eTBwm+NEbpUeTWhzKrZDSdKm6nplj+z4lKz8ANDgildxHm47Vg8EUia0aicKbawUVVA==}
