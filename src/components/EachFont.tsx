@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { FontData } from "../types/FontData";
+import { FontData } from "~/types/FontData";
 
 const EachFont: React.FC = () => {
   const { fontFamily } = useParams();

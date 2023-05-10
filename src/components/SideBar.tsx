@@ -4,7 +4,7 @@ import { Navbar, Textarea } from "@mantine/core";
 
 import { useAtom, useAtomValue } from "jotai";
 
-import { openedAtom, pinnedFontsAtom, textAtom } from "../jotai/atoms";
+import { openedAtom, pinnedFontsAtom, textAtom } from "~/jotai/atoms";
 
 import classes from "./SideBar.module.css";
 

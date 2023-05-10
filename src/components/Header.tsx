@@ -4,7 +4,7 @@ import { Burger, Header as MantineHeader, MediaQuery } from "@mantine/core";
 
 import { useAtom } from "jotai";
 
-import { openedAtom } from "../jotai/atoms";
+import { openedAtom } from "~/jotai/atoms";
 
 import classes from "./Header.module.css";
 

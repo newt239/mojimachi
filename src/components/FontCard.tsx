@@ -4,7 +4,7 @@ import { Paper, Switch } from "@mantine/core";
 
 import { useAtom, useAtomValue } from "jotai";
 
-import { pinnedFontsAtom, textAtom } from "../jotai/atoms";
+import { pinnedFontsAtom, textAtom } from "~/jotai/atoms";
 
 import classes from "./FontCard.module.css";
 
