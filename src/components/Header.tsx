@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
 
-import { Burger, Header as MantineHeader, MediaQuery } from "@mantine/core";
+import {
+  ActionIcon,
+  Burger,
+  Flex,
+  Header as MantineHeader,
+  MediaQuery,
+} from "@mantine/core";
 
 import { useAtom } from "jotai";
+import { GithubLogo } from "phosphor-react";
 
 import { openedAtom } from "~/jotai/atoms";
 
@@ -13,7 +20,7 @@ const Header: React.FC = () => {
 
   return (
     <MantineHeader height={60} p="xs">
-      <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
+      <Flex align="center" h="100%" justify="space-between" px="lg">
         <MediaQuery largerThan="sm" styles={{ display: "none" }}>
           <Burger
             opened={opened}
@@ -25,7 +32,16 @@ const Header: React.FC = () => {
         <Link to="/">
           <h1 className={classes.siteName}>Local Font Emulator</h1>
         </Link>
-      </div>
+        <ActionIcon
+          component="a"
+          href="https://github.com/newt239/local-font-emulator"
+          variant="outline"
+          target="default"
+          size="lg"
+        >
+          <GithubLogo size={32} />
+        </ActionIcon>
+      </Flex>
     </MantineHeader>
   );
 };
