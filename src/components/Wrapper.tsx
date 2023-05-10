@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
-import { AppShell } from "@mantine/core";
+import { AppShell, useMantineTheme } from "@mantine/core";
 
 import EachFont from "./EachFont";
 import FontList from "./FontList";
@@ -8,6 +8,8 @@ import Header from "./Header";
 import SideBar from "./SideBar";
 
 const Wrapper = () => {
+  const theme = useMantineTheme();
+
   return (
     <AppShell
       navbarOffsetBreakpoint="sm"
@@ -15,6 +17,14 @@ const Wrapper = () => {
       padding="md"
       navbar={<SideBar />}
       header={<Header />}
+      styles={{
+        main: {
+          background:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[8]
+              : theme.colors.gray[0],
+        },
+      }}
     >
       <Routes>
         <Route path="/">

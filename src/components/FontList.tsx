@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mantine/core";
+import { Button, Center, Grid } from "@mantine/core";
 
 import { useAtom, useAtomValue } from "jotai";
 
@@ -42,9 +42,11 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
   return (
     <>
       {fontNameList.length === 0 ? (
-        <Button color="orange" onClick={logFontData}>
-          Get Font List
-        </Button>
+        <Center>
+          <Button color="orange" onClick={logFontData}>
+            フォントを取得する
+          </Button>
+        </Center>
       ) : (
         <Grid m={4}>
           {fontNameList.map((fontName) => {
