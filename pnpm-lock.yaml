@@ -20,6 +20,7 @@ specifiers:
   phosphor-react: ^1.4.1
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-ga4: ^2.1.0
   react-router-dom: ^6.11.1
   typescript: ^5.0.2
   vite: ^4.3.2
@@ -34,6 +35,7 @@ dependencies:
   phosphor-react: 1.4.1_react@18.2.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-ga4: 2.1.0
   react-router-dom: 6.11.1_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
@@ -2246,6 +2248,10 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-ga4/2.1.0:
+    resolution: {integrity: sha512-ZKS7PGNFqqMd3PJ6+C2Jtz/o1iU9ggiy8Y8nUeksgVuvNISbmrQtJiZNvC/TjDsqD0QlU5Wkgs7i+w9+OjHhhQ==}
     dev: false
 
   /react-is/16.13.1:

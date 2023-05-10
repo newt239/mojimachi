@@ -5,6 +5,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { fontListAtom, fontNameListAtom, pinnedFontsAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";
 
+import { useEffect } from "react";
 import FontCard from "./FontCard";
 
 const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
@@ -34,6 +35,10 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
     }
   };
 
+  useEffect(() => {
+    logFontData();
+  }, [pinned]);
+
   return (
     <>
       {fontNameList.length === 0 ? (
@@ -47,7 +52,7 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
               (font) => font.family === fontName
             ) as FontData;
             return (
-              <Grid.Col lg={3} md={4} sm={6} xs={12}>
+              <Grid.Col lg={3} md={4} sm={6} xs={12} key={fontName}>
                 <FontCard key={fontName} family={fontData.family} />
               </Grid.Col>
             );
