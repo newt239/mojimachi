@@ -1,18 +1,16 @@
-import { useState } from "react";
-
 import { Button, Grid } from "@mantine/core";
 
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
-import { pinnedFontsAtom } from "../jotai/atoms";
-import { FontData } from "../types/FontData";
+import { fontListAtom, fontNameListAtom, pinnedFontsAtom } from "~/jotai/atoms";
+import { FontData } from "~/types/FontData";
 
 import FontCard from "./FontCard";
 
 const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
   const pinnedFonts = useAtomValue(pinnedFontsAtom);
-  const [fontList, setFontList] = useState<FontData[]>([]);
-  const [fontNameList, setFontNameList] = useState<string[]>([]);
+  const [fontList, setFontList] = useAtom(fontListAtom);
+  const [fontNameList, setFontNameList] = useAtom(fontNameListAtom);
 
   const logFontData = async () => {
     setFontList([]);
