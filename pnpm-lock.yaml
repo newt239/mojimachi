@@ -17,6 +17,7 @@ specifiers:
   eslint-plugin-react-refresh: ^0.3.4
   eslint-plugin-unused-imports: ^2.0.0
   jotai: ^2.1.0
+  phosphor-react: ^1.4.1
   react: ^18.2.0
   react-dom: ^18.2.0
   react-router-dom: ^6.11.1
@@ -30,6 +31,7 @@ dependencies:
   '@mantine/hooks': 6.0.10_react@18.2.0
   add: 2.0.6
   jotai: 2.1.0_react@18.2.0
+  phosphor-react: 1.4.1_react@18.2.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-router-dom: 6.11.1_biqbaboplfbrettd7655fr4n2y
@@ -2194,6 +2196,15 @@ packages:
   /path-type/4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
+
+  /phosphor-react/1.4.1_react@18.2.0:
+    resolution: {integrity: sha512-gO5j7U0xZrdglTAYDYPACU4xDOFBTJmptrrB/GeR+tHhCZF3nUMyGmV/0hnloKjuTrOmpSFlbfOY78H39rgjUQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
