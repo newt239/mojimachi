@@ -1,9 +1,12 @@
-import { Box, ScrollArea, Stack, Text, Title } from "@mantine/core";
-import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { textAtom } from "~/jotai/atoms";
 
+import { Box, ScrollArea, Stack, Text, Title } from "@mantine/core";
+
+import { useAtomValue } from "jotai";
+import opentype from "opentype.js";
+
+import { textAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";
 
 const EachFont: React.FC = () => {
@@ -19,8 +22,10 @@ const EachFont: React.FC = () => {
     const filledFonts = availableFonts.filter((font) =>
       font.family.includes(fontFamily)
     );
-    console.log(filledFonts);
     setFonts(filledFonts);
+    const blob = await filledFonts[0].blob();
+    const font = opentype.parse(await blob.arrayBuffer());
+    console.log(font);
   };
 
   useEffect(() => {
