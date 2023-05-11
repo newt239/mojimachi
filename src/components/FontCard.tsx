@@ -21,7 +21,7 @@ const FontCard: React.FC<FontCardProps> = ({ family }) => {
           <p>{family}</p>
         </Link>
         <Switch
-          color="orange"
+          color="yellow"
           checked={pinnedFonts.includes(family)}
           onChange={(e) => {
             if (e.target.checked) {

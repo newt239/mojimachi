@@ -1,12 +1,13 @@
+import { useEffect } from "react";
+
 import { Button, Center, Grid } from "@mantine/core";
 
 import { useAtom, useAtomValue } from "jotai";
 
+import FontCard from "./FontCard";
+
 import { fontListAtom, fontNameListAtom, pinnedFontsAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";
-
-import { useEffect } from "react";
-import FontCard from "./FontCard";
 
 const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
   const pinnedFonts = useAtomValue(pinnedFontsAtom);
@@ -43,7 +44,7 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
     <>
       {fontNameList.length === 0 ? (
         <Center>
-          <Button color="orange" onClick={logFontData}>
+          <Button color="yellow" onClick={logFontData}>
             フォントを取得する
           </Button>
         </Center>
