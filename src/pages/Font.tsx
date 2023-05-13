@@ -41,7 +41,6 @@ const FontPage: React.FC = () => {
     // eslint-disable-next-line import/no-named-as-default-member
     const font = opentype.parse(await blob.arrayBuffer());
     setFontMeta({ index: 0, data: font });
-    console.log(font);
   };
 
   useEffect(() => {
