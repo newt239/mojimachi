@@ -15,6 +15,7 @@ import {
 import { useAtomValue } from "jotai";
 import opentype from "opentype.js";
 
+import Lab from "~/components/Lab";
 import { textAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";
 
@@ -39,7 +40,7 @@ const FontPage: React.FC = () => {
     const blob = await filledFonts[0].blob();
     const font = opentype.parse(await blob.arrayBuffer());
     setFontMeta({ index: 0, data: font });
-    console.log(font.tables.name);
+    console.log(font);
   };
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const FontPage: React.FC = () => {
 
           <Tabs defaultValue="info" variant="outline">
             <Tabs.List>
-              <Tabs.Tab value="info">Info</Tabs.Tab>
+              {fontMeta && <Tabs.Tab value="info">Info</Tabs.Tab>}
               <Tabs.Tab value="variants">Variants</Tabs.Tab>
               <Tabs.Tab value="lab">Lab</Tabs.Tab>
             </Tabs.List>
@@ -119,7 +120,7 @@ const FontPage: React.FC = () => {
             </Tabs.Panel>
 
             <Tabs.Panel value="lab" pt="xs">
-              lab tab content
+              <Lab fontFamily={fonts[0].family} />
             </Tabs.Panel>
           </Tabs>
         </>
