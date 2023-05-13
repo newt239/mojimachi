@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
-import { AppShell } from "@mantine/core";
+import { Anchor, AppShell, Box, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 import SideBar from "./SideBar";
 
@@ -8,28 +9,45 @@ import FontPage from "~/pages/Font";
 import FontList from "~/pages/Home";
 
 const Wrapper = () => {
+  const matches = useMediaQuery("(min-width: 30em)");
   return (
-    <AppShell
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      padding="md"
-      navbar={<SideBar />}
-      styles={{
-        main: {
-          backgroundColor: "hsl(45,10%, 90%)",
-        },
-      }}
-    >
-      <Routes>
-        <Route path="/">
-          <Route index element={<FontList />} />
-          <Route path="pinned" element={<FontList pinned />} />
-          <Route path="font">
-            <Route path=":fontFamily" element={<FontPage />} />
-          </Route>
-        </Route>
-      </Routes>
-    </AppShell>
+    <>
+      {matches ? (
+        <AppShell
+          asideOffsetBreakpoint="xs"
+          padding="md"
+          navbar={<SideBar />}
+          styles={{
+            main: {
+              backgroundColor: "hsl(45,10%, 90%)",
+            },
+          }}
+        >
+          <Routes>
+            <Route path="/">
+              <Route index element={<FontList />} />
+              <Route path="pinned" element={<FontList pinned />} />
+              <Route path="font">
+                <Route path=":fontFamily" element={<FontPage />} />
+              </Route>
+            </Route>
+          </Routes>
+        </AppShell>
+      ) : (
+        <Box p="md">
+          <Text>
+            本アプリケーションはデスクトップのブラウザでのみ動作します。対応ブラウザの詳細は
+            <Anchor
+              href="https://caniuse.com/mdn-api_window_querylocalfonts"
+              target="_blank"
+            >
+              Window API: queryLocalFonts | Can I use
+            </Anchor>
+            をご確認ください。
+          </Text>
+        </Box>
+      )}
+    </>
   );
 };
 

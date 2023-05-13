@@ -22,7 +22,7 @@ const SideBar: React.FC = () => {
   const pinnedFonts = useAtomValue(pinnedFontsAtom);
 
   return (
-    <Navbar hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }} p="sm">
+    <Navbar hiddenBreakpoint="xs" width={{ base: 300 }} p="sm">
       <Navbar.Section mb="xs">
         <Link to="/">
           <Title order={1}>Local Font Emulator</Title>
