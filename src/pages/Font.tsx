@@ -51,9 +51,14 @@ const FontPage: React.FC = () => {
     <div>
       {fonts.length > 0 && (
         <>
-          <Title order={2} fz={75} mb={100}>
-            {fonts[0].family}
-          </Title>
+          <Box mb={100}>
+            <Title order={2} fz={75}>
+              {fonts[0].family}
+            </Title>
+            <Text>
+              {fontMeta ? fontMeta.data.names.fullName.ja : fonts[0].family}
+            </Text>
+          </Box>
 
           <Tabs defaultValue="info" variant="outline">
             <Tabs.List>
@@ -84,7 +89,7 @@ const FontPage: React.FC = () => {
                     {Object.entries(fontMeta.data.names).map(([key, value]) => (
                       <tr key={key}>
                         <td>{key}</td>
-                        <td>{value.en}</td>
+                        <td>{value.ja ? value.ja : value.en}</td>
                       </tr>
                     ))}
                   </tbody>
