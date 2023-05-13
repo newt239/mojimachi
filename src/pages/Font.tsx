@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Box, ScrollArea, Stack, Text, Title } from "@mantine/core";
+import { Box, ScrollArea, Stack, Tabs, Text, Title } from "@mantine/core";
 
 import { useAtomValue } from "jotai";
 import opentype from "opentype.js";
@@ -40,25 +40,43 @@ const FontPage: React.FC = () => {
             {fonts[0].family}
           </Title>
 
-          <Stack>
-            {fonts.map((font) => (
-              <Box key={font.fullName}>
-                <Title order={3}>{font.fullName}</Title>
-                <ScrollArea>
-                  <Text
-                    fz={50}
-                    sx={{ whiteSpace: "nowrap" }}
-                    style={{
-                      fontFamily: font.fullName,
-                      fontWeight: font.style,
-                    }}
-                  >
-                    {text}
-                  </Text>
-                </ScrollArea>
-              </Box>
-            ))}
-          </Stack>
+          <Tabs defaultValue="info" variant="outline">
+            <Tabs.List>
+              <Tabs.Tab value="info">Info</Tabs.Tab>
+              <Tabs.Tab value="weights">Weights</Tabs.Tab>
+              <Tabs.Tab value="lab">Lab</Tabs.Tab>
+            </Tabs.List>
+
+            <Tabs.Panel value="info" pt="xs">
+              Gallery tab content
+            </Tabs.Panel>
+
+            <Tabs.Panel value="weights" pt="xs">
+              <Stack>
+                {fonts.map((font) => (
+                  <Box key={font.fullName}>
+                    <Title order={3}>{font.fullName}</Title>
+                    <ScrollArea w="100%">
+                      <Text
+                        fz={50}
+                        sx={{ whiteSpace: "nowrap" }}
+                        style={{
+                          fontFamily: font.fullName,
+                          fontWeight: font.style,
+                        }}
+                      >
+                        {text}
+                      </Text>
+                    </ScrollArea>
+                  </Box>
+                ))}
+              </Stack>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="lab" pt="xs">
+              lab tab content
+            </Tabs.Panel>
+          </Tabs>
         </>
       )}
     </div>
