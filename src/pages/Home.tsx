@@ -57,7 +57,7 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
         </Center>
       ) : (
         <>
-          <Box ta="end">
+          <Box ta="end" mx={5}>
             <Button
               color="yellow"
               onClick={logFontData}
@@ -66,7 +66,7 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
               フォントを再取得
             </Button>
           </Box>
-          <Grid m={4}>
+          <Grid m={5}>
             {fontNameList.map((fontName) => {
               const fontData = fontList.find(
                 (font) => font.family === fontName

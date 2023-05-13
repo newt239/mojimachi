@@ -38,6 +38,7 @@ const FontPage: React.FC = () => {
     );
     setFonts(filledFonts);
     const blob = await filledFonts[0].blob();
+    // eslint-disable-next-line import/no-named-as-default-member
     const font = opentype.parse(await blob.arrayBuffer());
     setFontMeta({ index: 0, data: font });
     console.log(font);
@@ -78,6 +79,7 @@ const FontPage: React.FC = () => {
                 onChange={async (event) => {
                   const index = Number(event);
                   const blob = await fonts[index].blob();
+                  // eslint-disable-next-line import/no-named-as-default-member
                   const font = opentype.parse(await blob.arrayBuffer());
                   setFontMeta({ index, data: font });
                 }}
