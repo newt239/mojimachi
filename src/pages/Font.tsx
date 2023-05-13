@@ -60,7 +60,7 @@ const FontPage: React.FC = () => {
             </Text>
           </Box>
 
-          <Tabs defaultValue="info" variant="outline">
+          <Tabs defaultValue="info" variant="pills" color="yellow">
             <Tabs.List>
               {fontMeta && <Tabs.Tab value="info">Info</Tabs.Tab>}
               <Tabs.Tab value="variants">Variants</Tabs.Tab>
