@@ -4,20 +4,14 @@ import { Box, List, Navbar, Textarea } from "@mantine/core";
 
 import { useAtom, useAtomValue } from "jotai";
 
-import { openedAtom, pinnedFontsAtom, textAtom } from "~/jotai/atoms";
+import { pinnedFontsAtom, textAtom } from "~/jotai/atoms";
 
 const SideBar: React.FC = () => {
   const [text, setText] = useAtom(textAtom);
   const pinnedFonts = useAtomValue(pinnedFontsAtom);
-  const opened = useAtomValue(openedAtom);
 
   return (
-    <Navbar
-      hiddenBreakpoint="sm"
-      hidden={!opened}
-      width={{ sm: 200, lg: 300 }}
-      p="sm"
-    >
+    <Navbar hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }} p="sm">
       <Navbar.Section grow>
         <Textarea
           label="表示するテキスト"

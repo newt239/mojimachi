@@ -9,7 +9,7 @@ import opentype from "opentype.js";
 import { textAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";
 
-const EachFont: React.FC = () => {
+const FontPage: React.FC = () => {
   const { fontFamily } = useParams();
   const [fonts, setFonts] = useState<FontData[]>([]);
   const text = useAtomValue(textAtom);
@@ -65,4 +65,4 @@ const EachFont: React.FC = () => {
   );
 };
 
-export default EachFont;
+export default FontPage;

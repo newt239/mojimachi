@@ -4,7 +4,7 @@ import { Button, Center, Grid } from "@mantine/core";
 
 import { useAtom, useAtomValue } from "jotai";
 
-import FontCard from "./FontCard";
+import FontCard from "../components/FontCard";
 
 import { fontListAtom, fontNameListAtom, pinnedFontsAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";

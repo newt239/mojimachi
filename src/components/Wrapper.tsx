@@ -2,10 +2,11 @@ import { Route, Routes } from "react-router-dom";
 
 import { AppShell, useMantineTheme } from "@mantine/core";
 
-import EachFont from "./EachFont";
-import FontList from "./FontList";
 import Header from "./Header";
 import SideBar from "./SideBar";
+
+import FontPage from "~/pages/Font";
+import FontList from "~/pages/Home";
 
 const Wrapper = () => {
   const theme = useMantineTheme();
@@ -31,7 +32,7 @@ const Wrapper = () => {
           <Route index element={<FontList />} />
           <Route path="pinned" element={<FontList pinned />} />
           <Route path="font">
-            <Route path=":fontFamily" element={<EachFont />} />
+            <Route path=":fontFamily" element={<FontPage />} />
           </Route>
         </Route>
       </Routes>

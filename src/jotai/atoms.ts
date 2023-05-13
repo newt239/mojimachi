@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
+
 import { FontData } from "~/types/FontData";
 
 export const fontListAtom = atom<FontData[]>([]);
@@ -11,5 +12,3 @@ export const textAtom = atom(
 );
 
 export const pinnedFontsAtom = atomWithStorage<string[]>("pinned-fonts", []);
-
-export const openedAtom = atom(true);
