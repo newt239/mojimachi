@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 
 import { AppShell, useMantineTheme } from "@mantine/core";
 
-import Header from "./Header";
 import SideBar from "./SideBar";
 
 import FontPage from "~/pages/Font";
@@ -17,7 +16,6 @@ const Wrapper = () => {
       asideOffsetBreakpoint="sm"
       padding="md"
       navbar={<SideBar />}
-      header={<Header />}
       styles={{
         main: {
           background:
