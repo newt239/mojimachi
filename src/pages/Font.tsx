@@ -2,19 +2,16 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import {
-  Alert,
   Badge,
   Box,
-  ScrollArea,
+  Flex,
   Select,
-  Stack,
   Table,
   Tabs,
   Text,
   Title,
 } from "@mantine/core";
 
-import { Warning } from "@phosphor-icons/react";
 import { useAtomValue } from "jotai";
 import opentype from "opentype.js";
 
@@ -83,7 +80,7 @@ const FontPage: React.FC = () => {
             )}
           </Box>
 
-          <Tabs defaultValue="info" variant="pills" color="yellow">
+          <Tabs defaultValue="info" variant="pills" color="yellow" w="100%">
             <Tabs.List>
               <Tabs.Tab value="info">Info</Tabs.Tab>
               <Tabs.Tab value="variants">Variants</Tabs.Tab>
@@ -93,7 +90,7 @@ const FontPage: React.FC = () => {
               {fonts[0].meta ? (
                 <>
                   <Select
-                    label="ウエイトを選択"
+                    label="ウエイト"
                     placeholder="Pick one"
                     value={index.toString()}
                     data={fonts.map((font, i) => {
@@ -139,43 +136,33 @@ const FontPage: React.FC = () => {
             </Tabs.Panel>
 
             <Tabs.Panel value="variants" pt="xs">
-              <Alert
-                icon={<Warning size={20} />}
-                color="red"
-                variant="filled"
-                mb="lg"
-              >
-                This feature is now experimental.
-              </Alert>
-              <Stack>
+              <Flex direction="column">
                 {fonts.map((font) => (
                   <Box key={font.fullName}>
-                    <Title order={3}>{font.fullName}</Title>
-                    {font.style}
-                    <ScrollArea w="100%">
-                      <Text
-                        fz={50}
-                        sx={{ whiteSpace: "nowrap" }}
-                        style={{
-                          fontFamily: `'${
-                            font.meta
-                              ? font.meta.names.fontFamily.en
-                              : font.family
-                          }'`,
-                          fontWeight: font.style.includes("Bold")
-                            ? "bold"
-                            : undefined,
-                          fontStyle: font.style.includes("Italic")
-                            ? "italic"
-                            : undefined,
-                        }}
-                      >
-                        {text}
-                      </Text>
-                    </ScrollArea>
+                    <Title order={3} weight="inherit">
+                      {font.fullName}
+                    </Title>
+                    <Text
+                      fz={50}
+                      style={{
+                        fontFamily: `'${
+                          font.meta
+                            ? font.meta.names.fontFamily.en
+                            : font.family
+                        }'`,
+                        fontWeight: font.style.includes("Bold")
+                          ? "bold"
+                          : undefined,
+                        fontStyle: font.style.includes("Italic")
+                          ? "italic"
+                          : undefined,
+                      }}
+                    >
+                      {text}
+                    </Text>
                   </Box>
                 ))}
-              </Stack>
+              </Flex>
             </Tabs.Panel>
             <Tabs.Panel value="lab" pt="xs">
               <Lab fontFamily={fonts[0].family} />
