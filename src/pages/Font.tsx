@@ -3,11 +3,9 @@ import { useParams } from "react-router-dom";
 
 import { Box, Select, Table, Tabs, Text, Title } from "@mantine/core";
 
-import { useAtomValue } from "jotai";
 import opentype from "opentype.js";
 
 import Lab from "~/components/Lab";
-import { textAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";
 
 const FontPage: React.FC = () => {
@@ -17,7 +15,6 @@ const FontPage: React.FC = () => {
     index: number;
     data: opentype.Font;
   } | null>(null);
-  const text = useAtomValue(textAtom);
 
   const loadFontData = async () => {
     if (!fontFamily) return;

@@ -42,6 +42,7 @@ const HomePage: React.FC = () => {
         uniqueFonts.map(async (font) => {
           const blob = await font.blob();
           try {
+            // eslint-disable-next-line import/no-named-as-default-member
             const fontData = opentype.parse(await blob.arrayBuffer());
             if (fontData.supported) {
               const glyph_あ = fontData.charToGlyphIndex("あ");
