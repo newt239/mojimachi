@@ -1,10 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
-import { Anchor, Box, Flex, Text } from "@mantine/core";
+import { Anchor, AppShell, Box, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 
-import { NewSideBar } from "./NewSideBar";
-
+import { SideBar } from "~/components/SideBar";
 import FontPage from "~/pages/Font";
 import HomePage from "~/pages/Home";
 
@@ -13,20 +12,26 @@ const Wrapper = () => {
   return (
     <>
       {matches ? (
-        <Flex>
-          <NewSideBar />
-          <Box w="100%" p="md">
-            <Routes>
-              <Route path="/">
-                <Route index element={<HomePage />} />
-                <Route path="font">
-                  <Route path=":fontFamily" element={<FontPage />} />
-                </Route>
-                <Route path="*" element={<HomePage />} />
+        <AppShell
+          asideOffsetBreakpoint="xs"
+          padding="md"
+          navbar={<SideBar />}
+          styles={{
+            main: {
+              backgroundColor: "hsl(45,10%, 90%)",
+            },
+          }}
+        >
+          <Routes>
+            <Route path="/">
+              <Route index element={<HomePage />} />
+              <Route path="font">
+                <Route path=":fontFamily" element={<FontPage />} />
               </Route>
-            </Routes>
-          </Box>
-        </Flex>
+              <Route path="*" element={<HomePage />} />
+            </Route>
+          </Routes>
+        </AppShell>
       ) : (
         <Box p="md">
           <Text>

@@ -1,53 +1,73 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   ActionIcon,
   Anchor,
-  Box,
   Flex,
-  List,
   Navbar,
+  SegmentedControl,
   Text,
   Textarea,
   Title,
 } from "@mantine/core";
 
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { GithubLogo } from "phosphor-react";
 
-import { pinnedFontsAtom, textAtom } from "~/jotai/atoms";
+import { textAtom } from "~/jotai/atoms";
 
-const SideBar: React.FC = () => {
+export function SideBar() {
+  const navigate = useNavigate();
+
   const [text, setText] = useAtom(textAtom);
-  const pinnedFonts = useAtomValue(pinnedFontsAtom);
 
   return (
-    <Navbar hiddenBreakpoint="xs" width={{ base: 300 }} p="sm">
-      <Navbar.Section mb="xs">
+    <Navbar width={{ sm: 300 }} p="md">
+      <Navbar.Section mb="md">
         <Link to="/">
-          <Title order={1}>Local Font Emulator</Title>
+          <Title
+            color="yellow"
+            order={1}
+            sx={{
+              lineHeight: 1,
+              transition: "color 0.2s ease",
+              ":hover": {
+                color: "black",
+              },
+            }}
+          >
+            Local Font Emulator
+          </Title>
         </Link>
       </Navbar.Section>
+
+      <Textarea
+        placeholder="Type something..."
+        mb="sm"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+
       <Navbar.Section grow>
-        <Textarea
-          label="表示するテキスト"
-          autosize
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+        <Text size="xs" weight={500} color="dimmed" mb="xs">
+          フィルター
+        </Text>
+        <SegmentedControl
+          data={[
+            { value: "all", label: "すべて" },
+            { value: "pinned", label: "お気に入り" },
+          ]}
+          onChange={(value) => {
+            if (value === "all") {
+              navigate("/");
+            } else if (value === "pinned") {
+              navigate("/?pinned=true");
+            }
+          }}
+          fullWidth
         />
-        {pinnedFonts.length > 0 && (
-          <Box mt={10}>
-            <Link to="/?pinned=true">Pinned Fonts</Link>
-            <List>
-              {pinnedFonts.map((font) => (
-                <List.Item key={font}>
-                  <Link to={`/font/${font}`}>{font}</Link>
-                </List.Item>
-              ))}
-            </List>
-          </Box>
-        )}
       </Navbar.Section>
+
       <Navbar.Section>
         <Flex justify="space-between" align="center">
           <Text>
@@ -69,6 +89,4 @@ const SideBar: React.FC = () => {
       </Navbar.Section>
     </Navbar>
   );
-};
-
-export default SideBar;
+}
