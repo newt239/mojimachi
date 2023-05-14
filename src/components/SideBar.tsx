@@ -37,7 +37,7 @@ const SideBar: React.FC = () => {
         />
         {pinnedFonts.length > 0 && (
           <Box mt={10}>
-            <Link to="/pinned">Pinned Fonts</Link>
+            <Link to="/?pinned=true">Pinned Fonts</Link>
             <List>
               {pinnedFonts.map((font) => (
                 <List.Item key={font}>

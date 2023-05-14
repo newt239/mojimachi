@@ -1,3 +1,6 @@
+import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+
 import { Box, Button, Center, Grid, LoadingOverlay } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -8,11 +11,25 @@ import FontCard from "~/components/FontCard";
 import { fontListAtom, fontNameListAtom, pinnedFontsAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";
 
-const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
+const HomePage: React.FC = () => {
+  const { search } = useLocation();
+
+  const query = new URLSearchParams(search);
   const pinnedFonts = useAtomValue(pinnedFontsAtom);
   const [fontList, setFontList] = useAtom(fontListAtom);
   const [fontNameList, setFontNameList] = useAtom(fontNameListAtom);
   const [visible, handlers] = useDisclosure(false);
+
+  const ref = useRef(true);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current = false;
+      return;
+    } else {
+      logFontData();
+    }
+  }, [search]);
 
   const logFontData = async () => {
     handlers.open();
@@ -20,12 +37,11 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
     setFontNameList([]);
     try {
       const availableFonts: FontData[] = await window.queryLocalFonts();
-      if (pinned) {
+      if (query.get("pinned") === "true") {
         setFontList(
           availableFonts.filter((font) => pinnedFonts.includes(font.family))
         );
         setFontNameList(pinnedFonts);
-        return;
       } else {
         setFontList(availableFonts);
         setFontNameList([
@@ -84,4 +100,4 @@ const FontList: React.FC<{ pinned?: boolean }> = ({ pinned = false }) => {
   );
 };
 
-export default FontList;
+export default HomePage;
