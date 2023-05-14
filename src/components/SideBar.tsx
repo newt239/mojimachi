@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import {
   ActionIcon,
@@ -17,6 +17,8 @@ import { useAtom } from "jotai";
 import { textAtom } from "~/jotai/atoms";
 
 export function SideBar() {
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
   const navigate = useNavigate();
 
   const [text, setText] = useAtom(textAtom);
@@ -49,7 +51,7 @@ export function SideBar() {
       />
 
       <Navbar.Section grow>
-        <Text size="xs" weight={500} color="dimmed" mb="xs">
+        <Text size="xs" weight={500} color="dimmed" my="xs">
           フィルター
         </Text>
         <SegmentedControl
@@ -59,9 +61,31 @@ export function SideBar() {
           ]}
           onChange={(value) => {
             if (value === "all") {
-              navigate("/");
+              query.delete("pinned");
+              navigate({ search: query.toString() });
             } else if (value === "pinned") {
-              navigate("/?pinned=true");
+              query.set("pinned", "true");
+              navigate({ search: query.toString() });
+            }
+          }}
+          fullWidth
+        />
+
+        <Text size="xs" weight={500} color="dimmed" my="xs">
+          和文フォント
+        </Text>
+        <SegmentedControl
+          data={[
+            { value: "all", label: "すべて" },
+            { value: "ja", label: "和文のみ" },
+          ]}
+          onChange={(value) => {
+            if (value === "all") {
+              query.delete("ja");
+              navigate({ search: query.toString() });
+            } else if (value === "ja") {
+              query.set("ja", "true");
+              navigate({ search: query.toString() });
             }
           }}
           fullWidth
