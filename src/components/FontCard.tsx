@@ -4,7 +4,7 @@ import { Flex, Paper, ScrollArea, Switch, Text } from "@mantine/core";
 
 import { useAtom, useAtomValue } from "jotai";
 
-import { pinnedFontsAtom, textAtom } from "~/jotai/atoms";
+import { fontSizeAtom, pinnedFontsAtom, textAtom } from "~/jotai/atoms";
 import { FontList } from "~/types/FontData";
 
 type FontCardProps = {
@@ -13,6 +13,7 @@ type FontCardProps = {
 
 const FontCard: React.FC<FontCardProps> = ({ font }) => {
   const text = useAtomValue(textAtom);
+  const fontSize = useAtomValue(fontSizeAtom);
   const [pinnedFonts, setPinnedFonts] = useAtom(pinnedFontsAtom);
 
   return (
@@ -41,6 +42,7 @@ const FontCard: React.FC<FontCardProps> = ({ font }) => {
           sx={{ whiteSpace: "pre-wrap" }}
           style={{
             fontFamily: `'${font.family}', Tofu`,
+            fontSize,
           }}
         >
           {text}

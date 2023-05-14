@@ -12,3 +12,5 @@ export const textAtom = atom(
 );
 
 export const pinnedFontsAtom = atomWithStorage<string[]>("pinned-fonts", []);
+
+export const fontSizeAtom = atomWithStorage("font-size", 16);

@@ -6,6 +6,7 @@ import {
   Flex,
   Navbar,
   SegmentedControl,
+  Slider,
   Text,
   Textarea,
   Title,
@@ -14,7 +15,7 @@ import {
 import { GithubLogo } from "@phosphor-icons/react";
 import { useAtom } from "jotai";
 
-import { textAtom } from "~/jotai/atoms";
+import { fontSizeAtom, textAtom } from "~/jotai/atoms";
 
 export function SideBar() {
   const { search } = useLocation();
@@ -22,6 +23,7 @@ export function SideBar() {
   const navigate = useNavigate();
 
   const [text, setText] = useAtom(textAtom);
+  const [fontSize, setFontSize] = useAtom(fontSizeAtom);
 
   return (
     <Navbar width={{ sm: 300 }} p="md">
@@ -51,6 +53,10 @@ export function SideBar() {
       />
 
       <Navbar.Section grow>
+        <Text size="xs" weight={500} color="dimmed" my="xs">
+          フォントサイズ
+        </Text>
+        <Slider value={fontSize} onChange={setFontSize} min={5} max={50} />
         <Text size="xs" weight={500} color="dimmed" my="xs">
           フィルター
         </Text>

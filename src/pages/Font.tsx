@@ -165,7 +165,13 @@ const FontPage: React.FC = () => {
               </Flex>
             </Tabs.Panel>
             <Tabs.Panel value="lab" pt="xs">
-              <Lab fontFamily={fonts[0].family} />
+              <Lab
+                fontFamily={`'${
+                  fonts[0].meta
+                    ? fonts[0].meta.names.fontFamily.en
+                    : fonts[0].family
+                }', Tofu`}
+              />
             </Tabs.Panel>
           </Tabs>
         </>

@@ -96,13 +96,16 @@ const HomePage: React.FC = () => {
     <>
       {fontList.length === 0 ? (
         <Center>
-          <Button
-            color="yellow"
-            onClick={getLocalFonts}
-            leftIcon={<Play size={20} />}
-          >
-            フォントを取得
-          </Button>
+          <Flex gap={5}>
+            {visible && <Loader size="md" color="yellow" />}
+            <Button
+              color="yellow"
+              onClick={getLocalFonts}
+              leftIcon={<Play size={20} />}
+            >
+              フォントを取得
+            </Button>
+          </Flex>
         </Center>
       ) : (
         <>
