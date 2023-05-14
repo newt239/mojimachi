@@ -5,29 +5,32 @@ import { Flex, Paper, ScrollArea, Switch, Text } from "@mantine/core";
 import { useAtom, useAtomValue } from "jotai";
 
 import { pinnedFontsAtom, textAtom } from "~/jotai/atoms";
+import { FontList } from "~/types/FontData";
 
 type FontCardProps = {
-  family: string;
+  font: FontList[number];
 };
 
-const FontCard: React.FC<FontCardProps> = ({ family }) => {
+const FontCard: React.FC<FontCardProps> = ({ font }) => {
   const text = useAtomValue(textAtom);
   const [pinnedFonts, setPinnedFonts] = useAtom(pinnedFontsAtom);
 
   return (
     <Paper shadow="xs" p="md" w="100%">
       <Flex align="center" justify="space-between">
-        <Link to={`/font/${family}`}>
-          <p>{family}</p>
+        <Link to={`/font/${font.family}`}>
+          <p>{font.family}</p>
         </Link>
         <Switch
           color="yellow"
-          checked={pinnedFonts.includes(family)}
+          checked={pinnedFonts.includes(font.family)}
           onChange={(e) => {
             if (e.target.checked) {
-              setPinnedFonts([...pinnedFonts, family]);
+              setPinnedFonts([...pinnedFonts, font.family]);
             } else {
-              setPinnedFonts(pinnedFonts.filter((font) => font !== family));
+              setPinnedFonts(
+                pinnedFonts.filter((afont) => afont !== font.family)
+              );
             }
           }}
         />
@@ -37,7 +40,7 @@ const FontCard: React.FC<FontCardProps> = ({ family }) => {
           fz="lg"
           sx={{ whiteSpace: "pre-wrap" }}
           style={{
-            fontFamily: family,
+            fontFamily: `'${font.family}'`,
           }}
         >
           {text}

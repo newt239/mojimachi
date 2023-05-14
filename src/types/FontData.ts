@@ -10,7 +10,4 @@ export type FontData = {
 
 export type JAAbility = { ja?: "supported" | "undetermind" };
 
-export type FontList = Omit<
-  FontData & JAAbility,
-  "fullName" | "blob" | "style"
->[];
+export type FontList = Omit<FontData & JAAbility, "blob">[];

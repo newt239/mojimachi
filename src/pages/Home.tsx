@@ -49,6 +49,8 @@ const HomePage: React.FC = () => {
               if (glyph_あ !== 0) {
                 return {
                   family: font.family,
+                  fullName: font.fullName,
+                  style: font.style,
                   postscriptName: font.postscriptName,
                   ja: "supported",
                 };
@@ -58,6 +60,8 @@ const HomePage: React.FC = () => {
           } catch (err) {
             return {
               family: font.family,
+              fullName: font.fullName,
+              style: font.style,
               postscriptName: font.postscriptName,
               ja: "undetermind",
             };
@@ -116,7 +120,7 @@ const HomePage: React.FC = () => {
           <Grid m={5}>
             {fontList.map((font) => (
               <Grid.Col lg={3} md={4} sm={6} xs={12} key={font.family}>
-                <FontCard family={font.family} />
+                <FontCard font={font} />
               </Grid.Col>
             ))}
           </Grid>
