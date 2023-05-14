@@ -40,7 +40,7 @@ const FontCard: React.FC<FontCardProps> = ({ font }) => {
           fz="lg"
           sx={{ whiteSpace: "pre-wrap" }}
           style={{
-            fontFamily: `'${font.family}'`,
+            fontFamily: `'${font.family}', Tofu`,
           }}
         >
           {text}

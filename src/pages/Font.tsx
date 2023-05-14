@@ -149,7 +149,7 @@ const FontPage: React.FC = () => {
                           font.meta
                             ? font.meta.names.fontFamily.en
                             : font.family
-                        }'`,
+                        }', Tofu`,
                         fontWeight: font.style.includes("Bold")
                           ? "bold"
                           : undefined,
