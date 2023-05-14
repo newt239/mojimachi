@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Box, Button, Center, Grid, LoadingOverlay } from "@mantine/core";
+import { Button, Center, Flex, Grid, Loader } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import { ArrowClockwise, Play } from "@phosphor-icons/react";
@@ -33,7 +33,6 @@ const HomePage: React.FC = () => {
 
   const getLocalFonts = async () => {
     handlers.open();
-    setFontList([]);
     try {
       const fonts: FontData[] = await window.queryLocalFonts();
       const uniqueFonts = Array.from(
@@ -89,12 +88,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <Box>
-      <LoadingOverlay
-        visible={visible}
-        overlayBlur={2}
-        loaderProps={{ size: "lg", color: "yellow" }}
-      />
+    <>
       {fontList.length === 0 ? (
         <Center>
           <Button
@@ -107,15 +101,17 @@ const HomePage: React.FC = () => {
         </Center>
       ) : (
         <>
-          <Box ta="end" mx={5}>
+          <Flex mx={5} justify="end" align="center" gap={5}>
+            {visible && <Loader size="md" color="yellow" />}
             <Button
               color="yellow"
               onClick={getLocalFonts}
               leftIcon={<ArrowClockwise size="20" />}
+              disabled={visible}
             >
               フォントを再取得
             </Button>
-          </Box>
+          </Flex>
           <Grid m={5}>
             {fontList.map((font) => (
               <Grid.Col lg={3} md={4} sm={6} xs={12} key={font.family}>
@@ -125,7 +121,7 @@ const HomePage: React.FC = () => {
           </Grid>
         </>
       )}
-    </Box>
+    </>
   );
 };
 
