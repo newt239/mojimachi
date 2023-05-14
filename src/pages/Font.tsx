@@ -21,13 +21,12 @@ import Lab from "~/components/Lab";
 import { textAtom } from "~/jotai/atoms";
 import { FontData } from "~/types/FontData";
 
+type Font = Omit<FontData & { meta?: opentype.Font }, "blob">;
+
 const FontPage: React.FC = () => {
   const { fontFamily } = useParams();
-  const [fonts, setFonts] = useState<FontData[]>([]);
-  const [fontMeta, setFontMeta] = useState<{
-    index: number;
-    data: opentype.Font;
-  } | null>(null);
+  const [fonts, setFonts] = useState<Font[]>([]);
+  const [index, setIndex] = useState(0);
 
   const text = useAtomValue(textAtom);
 
@@ -39,11 +38,32 @@ const FontPage: React.FC = () => {
     const filledFonts = availableFonts.filter((font) =>
       font.family.includes(fontFamily)
     );
-    setFonts(filledFonts);
-    const blob = await filledFonts[0].blob();
-    // eslint-disable-next-line import/no-named-as-default-member
-    const font = opentype.parse(await blob.arrayBuffer());
-    setFontMeta({ index: 0, data: font });
+    const parsedFonts = await Promise.all(
+      filledFonts.map(async (font) => {
+        console.log(font.style);
+        const blob = await font.blob();
+        try {
+          // eslint-disable-next-line import/no-named-as-default-member
+          const fontMeta = opentype.parse(await blob.arrayBuffer());
+          return {
+            family: fontMeta.names.fontFamily.en,
+            fullName: font.fullName,
+            style: font.style,
+            postscriptName: font.postscriptName,
+            meta: fontMeta,
+          };
+        } catch {
+          return {
+            family: font.family,
+            fullName: font.fullName,
+            style: font.style,
+            postscriptName: font.postscriptName,
+          };
+        }
+      })
+    );
+
+    setFonts(parsedFonts);
   };
 
   useEffect(() => {
@@ -59,7 +79,9 @@ const FontPage: React.FC = () => {
               {fonts[0].family}
             </Title>
             <Text>
-              {fontMeta ? fontMeta.data.names.fullName.ja : fonts[0].family}
+              {fonts[0].meta
+                ? fonts[0].meta.names.fullName.ja
+                : fonts[0].family}
             </Text>
           </Box>
 
@@ -70,34 +92,31 @@ const FontPage: React.FC = () => {
               <Tabs.Tab value="lab">Lab</Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="info" pt="xs">
-              {fontMeta ? (
+              {fonts[0].meta ? (
                 <>
                   <Select
                     label="ウエイトを選択"
                     placeholder="Pick one"
-                    defaultValue="0"
+                    value={index.toString()}
                     data={fonts.map((font, i) => {
                       return { value: i.toString(), label: font.style };
                     })}
-                    onChange={async (event) => {
-                      const index = Number(event);
-                      const blob = await fonts[index].blob();
-                      // eslint-disable-next-line import/no-named-as-default-member
-                      const font = opentype.parse(await blob.arrayBuffer());
-                      setFontMeta({ index, data: font });
-                    }}
+                    onChange={(v) => v && setIndex(parseInt(v))}
                     py={10}
                   />
                   <Table>
                     <tbody>
-                      {Object.entries(fontMeta.data.names).map(
-                        ([key, value]) => (
-                          <tr key={key}>
-                            <td>{key}</td>
-                            <td>{value.ja ? value.ja : value.en}</td>
-                          </tr>
-                        )
-                      )}
+                      {fonts[index] &&
+                        fonts[index].meta &&
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        Object.entries(fonts[index].meta!.names).map(
+                          ([key, value]) => (
+                            <tr key={key}>
+                              <td>{key}</td>
+                              <td>{value.ja ? value.ja : value.en}</td>
+                            </tr>
+                          )
+                        )}
                     </tbody>
                   </Table>
                 </>
@@ -120,7 +139,17 @@ const FontPage: React.FC = () => {
                         fz={50}
                         sx={{ whiteSpace: "nowrap" }}
                         style={{
-                          fontFamily: `'${font.fullName}', '${font.family}'`,
+                          fontFamily: `'${
+                            font.meta
+                              ? font.meta.names.fontFamily.en
+                              : font.family
+                          }'`,
+                          fontWeight: font.style.includes("Bold")
+                            ? "bold"
+                            : undefined,
+                          fontStyle: font.style.includes("Italic")
+                            ? "italic"
+                            : undefined,
                         }}
                       >
                         {text}

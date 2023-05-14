@@ -10,7 +10,11 @@ function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <ScrollTop />
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{ fontFamily: "system-ui" }}
+      >
         <Wrapper />
       </MantineProvider>
     </BrowserRouter>
