@@ -7,3 +7,10 @@ export type FontData = {
   style: string;
   blob: () => Promise<Blob>;
 };
+
+export type JAAbility = { ja?: "supported" | "undetermind" };
+
+export type FontList = Omit<
+  FontData & JAAbility,
+  "fullName" | "blob" | "style"
+>[];

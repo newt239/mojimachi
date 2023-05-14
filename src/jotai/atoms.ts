@@ -1,9 +1,9 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-import { FontData } from "~/types/FontData";
+import { FontList } from "~/types/FontData";
 
-export const fontListAtom = atom<FontData[]>([]);
+export const fontListAtom = atom<FontList>([]);
 
 export const fontNameListAtom = atom<string[]>([]);
 

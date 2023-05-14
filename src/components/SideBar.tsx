@@ -1,53 +1,97 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import {
   ActionIcon,
   Anchor,
-  Box,
   Flex,
-  List,
   Navbar,
+  SegmentedControl,
   Text,
   Textarea,
   Title,
 } from "@mantine/core";
 
-import { useAtom, useAtomValue } from "jotai";
-import { GithubLogo } from "phosphor-react";
+import { GithubLogo } from "@phosphor-icons/react";
+import { useAtom } from "jotai";
 
-import { pinnedFontsAtom, textAtom } from "~/jotai/atoms";
+import { textAtom } from "~/jotai/atoms";
 
-const SideBar: React.FC = () => {
+export function SideBar() {
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const navigate = useNavigate();
+
   const [text, setText] = useAtom(textAtom);
-  const pinnedFonts = useAtomValue(pinnedFontsAtom);
 
   return (
-    <Navbar hiddenBreakpoint="xs" width={{ base: 300 }} p="sm">
-      <Navbar.Section mb="xs">
+    <Navbar width={{ sm: 300 }} p="md">
+      <Navbar.Section mb="md">
         <Link to="/">
-          <Title order={1}>Local Font Emulator</Title>
+          <Title
+            color="yellow"
+            order={1}
+            sx={{
+              lineHeight: 1,
+              transition: "color 0.2s ease",
+              ":hover": {
+                color: "black",
+              },
+            }}
+          >
+            Local Font Emulator
+          </Title>
         </Link>
       </Navbar.Section>
+
+      <Textarea
+        placeholder="Type something..."
+        mb="sm"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+
       <Navbar.Section grow>
-        <Textarea
-          label="表示するテキスト"
-          autosize
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+        <Text size="xs" weight={500} color="dimmed" my="xs">
+          フィルター
+        </Text>
+        <SegmentedControl
+          data={[
+            { value: "all", label: "すべて" },
+            { value: "pinned", label: "お気に入り" },
+          ]}
+          onChange={(value) => {
+            if (value === "all") {
+              query.delete("pinned");
+              navigate({ search: query.toString() });
+            } else if (value === "pinned") {
+              query.set("pinned", "true");
+              navigate({ search: query.toString() });
+            }
+          }}
+          fullWidth
         />
-        {pinnedFonts.length > 0 && (
-          <Box mt={10}>
-            <Link to="/pinned">Pinned Fonts</Link>
-            <List>
-              {pinnedFonts.map((font) => (
-                <List.Item key={font}>
-                  <Link to={`/font/${font}`}>{font}</Link>
-                </List.Item>
-              ))}
-            </List>
-          </Box>
-        )}
+
+        <Text size="xs" weight={500} color="dimmed" my="xs">
+          和文フォント
+        </Text>
+        <SegmentedControl
+          data={[
+            { value: "all", label: "すべて" },
+            { value: "ja", label: "和文のみ" },
+          ]}
+          onChange={(value) => {
+            if (value === "all") {
+              query.delete("ja");
+              navigate({ search: query.toString() });
+            } else if (value === "ja") {
+              query.set("ja", "true");
+              navigate({ search: query.toString() });
+            }
+          }}
+          fullWidth
+        />
       </Navbar.Section>
+
       <Navbar.Section>
         <Flex justify="space-between" align="center">
           <Text>
@@ -59,16 +103,15 @@ const SideBar: React.FC = () => {
           <ActionIcon
             component="a"
             href="https://github.com/newt239/local-font-emulator"
-            variant="outline"
+            variant="subtle"
             target="default"
+            color="dark"
             size="lg"
           >
-            <GithubLogo size={32} />
+            <GithubLogo size={20} />
           </ActionIcon>
         </Flex>
       </Navbar.Section>
     </Navbar>
   );
-};
-
-export default SideBar;
+}

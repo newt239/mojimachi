@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  Box,
-  ScrollArea,
-  Select,
-  Stack,
-  Table,
-  Tabs,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Select, Table, Tabs, Text, Title } from "@mantine/core";
 
 import { useAtomValue } from "jotai";
 import opentype from "opentype.js";
@@ -62,67 +53,45 @@ const FontPage: React.FC = () => {
 
           <Tabs defaultValue="info" variant="pills" color="yellow">
             <Tabs.List>
-              {fontMeta && <Tabs.Tab value="info">Info</Tabs.Tab>}
-              <Tabs.Tab value="variants">Variants</Tabs.Tab>
+              <Tabs.Tab value="info">Info</Tabs.Tab>
               <Tabs.Tab value="lab">Lab</Tabs.Tab>
             </Tabs.List>
 
             <Tabs.Panel value="info" pt="xs">
-              <Select
-                label="ウエイトを選択"
-                placeholder="Pick one"
-                defaultValue="0"
-                data={fonts.map((font, i) => {
-                  return { value: i.toString(), label: font.style };
-                })}
-                onChange={async (event) => {
-                  const index = Number(event);
-                  const blob = await fonts[index].blob();
-                  // eslint-disable-next-line import/no-named-as-default-member
-                  const font = opentype.parse(await blob.arrayBuffer());
-                  setFontMeta({ index, data: font });
-                }}
-                py={10}
-              />
-              {fontMeta && (
-                <Table>
-                  <tbody>
-                    {Object.entries(fontMeta.data.names).map(([key, value]) => (
-                      <tr key={key}>
-                        <td>{key}</td>
-                        <td>{value.ja ? value.ja : value.en}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
+              {fontMeta ? (
+                <>
+                  <Select
+                    label="ウエイトを選択"
+                    placeholder="Pick one"
+                    defaultValue="0"
+                    data={fonts.map((font, i) => {
+                      return { value: i.toString(), label: font.style };
+                    })}
+                    onChange={async (event) => {
+                      const index = Number(event);
+                      const blob = await fonts[index].blob();
+                      // eslint-disable-next-line import/no-named-as-default-member
+                      const font = opentype.parse(await blob.arrayBuffer());
+                      setFontMeta({ index, data: font });
+                    }}
+                    py={10}
+                  />
+                  <Table>
+                    <tbody>
+                      {Object.entries(fontMeta.data.names).map(
+                        ([key, value]) => (
+                          <tr key={key}>
+                            <td>{key}</td>
+                            <td>{value.ja ? value.ja : value.en}</td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </Table>
+                </>
+              ) : (
+                <Text>このフォントでこの機能は利用できません。</Text>
               )}
-            </Tabs.Panel>
-
-            <Tabs.Panel value="variants" pt="xs">
-              <Stack>
-                {fonts.map((font) => (
-                  <Box key={font.fullName}>
-                    <Title order={3}>{font.fullName}</Title>
-                    {font.style}
-                    <ScrollArea w="100%">
-                      <Text
-                        fz={50}
-                        sx={{ whiteSpace: "nowrap" }}
-                        style={{
-                          fontFamily: font.family,
-                          fontWeight: font.style,
-                          fontStyle: font.style.includes("Italic")
-                            ? "italic"
-                            : "normal",
-                          fontSynthesis: "none",
-                        }}
-                      >
-                        {text}
-                      </Text>
-                    </ScrollArea>
-                  </Box>
-                ))}
-              </Stack>
             </Tabs.Panel>
 
             <Tabs.Panel value="lab" pt="xs">
