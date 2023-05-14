@@ -18,7 +18,7 @@ import { useAtom } from "jotai";
 import { fontSizeAtom, textAtom } from "~/jotai/atoms";
 
 export function SideBar() {
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const query = new URLSearchParams(search);
   const navigate = useNavigate();
 
@@ -61,6 +61,7 @@ export function SideBar() {
           フィルター
         </Text>
         <SegmentedControl
+          disabled={pathname.includes("font")}
           data={[
             { value: "all", label: "すべて" },
             { value: "pinned", label: "お気に入り" },
@@ -81,6 +82,7 @@ export function SideBar() {
           和文フォント
         </Text>
         <SegmentedControl
+          disabled={pathname.includes("font")}
           data={[
             { value: "all", label: "すべて" },
             { value: "ja", label: "和文のみ" },
