@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import {
   Alert,
+  Badge,
   Box,
   ScrollArea,
   Select,
@@ -40,7 +41,6 @@ const FontPage: React.FC = () => {
     );
     const parsedFonts = await Promise.all(
       filledFonts.map(async (font) => {
-        console.log(font.style);
         const blob = await font.blob();
         try {
           // eslint-disable-next-line import/no-named-as-default-member
@@ -78,11 +78,9 @@ const FontPage: React.FC = () => {
             <Title order={2} fz={75}>
               {fonts[0].family}
             </Title>
-            <Text>
-              {fonts[0].meta
-                ? fonts[0].meta.names.fullName.ja
-                : fonts[0].family}
-            </Text>
+            {fonts[0].meta && fonts[0].meta.names.fullName.ja && (
+              <Text>{fonts[0].meta.names.fullName.ja}</Text>
+            )}
           </Box>
 
           <Tabs defaultValue="info" variant="pills" color="yellow">
@@ -113,7 +111,22 @@ const FontPage: React.FC = () => {
                           ([key, value]) => (
                             <tr key={key}>
                               <td>{key}</td>
-                              <td>{value.ja ? value.ja : value.en}</td>
+                              <td>
+                                {value.ja ? (
+                                  <>
+                                    <Badge
+                                      color="yellow"
+                                      variant="light"
+                                      mr="md"
+                                    >
+                                      JA
+                                    </Badge>
+                                    {value.ja}
+                                  </>
+                                ) : (
+                                  value.en
+                                )}
+                              </td>
                             </tr>
                           )
                         )}
@@ -126,7 +139,12 @@ const FontPage: React.FC = () => {
             </Tabs.Panel>
 
             <Tabs.Panel value="variants" pt="xs">
-              <Alert icon={<Warning size={20} />} color="red" variant="filled">
+              <Alert
+                icon={<Warning size={20} />}
+                color="red"
+                variant="filled"
+                mb="lg"
+              >
                 This feature is now experimental.
               </Alert>
               <Stack>
