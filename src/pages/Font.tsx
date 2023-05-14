@@ -38,6 +38,18 @@ const FontPage: React.FC = () => {
     );
     const parsedFonts = await Promise.all(
       filledFonts.map(async (font) => {
+        const fontFace = new FontFace(
+          font.fullName,
+          `local('${font.postscriptName}')`
+        );
+        fontFace
+          .load()
+          .then(function (loadedFace) {
+            document.fonts.add(loadedFace);
+          })
+          .catch(function (e) {
+            console.error(e);
+          });
         const blob = await font.blob();
         try {
           // eslint-disable-next-line import/no-named-as-default-member
@@ -149,17 +161,7 @@ const FontPage: React.FC = () => {
                     <Text
                       fz={50}
                       style={{
-                        fontFamily: `'${
-                          font.meta
-                            ? font.meta.names.fontFamily.en
-                            : font.family
-                        }', Tofu`,
-                        fontWeight: font.style.includes("Bold")
-                          ? "bold"
-                          : undefined,
-                        fontStyle: font.style.includes("Italic")
-                          ? "italic"
-                          : undefined,
+                        fontFamily: `'${font.fullName}', Tofu`,
                       }}
                     >
                       {text}
