@@ -7,7 +7,8 @@ export const fontListAtom = atom<FontList>([]);
 
 export const fontNameListAtom = atom<string[]>([]);
 
-export const textAtom = atom(
+export const textAtom = atomWithStorage(
+  "sample-text",
   "Whereas disregard and contempt for human rights have resulted"
 );
 
