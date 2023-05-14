@@ -11,8 +11,8 @@ import {
   Title,
 } from "@mantine/core";
 
+import { GithubLogo } from "@phosphor-icons/react";
 import { useAtom } from "jotai";
-import { GithubLogo } from "phosphor-react";
 
 import { textAtom } from "~/jotai/atoms";
 
@@ -79,11 +79,12 @@ export function SideBar() {
           <ActionIcon
             component="a"
             href="https://github.com/newt239/local-font-emulator"
-            variant="outline"
+            variant="subtle"
             target="default"
+            color="dark"
             size="lg"
           >
-            <GithubLogo size={32} />
+            <GithubLogo size={20} />
           </ActionIcon>
         </Flex>
       </Navbar.Section>

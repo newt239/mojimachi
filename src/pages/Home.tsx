@@ -4,8 +4,8 @@ import { useLocation } from "react-router-dom";
 import { Box, Button, Center, Grid, LoadingOverlay } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
+import { ArrowClockwise, Play } from "@phosphor-icons/react";
 import { useAtom, useAtomValue } from "jotai";
-import { ArrowClockwise, Play } from "phosphor-react";
 
 import FontCard from "~/components/FontCard";
 import { fontListAtom, fontNameListAtom, pinnedFontsAtom } from "~/jotai/atoms";

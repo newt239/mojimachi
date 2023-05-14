@@ -4,6 +4,7 @@ specifiers:
   '@emotion/react': ^11.11.0
   '@mantine/core': ^6.0.10
   '@mantine/hooks': ^6.0.10
+  '@phosphor-icons/react': ^2.0.9
   '@types/node': ^20.1.0
   '@types/opentype.js': ^1.3.4
   '@types/react': ^18.0.28
@@ -19,7 +20,6 @@ specifiers:
   eslint-plugin-unused-imports: ^2.0.0
   jotai: ^2.1.0
   opentype.js: ^1.3.4
-  phosphor-react: ^1.4.1
   react: ^18.2.0
   react-dom: ^18.2.0
   react-ga4: ^2.1.0
@@ -32,10 +32,10 @@ dependencies:
   '@emotion/react': 11.11.0_s3k22s5ab4eu26xuel7hiaraxy
   '@mantine/core': 6.0.10_ax4rozuubpy5lydedoie5ueqvm
   '@mantine/hooks': 6.0.10_react@18.2.0
+  '@phosphor-icons/react': 2.0.9_biqbaboplfbrettd7655fr4n2y
   add: 2.0.6
   jotai: 2.1.0_react@18.2.0
   opentype.js: 1.3.4
-  phosphor-react: 1.4.1_react@18.2.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-ga4: 2.1.0
@@ -558,6 +558,17 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
     dev: true
+
+  /@phosphor-icons/react/2.0.9_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-/dtQ0M9MXAr35wy8zPlwF684EvYRvGWZPAv+Bd0BR4vzIhjzfLBdHSovFxSP1rj3UOHvVR08qgRL04Kv90oqHA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>= 16.8'
+      react-dom: '>= 16.8'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /@radix-ui/number/1.0.0:
     resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==}
@@ -2215,15 +2226,6 @@ packages:
   /path-type/4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
-
-  /phosphor-react/1.4.1_react@18.2.0:
-    resolution: {integrity: sha512-gO5j7U0xZrdglTAYDYPACU4xDOFBTJmptrrB/GeR+tHhCZF3nUMyGmV/0hnloKjuTrOmpSFlbfOY78H39rgjUQ==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: '>=16'
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
