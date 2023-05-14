@@ -59,8 +59,12 @@ const FontPage: React.FC = () => {
         }
       })
     );
+    const sortedFonts = parsedFonts.sort((a, b) => {
+      if (a.family < b.family) return -1;
+      return 1;
+    });
 
-    setFonts(parsedFonts);
+    setFonts(sortedFonts);
   };
 
   useEffect(() => {
