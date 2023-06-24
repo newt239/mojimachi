@@ -1,8 +1,8 @@
 [package]
 name = "local-font-emulator"
 version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "Shows a list of fonts installed on the device."
+authors = ["newt239"]
 license = ""
 repository = ""
 edition = "2021"
