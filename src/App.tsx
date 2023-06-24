@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
 
+import { Button } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api/tauri";
 
-import "./App.css";
-import reactLogo from "./assets/react.svg";
+import Header from "~/components/Header";
+import HomePage from "~/pages/Home";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -14,23 +16,21 @@ function App() {
     setGreetMsg(await invoke("greet", { name }));
   }
 
+  const getFontNameList = async () => {
+    const fontNameList = await invoke("get_font_name_list");
+    console.log(fontNameList);
+  };
+
   return (
     <div className="container">
-      <h1>Welcome to Tauri!</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
+      <Header />
+      <Routes>
+        <Route path="/">
+          <Route index element={<HomePage />} />
+          <Route path="*" element={<HomePage />} />
+        </Route>
+      </Routes>
+      <Button onClick={getFontNameList}>get</Button>
 
       <form
         className="row"
