@@ -1,10 +1,10 @@
-import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Box, Heading, Stack, useColorModeValue } from "@chakra-ui/react";
 
 const Sidebar: React.FC = () => {
   return (
     <Box
       bg={useColorModeValue("gray.100", "gray.900")}
-      w={100}
+      w="15rem"
       display="block"
       sx={{
         position: "sticky",
@@ -13,9 +13,18 @@ const Sidebar: React.FC = () => {
         height: "calc(100vh - 3rem)",
       }}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        Logo
-      </Flex>
+      <Stack gap="2rem" px="1rem" py="3rem">
+        <Box>
+          <Heading as="h4" size="xs" fontWeight="bold">
+            フィルター
+          </Heading>
+        </Box>
+        <Box>
+          <Heading as="h4" size="xs" fontWeight="bold">
+            お気に入り
+          </Heading>
+        </Box>
+      </Stack>
     </Box>
   );
 };

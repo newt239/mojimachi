@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { Stack } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
@@ -23,11 +24,11 @@ const HomePage: React.FC = () => {
   }, [familyKeyword]);
 
   return (
-    <>
+    <Stack gap="0.5rem">
       {familyList.map((family) => (
         <EachFont key={family} family_name={family} />
       ))}
-    </>
+    </Stack>
   );
 };
 

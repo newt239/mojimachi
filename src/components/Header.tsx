@@ -38,11 +38,11 @@ const Header: React.FC = () => {
           placeholder="フォントを検索"
           value={familyKeyword}
           onChange={(e) => setFamilyKeyword(e.target.value)}
-          boxShadow="none"
+          variant="outline"
           color={useColorModeValue("black", "white")}
         />
         <Flex alignItems={"center"}>
-          <Button onClick={toggleColorMode} boxShadow="none">
+          <Button onClick={toggleColorMode} variant="solid">
             {colorMode === "light" ? (
               <Moon weight="duotone" />
             ) : (
