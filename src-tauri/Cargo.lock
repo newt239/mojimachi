@@ -799,12 +799,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "font-types"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "447140b34382bb52ace3bb6d79626b8ac353deb0e107309cad60422fc4ff7896"
-
-[[package]]
 name = "foreign-types"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1639,11 +1633,11 @@ name = "mojimatch"
 version = "0.0.0"
 dependencies = [
  "font-kit",
- "read-fonts",
  "serde",
  "serde_json",
  "tauri",
  "tauri-build",
+ "ttf-parser",
 ]
 
 [[package]]
@@ -2204,15 +2198,6 @@ name = "raw-window-handle"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f2ff9a1f06a88b01621b7ae906ef0211290d1c8a168a15542486a8f61c0833b9"
-
-[[package]]
-name = "read-fonts"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3c0ae6675c4f00914d9d9d77c9c933f541a3bc824064ed65ede16f7cd55471b0"
-dependencies = [
- "font-types",
-]
 
 [[package]]
 name = "redox_syscall"
@@ -3193,6 +3178,12 @@ checksum = "52984d277bdf2a751072b5df30ec0377febdb02f7696d64c2d7d54630bac4303"
 dependencies = [
  "serde_json",
 ]
+
+[[package]]
+name = "ttf-parser"
+version = "0.19.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a464a4b34948a5f67fddd2b823c62d9d92e44be75058b99939eae6c5b6960b33"
 
 [[package]]
 name = "typenum"

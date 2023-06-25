@@ -1,5 +1,10 @@
 import { Blob } from "buffer";
 
+export type FontInfo = {
+  family: string;
+  postscript_name: string;
+};
+
 export type FontData = {
   family: string;
   fullName: string;

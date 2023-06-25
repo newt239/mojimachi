@@ -12,7 +12,9 @@ const Header: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <header>
+    <header
+      style={{ position: "sticky", top: 0, left: 0, right: 0, zIndex: 10 }}
+    >
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Heading as="h1" size="xl">
