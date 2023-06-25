@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { Card, Flex, Switch, Text } from "@chakra-ui/react";
+import { Box, Flex, Switch, Text } from "@chakra-ui/react";
 
 type EachFontProps = {
   family_name: string;
@@ -8,7 +8,7 @@ type EachFontProps = {
 
 const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
   return (
-    <Card shadow="xs" p="md" w="100%">
+    <Box>
       <Flex align="center" justify="space-between">
         <Link to={`/family/${family_name}`}>{family_name}</Link>
         <Switch color="yellow" />
@@ -22,7 +22,7 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
       >
         にほんごどう？
       </Text>
-    </Card>
+    </Box>
   );
 };
 

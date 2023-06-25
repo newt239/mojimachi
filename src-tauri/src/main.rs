@@ -13,11 +13,21 @@ struct FontInfo {
 }
 
 #[tauri::command]
-fn get_families() -> Vec<String> {
+fn get_families(keyword: Option<String>) -> Vec<String> {
     let source = SystemSource::new();
     let families = source.all_families().unwrap();
+    let mut filtered_families = Vec::new();
+    for family in families {
+        if let Some(keyword) = &keyword {
+            if family.to_lowercase().contains(&keyword.to_lowercase()) {
+                filtered_families.push(family);
+            }
+        } else {
+            filtered_families.push(family);
+        }
+    }
 
-    families
+    filtered_families
 }
 
 #[tauri::command]
