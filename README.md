@@ -1,6 +1,22 @@
-# Tauri + React + Typescript
+# mojimatch
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+デバイス上にインストールされたフォントの一覧を表示します。
+
+## development
+
+### setup
+
+```
+git clone https://github.com/newt239/mojimatch
+cd mojimatch
+pnpm install
+```
+
+### run
+
+```
+pnpm tauri dev
+```
 
 ## Recommended IDE Setup
 
