@@ -1,11 +1,7 @@
-# local-font-emulator
+# Tauri + React + Typescript
 
-https://newt239.github.io/local-font-emulator/
+This template should help get you started developing with Tauri, React and Typescript in Vite.
 
-デバイス上にインストールされたフォントの一覧を表示します。
+## Recommended IDE Setup
 
-## 動作環境
-
-デスクトップの Google Chrome 103 または Microsoft Edge 103 以降(およびその他 Chromium 系のブラウザ)でのみ動作します。
-
-詳細は [Local Font Access API - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Local_Font_Access_API) をご確認ください。
+- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)

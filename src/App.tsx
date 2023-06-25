@@ -1,23 +1,28 @@
-import { BrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import { MantineProvider } from "@mantine/core";
+import { Button } from "@chakra-ui/react";
+import { invoke } from "@tauri-apps/api/tauri";
 
-import ScrollTop from "~/components/ScrollTop";
-import Wrapper from "~/components/Wrapper";
-import "./App.css";
+import Header from "~/components/Header";
+import HomePage from "~/pages/Home";
 
 function App() {
+  const getFontNameList = async () => {
+    const fontNameList = await invoke("get_font_name_list");
+    console.log(fontNameList);
+  };
+
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <ScrollTop />
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{ fontFamily: "system-ui" }}
-      >
-        <Wrapper />
-      </MantineProvider>
-    </BrowserRouter>
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/">
+          <Route index element={<HomePage />} />
+          <Route path="*" element={<HomePage />} />
+        </Route>
+      </Routes>
+      <Button onClick={getFontNameList}>get</Button>
+    </div>
   );
 }
 
