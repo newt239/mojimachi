@@ -10,9 +10,7 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
   return (
     <Card shadow="xs" p="md" w="100%">
       <Flex align="center" justify="space-between">
-        <Link to={`/font/${family_name}`}>
-          <p>{family_name}</p>
-        </Link>
+        <Link to={`/family/${family_name}`}>{family_name}</Link>
         <Switch color="yellow" />
       </Flex>
       <Text
