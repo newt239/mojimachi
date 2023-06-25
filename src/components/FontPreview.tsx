@@ -8,7 +8,7 @@ type FontCardProps = {
   font: FontList[number];
 };
 
-const FontCard: React.FC<FontCardProps> = ({ font }) => {
+const FontPreview: React.FC<FontCardProps> = ({ font }) => {
   return (
     <Card shadow="xs" p="md" w="100%">
       <Flex align="center" justify="space-between">
@@ -22,4 +22,4 @@ const FontCard: React.FC<FontCardProps> = ({ font }) => {
   );
 };
 
-export default FontCard;
+export default FontPreview;

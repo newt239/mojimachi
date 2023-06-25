@@ -12,13 +12,12 @@ fn greet(name: &str) -> String {
 #[tauri::command]
 fn get_font_name_list() -> Vec<String> {
     let source = SystemSource::new();
-    let font_families = source.all_families().unwrap();
+    let all_fonts = source.all_fonts().unwrap();
     let mut fonts = Vec::new();
 
-    for family in font_families {
-        if !family.is_empty() {
-            fonts.push(family);
-        }
+    for font in all_fonts {
+        let font_object = font.load().unwrap();
+        fonts.push(font_object.postscript_name().unwrap());
     }
 
     fonts

@@ -1,5 +1,5 @@
 [package]
-name = "local-font-emulator"
+name = "mojimatch"
 version = "0.0.0"
 description = "Shows a list of fonts installed on the device."
 authors = ["newt239"]
