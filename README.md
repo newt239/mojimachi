@@ -1,4 +1,4 @@
-# mojimatch
+# mojimachi
 
 デバイス上にインストールされたフォントの一覧を表示します。
 
@@ -7,8 +7,8 @@
 ### setup
 
 ```
-git clone https://github.com/newt239/mojimatch
-cd mojimatch
+git clone https://github.com/newt239/mojimachi
+cd mojimachi
 pnpm install
 ```
 
