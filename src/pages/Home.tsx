@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { Stack } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
 import EachFont from "~/components/EachFont";
+import Menubar from "~/components/Menubar";
 import { familyKeywordAtom } from "~/utils/jotai";
 
 const HomePage: React.FC = () => {
@@ -24,11 +25,16 @@ const HomePage: React.FC = () => {
   }, [familyKeyword]);
 
   return (
-    <Stack gap="0.5rem">
-      {familyList.map((family) => (
-        <EachFont key={family} family_name={family} />
-      ))}
-    </Stack>
+    <>
+      <Menubar />
+      <Box p="1rem">
+        <Stack gap="0.5rem">
+          {familyList.map((family) => (
+            <EachFont key={family} family_name={family} />
+          ))}
+        </Stack>
+      </Box>
+    </>
   );
 };
 

@@ -15,7 +15,7 @@ function App() {
       <Header />
       <Flex>
         <Sidebar />
-        <Box flexGrow={1} p="1rem">
+        <Box flexGrow={1}>
           <Routes>
             <Route path="/">
               <Route index element={<HomePage />} />

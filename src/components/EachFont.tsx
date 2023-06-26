@@ -2,15 +2,16 @@ import { ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
 import { Box, Flex, Switch, Text } from "@chakra-ui/react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
-import { favoriteFamilyAtom } from "~/utils/jotai";
+import { favoriteFamilyAtom, fontSizeAtom } from "~/utils/jotai";
 
 type EachFontProps = {
   family_name: string;
 };
 
 const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
+  const fontSize = useAtomValue(fontSizeAtom);
   const [favoriteFamily, setFavoriteFamily] = useAtom(favoriteFamilyAtom);
 
   const onChange = (_e: ChangeEvent<HTMLInputElement>) => {
@@ -34,8 +35,8 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
       <Text
         sx={{
           fontFamily: `'${family_name}', Tofu`,
-          fontSize: "30px",
-          lineHeight: "30px",
+          fontSize: `${fontSize}px`,
+          lineHeight: `${fontSize}px`,
         }}
       >
         にほんごどう？
