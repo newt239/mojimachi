@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import { Box, Flex, Switch, Text } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
-import { favoriteFamilyAtom, fontSizeAtom } from "~/utils/jotai";
+import {
+  favoriteFamilyAtom,
+  fontSizeAtom,
+  previewStringAtom,
+} from "~/utils/jotai";
 
 type EachFontProps = {
   family_name: string;
@@ -12,6 +16,7 @@ type EachFontProps = {
 
 const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
   const fontSize = useAtomValue(fontSizeAtom);
+  const previewString = useAtomValue(previewStringAtom);
   const [favoriteFamily, setFavoriteFamily] = useAtom(favoriteFamilyAtom);
 
   const onChange = (_e: ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +44,7 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
           lineHeight: `${fontSize}px`,
         }}
       >
-        にほんごどう？
+        {previewString}
       </Text>
     </Box>
   );

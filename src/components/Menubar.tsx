@@ -1,6 +1,7 @@
 import {
   Box,
   Flex,
+  Input,
   Slider,
   SliderFilledTrack,
   SliderThumb,
@@ -9,10 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
-import { fontSizeAtom } from "~/utils/jotai";
+import { fontSizeAtom, previewStringAtom } from "~/utils/jotai";
 
 const Menubar: React.FC = () => {
   const [fontSize, setFontSize] = useAtom(fontSizeAtom);
+  const [previewString, setPreviewString] = useAtom(previewStringAtom);
 
   return (
     <Flex
@@ -31,7 +33,7 @@ const Menubar: React.FC = () => {
         value={fontSize}
         onChange={setFontSize}
         min={10}
-        max={180}
+        max={100}
         focusThumbOnChange={false}
       >
         <SliderTrack>
@@ -39,6 +41,13 @@ const Menubar: React.FC = () => {
         </SliderTrack>
         <SliderThumb />
       </Slider>
+      <Input
+        placeholder="プレビューする文字"
+        value={previewString}
+        onChange={(e) => setPreviewString(e.target.value)}
+        variant="outline"
+        color={useColorModeValue("black", "white")}
+      />
     </Flex>
   );
 };

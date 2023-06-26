@@ -4,4 +4,6 @@ export const familyKeywordAtom = atom<string>("");
 
 export const fontSizeAtom = atom<number>(32);
 
+export const previewStringAtom = atom<string>("日本語どう？");
+
 export const favoriteFamilyAtom = atom<string[]>([]);
