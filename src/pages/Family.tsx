@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 import {
+  Box,
   Button,
   Heading,
   Tab,
@@ -15,7 +16,7 @@ const FamilyPage: React.FC = () => {
   const { family_name } = useParams();
 
   return (
-    <>
+    <Box p="1rem">
       <Button
         as={Link}
         to="/"
@@ -28,11 +29,12 @@ const FamilyPage: React.FC = () => {
       <Heading as="h2" size="2xl">
         {family_name}
       </Heading>
-      <Tabs mt={5}>
+      <Tabs mt={5} colorScheme="orange">
         <TabList>
           <Tab>Info</Tab>
           <Tab>Styles</Tab>
           <Tab>Glyphs</Tab>
+          <Tab>Playground</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -44,9 +46,12 @@ const FamilyPage: React.FC = () => {
           <TabPanel>
             <p>three!</p>
           </TabPanel>
+          <TabPanel>
+            <p>four!</p>
+          </TabPanel>
         </TabPanels>
       </Tabs>
-    </>
+    </Box>
   );
 };
 

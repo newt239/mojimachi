@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  useColorMode,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { Moon, Sun } from "@phosphor-icons/react";
+import { Box, Flex, Input, useColorMode } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
 import { familyKeywordAtom } from "~/utils/jotai";
@@ -18,38 +10,28 @@ const Header: React.FC = () => {
   return (
     <Box
       as="header"
-      bg={useColorModeValue("gray.100", "gray.900")}
+      bg="gray.900"
       sx={{
         position: "sticky",
         top: 0,
         left: 0,
         right: 0,
         zIndex: 10,
-        px: "1rem",
+        p: "0.5rem",
       }}
     >
       <Flex
         h="3rem"
         alignItems={"center"}
         justifyContent={"space-between"}
-        gap="1rem"
+        gap="0.5rem"
       >
         <Input
           placeholder="フォントを検索"
           value={familyKeyword}
           onChange={(e) => setFamilyKeyword(e.target.value)}
           variant="outline"
-          color={useColorModeValue("black", "white")}
         />
-        <Flex alignItems={"center"}>
-          <Button onClick={toggleColorMode} variant="solid">
-            {colorMode === "light" ? (
-              <Moon weight="duotone" />
-            ) : (
-              <Sun weight="duotone" />
-            )}
-          </Button>
-        </Flex>
       </Flex>
     </Box>
   );

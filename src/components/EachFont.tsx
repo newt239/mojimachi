@@ -29,13 +29,13 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
 
   return (
     <Box>
-      <Flex align="center" justify="space-between">
-        <Link to={`/family/${family_name}`}>{family_name}</Link>
+      <Flex align="center" justify="start" gap="1rem" pb="0.5rem">
         <Switch
           colorScheme="orange"
           onChange={onChange}
           isChecked={favoriteFamily.includes(family_name)}
         />
+        <Link to={`/family/${family_name}`}>{family_name}</Link>
       </Flex>
       <Text
         sx={{

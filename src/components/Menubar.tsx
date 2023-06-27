@@ -6,7 +6,6 @@ import {
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
@@ -18,19 +17,21 @@ const Menubar: React.FC = () => {
 
   return (
     <Flex
-      bg={useColorModeValue("gray.100", "gray.900")}
+      bg="gray.900"
       top="3rem"
       position="sticky"
       left="15rem"
       zIndex={10}
-      p="1rem"
+      p="0.5rem"
+      pt="0"
+      gap="1rem"
     >
       <Box w="4rem" m="auto">
         {fontSize}px
       </Box>
       <Slider
         aria-label="slider-ex-1"
-        value={fontSize}
+        defaultValue={fontSize}
         onChange={setFontSize}
         min={10}
         max={100}
@@ -46,7 +47,6 @@ const Menubar: React.FC = () => {
         value={previewString}
         onChange={(e) => setPreviewString(e.target.value)}
         variant="outline"
-        color={useColorModeValue("black", "white")}
       />
     </Flex>
   );
