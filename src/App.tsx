@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 
 import { Box, Flex } from "@chakra-ui/react";
 
+import FontPage from "./pages/Font";
+
 import Header from "~/components/Header";
 import Sidebar from "~/components/Sidebar";
 import FamilyPage from "~/pages/Family";
@@ -22,6 +24,9 @@ function App() {
               <Route path="favorite" element={<FavoritePage />} />
               <Route path="family">
                 <Route path=":family_name" element={<FamilyPage />} />
+              </Route>
+              <Route path="font">
+                <Route path=":font_name" element={<FontPage />} />
               </Route>
               <Route path="*" element={<NotFoundPage />} />
             </Route>
