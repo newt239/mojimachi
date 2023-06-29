@@ -24,6 +24,24 @@ const FontPage: React.FC = () => {
   const [range, setRange] = useState<string>("Basic Latin");
   const [glyphs, setGlyphs] = useState<string[]>([]);
 
+  const loadFont = async (font_name: string) => {
+    const fontFace = new FontFace(font_name, `local('${font_name}')`);
+    fontFace
+      .load()
+      .then((loadedFace) => {
+        document.fonts.add(loadedFace);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  useEffect(() => {
+    if (font_name) {
+      loadFont(font_name);
+    }
+  }, []);
+
   useEffect(() => {
     const newGlyphs = [];
     for (
@@ -73,7 +91,12 @@ const FontPage: React.FC = () => {
                   </Stack>
                 ))}
               </RadioGroup>
-              <Flex flexWrap="wrap" w="80%">
+              <Flex
+                flexWrap="wrap"
+                w="80%"
+                alignContent="flex-start"
+                fontFamily={`'${font_name}', Tofu`}
+              >
                 {glyphs.map((glyph) => (
                   <Flex
                     key={glyph}
@@ -83,7 +106,6 @@ const FontPage: React.FC = () => {
                     borderColor="gray.100"
                     alignItems="center"
                     w="10%"
-                    alignContent="flex-start"
                   >
                     <Box fontSize={32}>{glyph === " " ? "x" : glyph}</Box>
                   </Flex>
