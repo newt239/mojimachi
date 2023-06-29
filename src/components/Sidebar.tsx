@@ -18,7 +18,7 @@ const Sidebar: React.FC = () => {
   return (
     <Box
       bg={useColorModeValue("gray.100", "gray.900")}
-      w="15rem"
+      w="20%"
       display="block"
       sx={{
         position: "sticky",

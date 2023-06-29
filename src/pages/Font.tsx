@@ -1,9 +1,14 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import {
   Box,
   Button,
+  Flex,
   Heading,
+  Radio,
+  RadioGroup,
+  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -12,8 +17,24 @@ import {
 } from "@chakra-ui/react";
 import { ArrowUUpLeft } from "@phosphor-icons/react";
 
+import { unicodeRanges } from "~/utils/unicode";
+
 const FontPage: React.FC = () => {
   const { font_name } = useParams();
+  const [range, setRange] = useState<string>("Basic Latin");
+  const [glyphs, setGlyphs] = useState<string[]>([]);
+
+  useEffect(() => {
+    const newGlyphs = [];
+    for (
+      let i = unicodeRanges[range].start;
+      i < unicodeRanges[range].end;
+      i++
+    ) {
+      newGlyphs.push(String.fromCodePoint(i));
+    }
+    setGlyphs(newGlyphs);
+  }, [range]);
 
   return (
     <Box p="1rem">
@@ -36,11 +57,39 @@ const FontPage: React.FC = () => {
           <Tab>Playground</Tab>
         </TabList>
         <TabPanels>
+          <TabPanel sx={{ fontFamily: `'${font_name}', Tofu` }}></TabPanel>
           <TabPanel>
-            <p>one!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>three!</p>
+            <Flex direction="row">
+              <RadioGroup
+                onChange={setRange}
+                value={range}
+                flexDirection="column"
+                w="20%"
+                flexGrow={1}
+              >
+                {Object.keys(unicodeRanges).map((name) => (
+                  <Stack key={name}>
+                    <Radio value={name}>{unicodeRanges[name].name}</Radio>
+                  </Stack>
+                ))}
+              </RadioGroup>
+              <Flex flexWrap="wrap" w="80%">
+                {glyphs.map((glyph) => (
+                  <Flex
+                    key={glyph}
+                    direction="column"
+                    borderWidth="1px"
+                    borderStyle="solid"
+                    borderColor="gray.100"
+                    alignItems="center"
+                    w="10%"
+                    alignContent="flex-start"
+                  >
+                    <Box fontSize={32}>{glyph === " " ? "x" : glyph}</Box>
+                  </Flex>
+                ))}
+              </Flex>
+            </Flex>
           </TabPanel>
           <TabPanel>
             <p>four!</p>
