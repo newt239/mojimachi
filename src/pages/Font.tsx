@@ -13,6 +13,7 @@ import {
 import { ArrowUUpLeft } from "@phosphor-icons/react";
 
 import Glyphs from "~/components/Glyphs";
+import Info from "~/components/Info";
 
 const FontPage: React.FC = () => {
   const { font_name } = useParams();
@@ -40,7 +41,9 @@ const FontPage: React.FC = () => {
           <Tab>Playground</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel sx={{ fontFamily: `'${font_name}', Tofu` }}></TabPanel>
+          <TabPanel>
+            <Info font_name={font_name} />
+          </TabPanel>
           <TabPanel>
             <Glyphs font_name={font_name} />
           </TabPanel>

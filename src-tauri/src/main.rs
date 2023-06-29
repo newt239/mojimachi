@@ -82,6 +82,36 @@ fn get_fonts_head() -> Vec<Vec<Option<String>>> {
     fonts
 }
 
+
+#[tauri::command]
+fn get_font_head(name: String) -> Vec<Option<String>> {
+    let name_table_tag = Tag::from_bytes(b"name").as_u32();
+    let source = SystemSource::new();
+    let font_handle = source.select_by_postscript_name(&name).unwrap();
+    let font_object = font_handle.load().unwrap();
+    let name_table_bytes = font_object.load_font_table(name_table_tag).unwrap();
+    let name_table_data = name_table_bytes.as_ref();
+    let name_table = Table::parse(name_table_data).unwrap();
+    let mut font_info = Vec::new();
+
+    let mut i = 0;
+        loop {
+            if i >= 25 {
+                break;
+            } else {
+                let value = name_table
+                    .names
+                    .get(i)
+                    .map(|n| n.to_string())
+                    .unwrap_or(None);
+                font_info.push(value);
+                i += 1;
+            }
+        }
+    font_info
+
+}
+
 #[tauri::command]
 fn get_fonts_by_family(family: String) -> Vec<Option<String>> {
     let source = SystemSource::new();
@@ -103,6 +133,7 @@ fn main() {
             get_families,
             get_fonts_info,
             get_fonts_head,
+            get_font_head,
             get_fonts_by_family,
         ])
         .run(tauri::generate_context!())
