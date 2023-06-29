@@ -14,6 +14,7 @@ import { ArrowUUpLeft } from "@phosphor-icons/react";
 
 import Glyphs from "~/components/Glyphs";
 import Info from "~/components/Info";
+import Playground from "~/components/Playground";
 
 const FontPage: React.FC = () => {
   const { font_name } = useParams();
@@ -36,9 +37,9 @@ const FontPage: React.FC = () => {
       </Heading>
       <Tabs mt={5} colorScheme="orange">
         <TabList>
-          <Tab>Info</Tab>
-          <Tab>Glyphs</Tab>
-          <Tab>Playground</Tab>
+          <Tab>情報</Tab>
+          <Tab>グリフ一覧</Tab>
+          <Tab>ためしがき</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -48,7 +49,7 @@ const FontPage: React.FC = () => {
             <Glyphs font_name={font_name} />
           </TabPanel>
           <TabPanel>
-            <p>four!</p>
+            <Playground font_name={font_name} />
           </TabPanel>
         </TabPanels>
       </Tabs>

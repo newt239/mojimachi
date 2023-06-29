@@ -28,7 +28,7 @@ const Menubar: React.FC = () => {
   return (
     <Flex
       bg="gray.900"
-      top="3rem"
+      top="4rem"
       position="sticky"
       left="15rem"
       zIndex={10}

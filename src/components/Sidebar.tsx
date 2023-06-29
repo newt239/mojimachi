@@ -22,7 +22,7 @@ const Sidebar: React.FC = () => {
       display="block"
       sx={{
         position: "sticky",
-        top: "3rem",
+        top: "4rem",
         left: 0,
         height: "calc(100vh - 3rem)",
       }}
