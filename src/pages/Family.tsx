@@ -1,19 +1,46 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import {
   Box,
   Button,
   Heading,
+  Stack,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
 } from "@chakra-ui/react";
 import { ArrowUUpLeft } from "@phosphor-icons/react";
+import { invoke } from "@tauri-apps/api";
 
 const FamilyPage: React.FC = () => {
   const { family_name } = useParams();
+  const [styles, setStyles] = useState<string[]>([]);
+
+  const getFontNameList = async () => {
+    const fontNameList: string[] = await invoke("get_fonts_by_family", {
+      family: family_name,
+    });
+    for (const style of fontNameList) {
+      const fontFace = new FontFace(style, `local('${style}')`);
+      fontFace
+        .load()
+        .then(function (loadedFace) {
+          document.fonts.add(loadedFace);
+        })
+        .catch(function (e) {
+          console.error(e);
+        });
+    }
+    setStyles(fontNameList);
+  };
+
+  useEffect(() => {
+    getFontNameList();
+  }, []);
 
   return (
     <Box p="1rem">
@@ -41,7 +68,13 @@ const FamilyPage: React.FC = () => {
             <p>one!</p>
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <Stack>
+              {styles.map((style) => (
+                <Text key={style} sx={{ fontFamily: `'${style}', Tofu` }}>
+                  {style}
+                </Text>
+              ))}
+            </Stack>
           </TabPanel>
           <TabPanel>
             <p>three!</p>

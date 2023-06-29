@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Box,
   Flex,
@@ -7,13 +9,21 @@ import {
   SliderThumb,
   SliderTrack,
 } from "@chakra-ui/react";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
+import { useDebounce } from "~/hooks/useDebounce";
 import { fontSizeAtom, previewStringAtom } from "~/utils/jotai";
 
 const Menubar: React.FC = () => {
-  const [fontSize, setFontSize] = useAtom(fontSizeAtom);
+  const debounce = useDebounce(1000);
+  const setFontSize = useSetAtom(fontSizeAtom);
+  const [localFontSize, setLocalFontSize] = useState<number>(32);
   const [previewString, setPreviewString] = useAtom(previewStringAtom);
+
+  const onChange = (e: number) => {
+    setLocalFontSize(e);
+    setFontSize(e);
+  };
 
   return (
     <Flex
@@ -27,12 +37,12 @@ const Menubar: React.FC = () => {
       gap="1rem"
     >
       <Box w="4rem" m="auto">
-        {fontSize}px
+        {localFontSize}px
       </Box>
       <Slider
         aria-label="slider-ex-1"
-        defaultValue={fontSize}
-        onChange={setFontSize}
+        defaultValue={localFontSize}
+        onChange={onChange}
         min={10}
         max={100}
         focusThumbOnChange={false}

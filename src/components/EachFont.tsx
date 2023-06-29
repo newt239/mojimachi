@@ -4,18 +4,13 @@ import { Link } from "react-router-dom";
 import { Box, Flex, Switch, Text } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
-import {
-  favoriteFamilyAtom,
-  fontSizeAtom,
-  previewStringAtom,
-} from "~/utils/jotai";
+import { favoriteFamilyAtom, previewStringAtom } from "~/utils/jotai";
 
 type EachFontProps = {
   family_name: string;
 };
 
 const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
-  const fontSize = useAtomValue(fontSizeAtom);
   const previewString = useAtomValue(previewStringAtom);
   const [favoriteFamily, setFavoriteFamily] = useAtom(favoriteFamilyAtom);
 
@@ -29,7 +24,14 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
 
   return (
     <Box>
-      <Flex align="center" justify="start" gap="1rem" pb="0.5rem">
+      <Flex
+        align="center"
+        justify="start"
+        gap="1rem"
+        pb="0.5rem"
+        fontSize="sm"
+        lineHeight="initial"
+      >
         <Switch
           colorScheme="orange"
           onChange={onChange}
@@ -37,15 +39,15 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
         />
         <Link to={`/family/${family_name}`}>{family_name}</Link>
       </Flex>
-      <Text
-        sx={{
-          fontFamily: `'${family_name}', Tofu`,
-          fontSize: `${fontSize}px`,
-          lineHeight: `${fontSize}px`,
-        }}
-      >
-        {previewString}
-      </Text>
+      <Box>
+        <Text
+          sx={{
+            fontFamily: `'${family_name}', Tofu`,
+          }}
+        >
+          {previewString}
+        </Text>
+      </Box>
     </Box>
   );
 };

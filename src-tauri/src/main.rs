@@ -82,12 +82,28 @@ fn get_fonts_head() -> Vec<Vec<Option<String>>> {
     fonts
 }
 
+#[tauri::command]
+fn get_fonts_by_family(family: String) -> Vec<Option<String>> {
+    let source = SystemSource::new();
+    let family_handle = source.select_family_by_name(&family).unwrap();
+    let fonts = family_handle.fonts();
+    let mut family_fonts = Vec::new();
+
+    for font in fonts {
+        let font_object = font.load().unwrap();
+        family_fonts.push(font_object.postscript_name());
+    }
+
+    family_fonts
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             get_families,
             get_fonts_info,
-            get_fonts_head
+            get_fonts_head,
+            get_fonts_by_family,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

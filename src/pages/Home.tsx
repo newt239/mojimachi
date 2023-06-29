@@ -6,9 +6,10 @@ import { useAtomValue } from "jotai";
 
 import EachFont from "~/components/EachFont";
 import Menubar from "~/components/Menubar";
-import { familyKeywordAtom } from "~/utils/jotai";
+import { familyKeywordAtom, fontSizeAtom } from "~/utils/jotai";
 
 const HomePage: React.FC = () => {
+  const fontSize = useAtomValue(fontSizeAtom);
   const [familyList, setFamilyList] = useState<string[]>([]);
   const familyKeyword = useAtomValue(familyKeywordAtom);
 
@@ -28,7 +29,13 @@ const HomePage: React.FC = () => {
     <>
       <Menubar />
       <Box p="1rem">
-        <Stack gap="0.5rem">
+        <Stack
+          gap="0.5rem"
+          style={{
+            fontSize: `${fontSize}px`,
+            lineHeight: `${fontSize}px`,
+          }}
+        >
           {familyList.map((family) => (
             <EachFont key={family} family_name={family} />
           ))}
