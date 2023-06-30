@@ -11,18 +11,17 @@ import { familyKeywordAtom, fontSizeAtom, jaFilterAtom } from "~/utils/jotai";
 const HomePage: React.FC = () => {
   const fontSize = useAtomValue(fontSizeAtom);
   const jaFilter = useAtomValue(jaFilterAtom);
-  const [familyList, setFamilyList] = useState<string[]>([]);
   const familyKeyword = useAtomValue(familyKeywordAtom);
+  const [familyList, setFamilyList] = useState<string[]>([]);
 
   const getFontNameList = async () => {
-    const familiyNameList: string[] = await invoke(
+    const familyNameList: string[] = await invoke(
       jaFilter ? "get_ja_families" : "get_families",
       {
         keyword: familyKeyword,
       }
     );
-    console.log(familiyNameList);
-    setFamilyList(familiyNameList);
+    setFamilyList(familyNameList);
   };
 
   useEffect(() => {

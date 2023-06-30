@@ -1,4 +1,4 @@
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, useLocation, useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -13,11 +13,18 @@ import {
 } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
-import { favoriteFamilyAtom, jaFilterAtom } from "~/utils/jotai";
+import {
+  familyKeywordAtom,
+  favoriteFamiliesAtom,
+  jaFilterAtom,
+} from "~/utils/jotai";
 
 const Sidebar: React.FC = () => {
-  const favoriteFamily = useAtomValue(favoriteFamilyAtom);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const favoriteFamily = useAtomValue(favoriteFamiliesAtom);
   const [jaFilter, setJaFilter] = useAtom(jaFilterAtom);
+  const [familyKeyword, setFamilyKeyword] = useAtom(familyKeywordAtom);
 
   return (
     <Box
@@ -31,7 +38,23 @@ const Sidebar: React.FC = () => {
         height: "calc(100vh - 4rem)",
       }}
     >
-      <Stack gap="2rem" px="1rem" py="3rem">
+      <Stack gap="2rem" px="1rem">
+        <Box>
+          <Button
+            w="full"
+            colorScheme="orange"
+            onClick={() => {
+              setJaFilter(false);
+              setFamilyKeyword("");
+              navigate("/");
+            }}
+            isDisabled={
+              !jaFilter && location.pathname === "/" && familyKeyword === ""
+            }
+          >
+            すべて表示
+          </Button>
+        </Box>
         <Box>
           <Heading as="h4" size="xs" fontWeight="bold">
             フィルター
