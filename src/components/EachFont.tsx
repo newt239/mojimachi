@@ -41,9 +41,9 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
       </Flex>
       <Box>
         <Text
-          sx={{
-            fontFamily: `'${family_name}', Tofu`,
-          }}
+          fontFamily={`'${family_name}', Tofu`}
+          overflow="hidden"
+          whiteSpace="nowrap"
         >
           {previewString}
         </Text>

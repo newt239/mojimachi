@@ -31,7 +31,7 @@ const Playground: React.FC<PlaygroundProps> = ({ font_name }) => {
     <Flex w="100%" justify="space-between" gap={3}>
       <Box
         mx="md"
-        p="md"
+        p="2rem"
         w="70%"
         sx={{
           fontFamily: `'${font_name}', Tofu`,

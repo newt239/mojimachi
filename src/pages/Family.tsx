@@ -58,10 +58,10 @@ const FamilyPage: React.FC = () => {
             </Link>
             <Text
               ml={2}
-              sx={{
-                fontFamily: `'${style}', Tofu`,
-                fontSize: `${fontSize}px`,
-              }}
+              fontFamily={`'${style}', Tofu`}
+              fontSize={`${fontSize}px`}
+              overflow="hidden"
+              whiteSpace="nowrap"
             >
               {previewString}
             </Text>
