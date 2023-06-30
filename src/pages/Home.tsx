@@ -6,24 +6,28 @@ import { useAtomValue } from "jotai";
 
 import EachFont from "~/components/EachFont";
 import Menubar from "~/components/Menubar";
-import { familyKeywordAtom, fontSizeAtom } from "~/utils/jotai";
+import { familyKeywordAtom, fontSizeAtom, jaFilterAtom } from "~/utils/jotai";
 
 const HomePage: React.FC = () => {
   const fontSize = useAtomValue(fontSizeAtom);
+  const jaFilter = useAtomValue(jaFilterAtom);
   const [familyList, setFamilyList] = useState<string[]>([]);
   const familyKeyword = useAtomValue(familyKeywordAtom);
 
   const getFontNameList = async () => {
-    const familiyNameList: string[] = await invoke("get_families", {
-      keyword: familyKeyword,
-    });
+    const familiyNameList: string[] = await invoke(
+      jaFilter ? "get_ja_families" : "get_families",
+      {
+        keyword: familyKeyword,
+      }
+    );
     console.log(familiyNameList);
     setFamilyList(familiyNameList);
   };
 
   useEffect(() => {
     getFontNameList();
-  }, [familyKeyword]);
+  }, [familyKeyword, jaFilter]);
 
   return (
     <>
