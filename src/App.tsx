@@ -2,9 +2,9 @@ import { Route, Routes } from "react-router-dom";
 
 import { Box, Flex } from "@chakra-ui/react";
 
+import Header from "./components/Header";
 import FontPage from "./pages/Font";
 
-import Header from "~/components/Header";
 import Sidebar from "~/components/Sidebar";
 import FamilyPage from "~/pages/Family";
 import FavoritePage from "~/pages/Favorite";

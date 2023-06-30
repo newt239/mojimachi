@@ -6,7 +6,6 @@ import { ArrowUUpLeft } from "@phosphor-icons/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
-import Menubar from "~/components/Menubar";
 import { fontSizeAtom, previewStringAtom } from "~/utils/jotai";
 
 const FamilyPage: React.FC = () => {
@@ -38,38 +37,38 @@ const FamilyPage: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <Menubar />
-      <Box p="1rem">
-        <Button
-          as={Link}
-          to="/"
-          variant="ghost"
-          colorScheme="orange"
-          leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}
-        >
-          戻る
-        </Button>
-        <Heading as="h2" size="2xl">
-          {family_name}
-        </Heading>
-        <Stack mt={5}>
-          {styles.map((style) => (
-            <Flex key={style} flexDirection="column">
-              <Link to={`/font/${style}`}>
-                <Text>{style}</Text>
-              </Link>
-              <Text
-                ml={2}
-                sx={{ fontFamily: `'${style}', Tofu`, fontSize: `${fontSize}px` }}
-              >
-                {previewString}
-              </Text>
-            </Flex>
-          ))}
-        </Stack>
-      </Box>
-    </>
+    <Box p="1rem">
+      <Button
+        as={Link}
+        to="/"
+        variant="ghost"
+        colorScheme="orange"
+        leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}
+      >
+        戻る
+      </Button>
+      <Heading as="h2" size="2xl">
+        {family_name}
+      </Heading>
+      <Stack mt={5}>
+        {styles.map((style) => (
+          <Flex key={style} flexDirection="column">
+            <Link to={`/font/${style}`}>
+              <Text>{style}</Text>
+            </Link>
+            <Text
+              ml={2}
+              sx={{
+                fontFamily: `'${style}', Tofu`,
+                fontSize: `${fontSize}px`,
+              }}
+            >
+              {previewString}
+            </Text>
+          </Flex>
+        ))}
+      </Stack>
+    </Box>
   );
 };
 
