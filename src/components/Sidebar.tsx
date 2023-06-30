@@ -3,17 +3,21 @@ import { Link as ReactLink } from "react-router-dom";
 import {
   Box,
   Button,
+  Flex,
   Heading,
   List,
   Stack,
+  Switch,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
-import { favoriteFamilyAtom } from "~/utils/jotai";
+import { favoriteFamilyAtom, jaFilterAtom } from "~/utils/jotai";
 
 const Sidebar: React.FC = () => {
   const favoriteFamily = useAtomValue(favoriteFamilyAtom);
+  const [jaFilter, setJaFilter] = useAtom(jaFilterAtom);
 
   return (
     <Box
@@ -24,7 +28,7 @@ const Sidebar: React.FC = () => {
         position: "sticky",
         top: "4rem",
         left: 0,
-        height: "calc(100vh - 3rem)",
+        height: "calc(100vh - 4rem)",
       }}
     >
       <Stack gap="2rem" px="1rem" py="3rem">
@@ -32,6 +36,14 @@ const Sidebar: React.FC = () => {
           <Heading as="h4" size="xs" fontWeight="bold">
             フィルター
           </Heading>
+          <Flex pt={3} alignItems="center" gap={1}>
+            <Switch
+              colorScheme="orange"
+              onChange={() => setJaFilter((v) => !v)}
+              isChecked={jaFilter}
+            />
+            <Text>日本語のみ</Text>
+          </Flex>
         </Box>
         <Box>
           <ReactLink to="/favorite">

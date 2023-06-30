@@ -26,6 +26,34 @@ fn get_families(keyword: Option<String>) -> Vec<String> {
             filtered_families.push(family);
         }
     }
+    
+    filtered_families.sort();
+
+    filtered_families
+}
+
+#[tauri::command]
+fn get_ja_families(keyword: Option<String>) -> Vec<String> {
+    let source = SystemSource::new();
+    let fonts = source.all_fonts().unwrap();
+    let mut filtered_families = Vec::new();
+    for font in fonts {
+        let font_object = font.load().unwrap();
+        let family_name = font_object.family_name().to_string();
+        let glyph = font_object.glyph_for_char('あ');
+        if glyph.is_some() && glyph.unwrap() != 0 {
+            if let Some(keyword) = &keyword {
+                if family_name.to_lowercase().contains(&keyword.to_lowercase()) {
+                    filtered_families.push(family_name);
+                }
+            } else {
+                filtered_families.push(family_name);
+            }
+        }
+    }
+    
+    filtered_families.sort();
+    filtered_families.dedup();
 
     filtered_families
 }
@@ -131,6 +159,7 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             get_families,
+            get_ja_families,
             get_fonts_info,
             get_fonts_head,
             get_font_head,
