@@ -23,7 +23,7 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
   };
 
   return (
-    <Box>
+    <Flex flexDirection="column">
       <Flex
         align="center"
         justify="start"
@@ -48,7 +48,7 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
           {previewString}
         </Text>
       </Box>
-    </Box>
+    </Flex>
   );
 };
 

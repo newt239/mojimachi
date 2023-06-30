@@ -11,11 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { useAtom, useSetAtom } from "jotai";
 
-import { useDebounce } from "~/hooks/useDebounce";
 import { fontSizeAtom, previewStringAtom } from "~/utils/jotai";
 
 const Menubar: React.FC = () => {
-  const debounce = useDebounce(1000);
   const setFontSize = useSetAtom(fontSizeAtom);
   const [localFontSize, setLocalFontSize] = useState<number>(32);
   const [previewString, setPreviewString] = useAtom(previewStringAtom);

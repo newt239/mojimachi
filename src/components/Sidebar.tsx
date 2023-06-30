@@ -1,4 +1,4 @@
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, useLocation, useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -16,9 +16,11 @@ import { useAtom, useAtomValue } from "jotai";
 import { favoriteFamilyAtom, jaFilterAtom } from "~/utils/jotai";
 
 const Sidebar: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const favoriteFamily = useAtomValue(favoriteFamilyAtom);
   const [jaFilter, setJaFilter] = useAtom(jaFilterAtom);
-
+  console.log(location.pathname);
   return (
     <Box
       bg={useColorModeValue("gray.100", "gray.900")}
@@ -31,7 +33,20 @@ const Sidebar: React.FC = () => {
         height: "calc(100vh - 4rem)",
       }}
     >
-      <Stack gap="2rem" px="1rem" py="3rem">
+      <Stack gap="2rem" px="1rem">
+        <Box>
+          <Button
+            w="full"
+            colorScheme="orange"
+            onClick={() => {
+              setJaFilter(false);
+              navigate("/");
+            }}
+            isDisabled={!jaFilter && location.pathname === "/"}
+          >
+            すべて表示
+          </Button>
+        </Box>
         <Box>
           <Heading as="h4" size="xs" fontWeight="bold">
             フィルター

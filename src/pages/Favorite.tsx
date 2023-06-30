@@ -1,18 +1,31 @@
-import { Stack } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 
 import EachFont from "~/components/EachFont";
-import { favoriteFamilyAtom } from "~/utils/jotai";
+import Menubar from "~/components/Menubar";
+import { favoriteFamilyAtom, fontSizeAtom } from "~/utils/jotai";
 
 const FavoritePage: React.FC = () => {
+  const fontSize = useAtomValue(fontSizeAtom);
   const favoriteFamily = useAtomValue(favoriteFamilyAtom);
 
   return (
-    <Stack gap="0.5rem">
-      {favoriteFamily.map((family) => (
-        <EachFont key={family} family_name={family} />
-      ))}
-    </Stack>
+    <>
+      <Menubar />
+      <Box p="1rem">
+        <Stack
+          gap="0.5rem"
+          style={{
+            fontSize: `${fontSize}px`,
+            lineHeight: `${fontSize}px`,
+          }}
+        >
+          {favoriteFamily.map((family) => (
+            <EachFont key={family} family_name={family} />
+          ))}
+        </Stack>
+      </Box>
+    </>
   );
 };
 
