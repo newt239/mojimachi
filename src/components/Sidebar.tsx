@@ -13,14 +13,19 @@ import {
 } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
-import { favoriteFamilyAtom, jaFilterAtom } from "~/utils/jotai";
+import {
+  familyKeywordAtom,
+  favoriteFamiliesAtom,
+  jaFilterAtom,
+} from "~/utils/jotai";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const favoriteFamily = useAtomValue(favoriteFamilyAtom);
+  const favoriteFamily = useAtomValue(favoriteFamiliesAtom);
   const [jaFilter, setJaFilter] = useAtom(jaFilterAtom);
-  console.log(location.pathname);
+  const [familyKeyword, setFamilyKeyword] = useAtom(familyKeywordAtom);
+
   return (
     <Box
       bg={useColorModeValue("gray.100", "gray.900")}
@@ -40,9 +45,12 @@ const Sidebar: React.FC = () => {
             colorScheme="orange"
             onClick={() => {
               setJaFilter(false);
+              setFamilyKeyword("");
               navigate("/");
             }}
-            isDisabled={!jaFilter && location.pathname === "/"}
+            isDisabled={
+              !jaFilter && location.pathname === "/" && familyKeyword === ""
+            }
           >
             すべて表示
           </Button>

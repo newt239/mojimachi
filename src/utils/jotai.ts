@@ -8,4 +8,4 @@ export const fontSizeAtom = atom<number>(32);
 
 export const previewStringAtom = atom<string>("日本語どう？");
 
-export const favoriteFamilyAtom = atom<string[]>([]);
+export const favoriteFamiliesAtom = atom<string[]>([]);
