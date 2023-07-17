@@ -38,14 +38,14 @@ const Header: React.FC = () => {
   return (
     <Flex
       bg="gray.900"
-      position="sticky"
+      position="fixed"
       top={0}
       left={0}
-      right={0}
-      zIndex={15}
+      zIndex={100}
       p="0.5rem"
       gap="1rem"
       h="4rem"
+      w="100%"
     >
       <Flex w="50%">
         <Box w="4rem" m="auto">

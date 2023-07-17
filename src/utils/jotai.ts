@@ -9,3 +9,5 @@ export const previewStringAtom = atom<string>(
 );
 
 export const favoriteFamiliesAtom = atom<string[]>([]);
+
+export const displayModeAtom = atom<"normal" | "vertical">("normal");

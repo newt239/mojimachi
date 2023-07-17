@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { Box, Stack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
-import EachFont from "~/components/EachFont";
-import Menubar from "~/components/Menubar";
+import FontCards from "~/components/FontCards";
 import { familyKeywordAtom, jaFilterAtom } from "~/utils/jotai";
 
 const HomePage: React.FC = () => {
@@ -20,6 +19,7 @@ const HomePage: React.FC = () => {
         keyword: familyKeyword,
       }
     );
+    console.log(familyNameList);
     setFamilyList(familyNameList);
   };
 
@@ -27,22 +27,9 @@ const HomePage: React.FC = () => {
     getFontNameList();
   }, [familyKeyword, jaFilter]);
 
-  const FontsMemo = useMemo(
-    () =>
-      familyList.map((family) => (
-        <EachFont key={family} family_name={family} />
-      )),
-    []
-  );
+  const FontsMemo = useMemo(() => <FontCards familyList={familyList} />, []);
 
-  return (
-    <>
-      <Menubar />
-      <Box p="1rem">
-        <Stack gap="0.5rem">{FontsMemo}</Stack>
-      </Box>
-    </>
-  );
+  return <Box p="1rem">{FontsMemo}</Box>;
 };
 
 export default HomePage;

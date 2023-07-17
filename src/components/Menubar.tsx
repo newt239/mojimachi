@@ -1,21 +1,24 @@
-import { Box, Flex, Input } from "@chakra-ui/react";
+import { Box, Flex, Input, Select } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
-import { familyKeywordAtom } from "~/utils/jotai";
+import { displayModeAtom, familyKeywordAtom } from "~/utils/jotai";
 
 const Menubar: React.FC = () => {
+  const [displayMode, setDisplayMode] = useAtom(displayModeAtom);
   const [familyKeyword, setFamilyKeyword] = useAtom(familyKeywordAtom);
 
   return (
     <Box
       as="header"
       bg="gray.900"
-      position="sticky"
+      position="fixed"
       top="4rem"
-      left="15rem"
+      right="20rem"
+      w="calc(100% - 20rem)"
       zIndex={10}
       p="0.5rem"
       pt="0"
+      h="4rem"
     >
       <Flex alignItems={"center"} justifyContent={"space-between"} gap="0.5rem">
         <Input
@@ -24,6 +27,16 @@ const Menubar: React.FC = () => {
           onChange={(e) => setFamilyKeyword(e.target.value)}
           variant="outline"
         />
+        <Select
+          w="10rem"
+          value={displayMode}
+          onChange={(e) =>
+            setDisplayMode(e.target.value as "normal" | "vertical")
+          }
+        >
+          <option value="normal">通常</option>
+          <option value="vertical">垂直</option>
+        </Select>
       </Flex>
     </Box>
   );

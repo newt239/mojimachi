@@ -1,9 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 
 import { Box, Flex } from "@chakra-ui/react";
+import { useAtomValue } from "jotai";
 
 import Header from "./components/Header";
+import Menubar from "./components/Menubar";
 import FontPage from "./pages/Font";
+import { displayModeAtom } from "./utils/jotai";
 
 import Sidebar from "~/components/Sidebar";
 import FamilyPage from "~/pages/Family";
@@ -12,12 +15,22 @@ import HomePage from "~/pages/Home";
 import NotFoundPage from "~/pages/NotFound";
 
 function App() {
+  const displayMode = useAtomValue(displayModeAtom);
   return (
     <div>
       <Header />
       <Flex>
         <Sidebar />
-        <Box w="80%">
+        <Menubar />
+        <Box
+          position="fixed"
+          top="8rem"
+          right="20rem"
+          w="calc(100% - 20rem)"
+          h="calc(100vh - 8rem)"
+          overflowX={displayMode === "vertical" ? "scroll" : "hidden"}
+          overflowY={displayMode === "vertical" ? "hidden" : "scroll"}
+        >
           <Routes>
             <Route path="/">
               <Route index element={<HomePage />} />

@@ -1,17 +1,22 @@
 import { ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
-import { Box, Flex, Switch, Text } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
-import { favoriteFamiliesAtom, previewStringAtom } from "~/utils/jotai";
+import {
+  displayModeAtom,
+  favoriteFamiliesAtom,
+  previewStringAtom,
+} from "~/utils/jotai";
 
 type EachFontProps = {
   family_name: string;
 };
 
-const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
+const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
   const previewString = useAtomValue(previewStringAtom);
+  const displayMode = useAtomValue(displayModeAtom);
   const [favoriteFamily, setFavoriteFamily] = useAtom(favoriteFamiliesAtom);
 
   const onChange = (_e: ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +28,14 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
   };
 
   return (
-    <Flex flexDirection="column" gap="0.5rem">
+    <Flex
+      flexDirection="column"
+      sx={{
+        writingMode:
+          displayMode === "vertical" ? "vertical-rl" : "horizontal-tb",
+      }}
+      gap="0.5rem"
+    >
       <Flex
         align="center"
         justify="start"
@@ -32,7 +44,7 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
         fontSize="sm"
         lineHeight="initial"
       >
-        <Switch
+        <Checkbox
           colorScheme="orange"
           onChange={onChange}
           isChecked={favoriteFamily.includes(family_name)}
@@ -53,4 +65,4 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
   );
 };
 
-export default EachFont;
+export default FontCard;

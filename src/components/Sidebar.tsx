@@ -29,14 +29,15 @@ const Sidebar: React.FC = () => {
   return (
     <Box
       bg={useColorModeValue("gray.100", "gray.900")}
-      w="20%"
+      w="20rem"
       display="block"
       sx={{
-        position: "sticky",
+        position: "fixed",
         top: "4rem",
-        left: 0,
+        right: 0,
         height: "calc(100vh - 4rem)",
       }}
+      zIndex={50}
     >
       <Stack gap="2rem" px="1rem">
         <Box>
