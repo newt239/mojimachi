@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Box, Stack } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
@@ -37,6 +37,14 @@ const FavoritePage: React.FC = () => {
     getFontNameList();
   }, [familyKeyword, jaFilter]);
 
+  const FontsMemo = useMemo(
+    () =>
+      familyList.map((family) => (
+        <EachFont key={family} family_name={family} />
+      )),
+    []
+  );
+
   return (
     <>
       <Menubar />
@@ -44,13 +52,10 @@ const FavoritePage: React.FC = () => {
         <Stack
           gap="0.5rem"
           style={{
-            fontSize: `${fontSize}px`,
-            lineHeight: `${fontSize}px`,
+            fontSize: `${fontSize}`,
           }}
         >
-          {familyList.map((family) => (
-            <EachFont key={family} family_name={family} />
-          ))}
+          {FontsMemo}
         </Stack>
       </Box>
     </>

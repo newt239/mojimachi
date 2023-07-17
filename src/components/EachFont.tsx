@@ -23,7 +23,7 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
   };
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" gap="0.5rem">
       <Flex
         align="center"
         justify="start"
@@ -39,11 +39,12 @@ const EachFont: React.FC<EachFontProps> = ({ family_name }) => {
         />
         <Link to={`/family/${family_name}`}>{family_name}</Link>
       </Flex>
-      <Box>
+      <Box sx={{ contentVisibility: "auto" }}>
         <Text
           fontFamily={`'${family_name}', Tofu`}
-          overflow="hidden"
           whiteSpace="nowrap"
+          fontSize="var(--font-size)"
+          overflow="hidden"
         >
           {previewString}
         </Text>

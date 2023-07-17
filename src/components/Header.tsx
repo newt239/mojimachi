@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   Box,
   Flex,
@@ -17,17 +15,16 @@ import {
   SliderTrack,
 } from "@chakra-ui/react";
 import { CaretDown } from "@phosphor-icons/react";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 
-import { fontSizeAtom, previewStringAtom } from "~/utils/jotai";
+import useFontSize from "~/hooks/useFontSize";
+import { previewStringAtom } from "~/utils/jotai";
 
 const Header: React.FC = () => {
-  const setFontSize = useSetAtom(fontSizeAtom);
-  const [localFontSize, setLocalFontSize] = useState<number>(32);
+  const [fontSize, setFontSize] = useFontSize({ variableName: "--font-size" });
   const [previewString, setPreviewString] = useAtom(previewStringAtom);
 
   const onChange = (e: number) => {
-    setLocalFontSize(e);
     setFontSize(e);
   };
 
@@ -52,11 +49,11 @@ const Header: React.FC = () => {
     >
       <Flex w="50%">
         <Box w="4rem" m="auto">
-          {localFontSize}px
+          {fontSize}px
         </Box>
         <Slider
           aria-label="slider-ex-1"
-          defaultValue={localFontSize}
+          defaultValue={Number(fontSize)}
           onChange={onChange}
           min={10}
           max={100}

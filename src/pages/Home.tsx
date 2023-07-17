@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Box, Stack } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
@@ -28,21 +28,19 @@ const HomePage: React.FC = () => {
     getFontNameList();
   }, [familyKeyword, jaFilter]);
 
+  const FontsMemo = useMemo(
+    () =>
+      familyList.map((family) => (
+        <EachFont key={family} family_name={family} />
+      )),
+    []
+  );
+
   return (
     <>
       <Menubar />
       <Box p="1rem">
-        <Stack
-          gap="0.5rem"
-          style={{
-            fontSize: `${fontSize}px`,
-            lineHeight: `${fontSize}px`,
-          }}
-        >
-          {familyList.map((family) => (
-            <EachFont key={family} family_name={family} />
-          ))}
-        </Stack>
+        <Stack gap="0.5rem">{FontsMemo}</Stack>
       </Box>
     </>
   );
