@@ -1,20 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { Box, Stack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
-import EachFont from "~/components/EachFont";
-import Menubar from "~/components/Menubar";
+import FontCards from "~/components/FontCards";
 import {
   familyKeywordAtom,
   favoriteFamiliesAtom,
-  fontSizeAtom,
   jaFilterAtom,
 } from "~/utils/jotai";
 
 const FavoritePage: React.FC = () => {
-  const fontSize = useAtomValue(fontSizeAtom);
   const jaFilter = useAtomValue(jaFilterAtom);
   const familyKeyword = useAtomValue(familyKeywordAtom);
   const favoriteFamilies = useAtomValue(favoriteFamiliesAtom);
@@ -37,24 +34,9 @@ const FavoritePage: React.FC = () => {
     getFontNameList();
   }, [familyKeyword, jaFilter]);
 
-  return (
-    <>
-      <Menubar />
-      <Box p="1rem">
-        <Stack
-          gap="0.5rem"
-          style={{
-            fontSize: `${fontSize}px`,
-            lineHeight: `${fontSize}px`,
-          }}
-        >
-          {familyList.map((family) => (
-            <EachFont key={family} family_name={family} />
-          ))}
-        </Stack>
-      </Box>
-    </>
-  );
+  const FontsMemo = useMemo(() => <FontCards familyList={familyList} />, [familyList]);
+
+  return <Box p="1rem">{FontsMemo}</Box>;
 };
 
 export default FavoritePage;

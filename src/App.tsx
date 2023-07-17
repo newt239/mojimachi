@@ -1,10 +1,13 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import { Box, Flex } from "@chakra-ui/react";
+import { useAtomValue } from "jotai";
 
+import Header from "./components/Header";
+import Menubar from "./components/Menubar";
 import FontPage from "./pages/Font";
+import { displayModeAtom } from "./utils/jotai";
 
-import Header from "~/components/Header";
 import Sidebar from "~/components/Sidebar";
 import FamilyPage from "~/pages/Family";
 import FavoritePage from "~/pages/Favorite";
@@ -12,12 +15,28 @@ import HomePage from "~/pages/Home";
 import NotFoundPage from "~/pages/NotFound";
 
 function App() {
+  const location = useLocation();
+  const isRoot = location.pathname === "/" || location.pathname === "/favorite";
+
+  const displayMode = useAtomValue(displayModeAtom);
   return (
     <div>
       <Header />
       <Flex>
         <Sidebar />
-        <Box w="80%">
+        <Menubar />
+        <Box
+          position="fixed"
+          top="8rem"
+          right="20rem"
+          w="calc(100% - 20rem)"
+          h="calc(100vh - 8rem)"
+          overflowX={displayMode === "vertical" ? undefined : "hidden"}
+          overflowY={
+            isRoot && displayMode === "vertical" ? "hidden" : undefined
+          }
+          id="mainArea"
+        >
           <Routes>
             <Route path="/">
               <Route index element={<HomePage />} />

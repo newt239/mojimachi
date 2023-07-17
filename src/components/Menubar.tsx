@@ -1,62 +1,44 @@
-import { useState } from "react";
+import { Box, Flex, Input, Select } from "@chakra-ui/react";
+import { useAtom } from "jotai";
 
-import {
-  Box,
-  Flex,
-  Input,
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-} from "@chakra-ui/react";
-import { useAtom, useSetAtom } from "jotai";
-
-import { fontSizeAtom, previewStringAtom } from "~/utils/jotai";
+import { displayModeAtom, familyKeywordAtom } from "~/utils/jotai";
 
 const Menubar: React.FC = () => {
-  const setFontSize = useSetAtom(fontSizeAtom);
-  const [localFontSize, setLocalFontSize] = useState<number>(32);
-  const [previewString, setPreviewString] = useAtom(previewStringAtom);
-
-  const onChange = (e: number) => {
-    setLocalFontSize(e);
-    setFontSize(e);
-  };
+  const [displayMode, setDisplayMode] = useAtom(displayModeAtom);
+  const [familyKeyword, setFamilyKeyword] = useAtom(familyKeywordAtom);
 
   return (
-    <Flex
+    <Box
+      as="header"
       bg="gray.900"
+      position="fixed"
       top="4rem"
-      position="sticky"
-      left="15rem"
+      right="20rem"
+      w="calc(100% - 20rem)"
       zIndex={10}
       p="0.5rem"
       pt="0"
-      gap="1rem"
+      h="4rem"
     >
-      <Box w="4rem" m="auto">
-        {localFontSize}px
-      </Box>
-      <Slider
-        aria-label="slider-ex-1"
-        defaultValue={localFontSize}
-        onChange={onChange}
-        min={10}
-        max={100}
-        focusThumbOnChange={false}
-      >
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
-      <Input
-        placeholder="プレビューする文字"
-        value={previewString}
-        onChange={(e) => setPreviewString(e.target.value)}
-        variant="outline"
-      />
-    </Flex>
+      <Flex alignItems={"center"} justifyContent={"space-between"} gap="0.5rem">
+        <Input
+          placeholder="フォントを検索"
+          value={familyKeyword}
+          onChange={(e) => setFamilyKeyword(e.target.value)}
+          variant="outline"
+        />
+        <Select
+          w="10rem"
+          value={displayMode}
+          onChange={(e) => {
+            setDisplayMode(e.target.value as "normal" | "vertical");
+          }}
+        >
+          <option value="normal">通常</option>
+          <option value="vertical">垂直</option>
+        </Select>
+      </Flex>
+    </Box>
   );
 };
 

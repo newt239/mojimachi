@@ -32,7 +32,7 @@ const Info: React.FC<FontInfoProps> = ({ font_name }) => {
         <Tbody>
           {headData.map((value, i) => (
             <Tr key={fontNameTableIds[i]}>
-              <Th>{fontNameTableIds[i]}</Th>
+              <Th maxW="250px">{fontNameTableIds[i]}</Th>
               <Td>{value}</Td>
             </Tr>
           ))}
