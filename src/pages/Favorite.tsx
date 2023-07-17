@@ -34,7 +34,7 @@ const FavoritePage: React.FC = () => {
     getFontNameList();
   }, [familyKeyword, jaFilter]);
 
-  const FontsMemo = useMemo(() => <FontCards familyList={familyList} />, []);
+  const FontsMemo = useMemo(() => <FontCards familyList={familyList} />, [familyList]);
 
   return <Box p="1rem">{FontsMemo}</Box>;
 };
