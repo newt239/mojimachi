@@ -19,7 +19,6 @@ const HomePage: React.FC = () => {
         keyword: familyKeyword,
       }
     );
-    console.log(familyNameList);
     setFamilyList(familyNameList);
   };
 

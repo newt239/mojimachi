@@ -30,9 +30,9 @@ const Menubar: React.FC = () => {
         <Select
           w="10rem"
           value={displayMode}
-          onChange={(e) =>
-            setDisplayMode(e.target.value as "normal" | "vertical")
-          }
+          onChange={(e) => {
+            setDisplayMode(e.target.value as "normal" | "vertical");
+          }}
         >
           <option value="normal">通常</option>
           <option value="vertical">垂直</option>
