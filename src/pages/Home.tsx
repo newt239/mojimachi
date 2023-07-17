@@ -6,10 +6,9 @@ import { useAtomValue } from "jotai";
 
 import EachFont from "~/components/EachFont";
 import Menubar from "~/components/Menubar";
-import { familyKeywordAtom, fontSizeAtom, jaFilterAtom } from "~/utils/jotai";
+import { familyKeywordAtom, jaFilterAtom } from "~/utils/jotai";
 
 const HomePage: React.FC = () => {
-  const fontSize = useAtomValue(fontSizeAtom);
   const jaFilter = useAtomValue(jaFilterAtom);
   const familyKeyword = useAtomValue(familyKeywordAtom);
   const [familyList, setFamilyList] = useState<string[]>([]);

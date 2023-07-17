@@ -9,12 +9,10 @@ import Menubar from "~/components/Menubar";
 import {
   familyKeywordAtom,
   favoriteFamiliesAtom,
-  fontSizeAtom,
   jaFilterAtom,
 } from "~/utils/jotai";
 
 const FavoritePage: React.FC = () => {
-  const fontSize = useAtomValue(fontSizeAtom);
   const jaFilter = useAtomValue(jaFilterAtom);
   const familyKeyword = useAtomValue(familyKeywordAtom);
   const favoriteFamilies = useAtomValue(favoriteFamiliesAtom);
@@ -49,14 +47,7 @@ const FavoritePage: React.FC = () => {
     <>
       <Menubar />
       <Box p="1rem">
-        <Stack
-          gap="0.5rem"
-          style={{
-            fontSize: `${fontSize}`,
-          }}
-        >
-          {FontsMemo}
-        </Stack>
+        <Stack gap="0.5rem">{FontsMemo}</Stack>
       </Box>
     </>
   );

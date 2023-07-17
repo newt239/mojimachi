@@ -12,10 +12,6 @@ const applyPropToDocument = (variableName: string, storedFontSize: string) => {
   document.documentElement.style.setProperty(variableName, storedFontSize);
 };
 
-const getDocumentProp = (variableName: string) => {
-  return document.documentElement.style.getPropertyValue(variableName);
-};
-
 export function useFontSize({
   storageKey = "f_s",
   initialSize = 16,
@@ -23,7 +19,7 @@ export function useFontSize({
 }: UseFontSizeProps = {}) {
   const [storedFontSize, storeFontSize] = useLocalStorage(
     storageKey,
-    initialSize.toString() // convert initialSize to string
+    initialSize.toString()
   );
 
   function init(initialValue: number) {
