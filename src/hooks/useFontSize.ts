@@ -1,6 +1,4 @@
-import { useReducer } from "react";
-
-import useLocalStorage from "./useLocalStorage";
+import { useEffect, useReducer, useState } from "react";
 
 export interface UseFontSizeProps {
   storageKey?: string;
@@ -8,31 +6,33 @@ export interface UseFontSizeProps {
   variableName?: string;
 }
 
-const applyPropToDocument = (variableName: string, storedFontSize: string) => {
-  document.documentElement.style.setProperty(variableName, storedFontSize);
+const applyPropToDocument = (variableName: string, newFontSize: number) => {
+  document.documentElement.style.setProperty(variableName, `${newFontSize}px`);
 };
 
 export function useFontSize({
-  storageKey = "f_s",
   initialSize = 16,
   variableName = "--font-size",
 }: UseFontSizeProps = {}) {
-  const [storedFontSize, storeFontSize] = useLocalStorage(
-    storageKey,
-    initialSize.toString()
+  const storageKey = "f_s";
+  const storage = localStorage.getItem(storageKey);
+  const [storedFontSize, storeFontSize] = useState(
+    storage ? Number(storage) : initialSize
   );
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, storedFontSize.toString());
+  }, [storedFontSize]);
 
   function init(initialValue: number) {
     if (typeof window === "undefined") return initialValue;
-    if (storedFontSize)
-      applyPropToDocument(variableName, storedFontSize.toString());
+    if (storedFontSize) applyPropToDocument(variableName, storedFontSize);
     return Number(storedFontSize);
   }
 
   function reducer(_state: number, newFontSize: number) {
-    // change _state to number
-    applyPropToDocument(variableName, `${newFontSize}px`);
-    storeFontSize(newFontSize.toString()); // convert newFontSize to string
+    applyPropToDocument(variableName, newFontSize);
+    storeFontSize(newFontSize);
     return newFontSize;
   }
 

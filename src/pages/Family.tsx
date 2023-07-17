@@ -6,12 +6,11 @@ import { ArrowUUpLeft } from "@phosphor-icons/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
-import { fontSizeAtom, previewStringAtom } from "~/utils/jotai";
+import { previewStringAtom } from "~/utils/jotai";
 
 const FamilyPage: React.FC = () => {
   const { family_name } = useParams();
   const previewString = useAtomValue(previewStringAtom);
-  const fontSize = useAtomValue(fontSizeAtom);
   const [styles, setStyles] = useState<string[]>([]);
 
   const getFontNameList = async () => {
@@ -59,7 +58,7 @@ const FamilyPage: React.FC = () => {
             <Text
               ml={2}
               fontFamily={`'${style}', Tofu`}
-              fontSize={`${fontSize}px`}
+              fontSize="var(--font-size)"
               overflow="hidden"
               whiteSpace="nowrap"
             >
