@@ -9,7 +9,6 @@ import {
   Stack,
   Switch,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
@@ -28,18 +27,21 @@ const Sidebar: React.FC = () => {
 
   return (
     <Box
-      bg={useColorModeValue("gray.100", "gray.900")}
-      w="20rem"
-      display="block"
       sx={{
+        display: "block",
         position: "fixed",
         top: "4rem",
         right: 0,
         height: "calc(100vh - 4rem)",
+        width: "15rem",
+        bgColor: "gray.100",
+        _dark: {
+          bgColor: "gray.900",
+        },
       }}
       zIndex={50}
     >
-      <Stack gap="2rem" px="1rem">
+      <Stack gap="2rem" px="1rem" py="0.5rem">
         <Box>
           <Button
             w="full"
