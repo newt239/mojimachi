@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use font_kit::source::{SystemSource};
+use font_kit::source::SystemSource;
 use serde::Serialize;
 use ttf_parser::name::Table;
 use ttf_parser::Tag;
@@ -151,6 +151,9 @@ fn get_fonts_by_family(family: String) -> Vec<Option<String>> {
         let font_object = font.load().unwrap();
         family_fonts.push(font_object.postscript_name());
     }
+
+    family_fonts.sort();
+    family_fonts.dedup();
 
     family_fonts
 }

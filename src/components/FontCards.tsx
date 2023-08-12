@@ -12,6 +12,10 @@ type EachFontProps = {
 const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
   const displayMode = useAtomValue(displayModeAtom);
 
+  if (familyList.length === 0) {
+    return <>条件に合うフォントが見つかりませんでした。</>;
+  }
+
   return (
     <Stack
       gap="0.5rem"
