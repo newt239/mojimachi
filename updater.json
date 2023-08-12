@@ -5,19 +5,19 @@
   "platforms": {
     "darwin-x86_64": {
       "signature": "Content of app.tar.gz.sig",
-      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/app-x86_64.app.tar.gz"
+      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/mojimachi_x64.app.tar.gz.sig"
     },
     "darwin-aarch64": {
       "signature": "Content of app.tar.gz.sig",
-      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/app-aarch64.app.tar.gz"
+      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/mojimachi_x64.app.tar.gz.sig"
     },
     "linux-x86_64": {
       "signature": "Content of app.AppImage.tar.gz.sig",
-      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/app-amd64.AppImage.tar.gz"
+      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/mojimachi_0.4.1_amd64.AppImage.tar.gz.sig"
     },
     "windows-x86_64": {
       "signature": "Content of app.msi.sig",
-      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/app-x64.msi.zip"
+      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/mojimachi_0.4.1_x64-setup.nsis.zip.sig"
     }
   }
 }
