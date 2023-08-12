@@ -28,8 +28,8 @@ function App() {
         <Box
           position="fixed"
           top="8rem"
-          right="20rem"
-          w="calc(100% - 20rem)"
+          right="15rem"
+          w="calc(100% - 15rem)"
           h="calc(100vh - 8rem)"
           overflowX={displayMode === "vertical" ? undefined : "hidden"}
           overflowY={

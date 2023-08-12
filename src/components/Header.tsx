@@ -37,15 +37,20 @@ const Header: React.FC = () => {
 
   return (
     <Flex
-      bg="gray.900"
-      position="fixed"
-      top={0}
-      left={0}
-      zIndex={100}
-      p="0.5rem"
-      gap="1rem"
-      h="4rem"
-      w="100%"
+      sx={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 100,
+        p: "0.5rem",
+        gap: "1rem",
+        h: "4rem",
+        w: "100%",
+        bgColor: "gray.100",
+        _dark: {
+          bgColor: "gray.900",
+        },
+      }}
     >
       <Flex w="50%">
         <Box w="4rem" m="auto">
@@ -72,6 +77,12 @@ const Header: React.FC = () => {
             value={previewString}
             onChange={(e) => setPreviewString(e.target.value)}
             variant="outline"
+            sx={{
+              borderColor: "gray.300",
+              _dark: {
+                borderColor: "gray.600",
+              },
+            }}
           />
           <InputRightElement>
             <Menu>
@@ -79,6 +90,7 @@ const Header: React.FC = () => {
                 as={IconButton}
                 icon={<CaretDown />}
                 variant="ghost"
+                size="sm"
               />
               <MenuList>
                 {sampleTexts.map((text) => (
