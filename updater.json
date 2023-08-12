@@ -1,23 +1,23 @@
 {
-  "version": "v0.4.1",
+  "version": "v0.4.2",
   "notes": "This app is now in beta.",
   "pub_date": "2023-07-18T00:00:00Z",
   "platforms": {
     "darwin-x86_64": {
       "signature": "Content of app.tar.gz.sig",
-      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/mojimachi_x64.app.tar.gz.sig"
+      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.2/mojimachi_x64.app.tar.gz.sig"
     },
     "darwin-aarch64": {
       "signature": "Content of app.tar.gz.sig",
-      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/mojimachi_x64.app.tar.gz.sig"
+      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.2/mojimachi_x64.app.tar.gz.sig"
     },
     "linux-x86_64": {
       "signature": "Content of app.AppImage.tar.gz.sig",
-      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/mojimachi_0.4.1_amd64.AppImage.tar.gz.sig"
+      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.2/mojimachi_0.4.2_amd64.AppImage.tar.gz.sig"
     },
     "windows-x86_64": {
       "signature": "Content of app.msi.sig",
-      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.1/mojimachi_0.4.1_x64-setup.nsis.zip.sig"
+      "url": "https://github.com/newt239/mojimachi/releases/download/v0.4.2/mojimachi_0.4.2_x64-setup.nsis.zip.sig"
     }
   }
 }
