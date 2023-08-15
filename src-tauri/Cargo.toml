@@ -19,6 +19,7 @@ serde_json = "1.0"
 directories = "5.0.1"
 font-kit = { git = "https://github.com/servo/font-kit.git" }
 ttf-parser = "0.19.1"
+fontdue = "0.7.3"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
