@@ -3,10 +3,12 @@ import {
   Flex,
   IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   Select,
   useColorMode,
 } from "@chakra-ui/react";
-import { Moon, Sun } from "@phosphor-icons/react";
+import { Moon, Sun, X } from "@phosphor-icons/react";
 import { useAtom } from "jotai";
 
 import { displayModeAtom, familyKeywordAtom } from "~/utils/jotai";
@@ -35,22 +37,31 @@ const Menubar: React.FC = () => {
       }}
     >
       <Flex alignItems={"center"} justifyContent={"space-between"} gap="0.5rem">
-        <Input
-          placeholder="フォントを検索"
-          value={familyKeyword}
-          onChange={(e) => setFamilyKeyword(e.target.value)}
-          variant="outline"
-          sx={{
-            borderColor: "gray.300",
-            _focusVisible: {
-              borderColor: "purple.500",
-              boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
-            },
-            _dark: {
-              borderColor: "gray.600",
-            },
-          }}
-        />
+        <InputGroup>
+          <Input
+            placeholder="フォントを検索"
+            value={familyKeyword}
+            onChange={(e) => setFamilyKeyword(e.target.value)}
+            variant="outline"
+            sx={{
+              borderColor: "gray.300",
+              _focusVisible: {
+                borderColor: "purple.500",
+                boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
+              },
+              _dark: {
+                borderColor: "gray.600",
+              },
+            }}
+          />
+          {familyKeyword !== "" && (
+            <InputRightElement>
+              <IconButton aria-label="リセット" size="sm" variant="ghost">
+                <X weight="bold" />
+              </IconButton>
+            </InputRightElement>
+          )}
+        </InputGroup>
         <Select
           w="10rem"
           value={displayMode}
@@ -65,6 +76,9 @@ const Menubar: React.FC = () => {
             },
             _dark: {
               borderColor: "gray.600",
+              option: {
+                backgroundColor: "gray.900",
+              },
             },
           }}
         >

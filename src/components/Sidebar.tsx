@@ -3,13 +3,13 @@ import { Link as ReactLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
-  Flex,
+  FormControl,
+  FormLabel,
   Heading,
   Link,
   List,
   Stack,
   Switch,
-  Text,
 } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
@@ -63,14 +63,17 @@ const Sidebar: React.FC = () => {
           <Heading as="h4" size="xs" fontWeight="bold">
             フィルター
           </Heading>
-          <Flex pt={3} alignItems="center" gap={1}>
+          <FormControl display="flex" alignItems="center" pt={3} gap={2}>
             <Switch
+              id="only-ja"
               colorScheme="purple"
               onChange={() => setJaFilter((v) => !v)}
               isChecked={jaFilter}
             />
-            <Text>日本語のみ</Text>
-          </Flex>
+            <FormLabel htmlFor="only-ja" mb={0} cursor="pointer">
+              日本語のみ
+            </FormLabel>
+          </FormControl>
         </Box>
         <Box>
           <ReactLink to="/favorite">
