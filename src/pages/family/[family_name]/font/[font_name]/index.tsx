@@ -17,7 +17,7 @@ import Info from "~/components/Info";
 import Playground from "~/components/Playground";
 
 const FontPage: React.FC = () => {
-  const { font_name } = useParams();
+  const { family_name, font_name } = useParams();
 
   if (!font_name) return null;
 
@@ -25,7 +25,7 @@ const FontPage: React.FC = () => {
     <Box p="1rem">
       <Button
         as={Link}
-        to="/"
+        to={`/family/${family_name}`}
         variant="ghost"
         colorScheme="purple"
         leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}

@@ -5,14 +5,14 @@ import { useAtomValue } from "jotai";
 
 import Header from "./components/Header";
 import Menubar from "./components/Menubar";
-import FontPage from "./pages/Font";
+import FontPage from "./pages/family/[family_name]/font/[font_name]";
 import { displayModeAtom } from "./utils/jotai";
 
 import Sidebar from "~/components/Sidebar";
-import FamilyPage from "~/pages/Family";
-import FavoritePage from "~/pages/Favorite";
-import HomePage from "~/pages/Home";
-import NotFoundPage from "~/pages/NotFound";
+import FamilyPage from "~/pages/family/[family_name]";
+import FavoritePage from "~/pages/favorite";
+import HomePage from "~/pages/home";
+import NotFoundPage from "~/pages/not-found";
 
 function App() {
   const location = useLocation();
@@ -42,10 +42,12 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path="favorite" element={<FavoritePage />} />
               <Route path="family">
-                <Route path=":family_name" element={<FamilyPage />} />
-              </Route>
-              <Route path="font">
-                <Route path=":font_name" element={<FontPage />} />
+                <Route path=":family_name">
+                  <Route index element={<FamilyPage />} />
+                  <Route path="font">
+                    <Route path=":font_name" element={<FontPage />} />
+                  </Route>
+                </Route>
               </Route>
               <Route path="*" element={<NotFoundPage />} />
             </Route>

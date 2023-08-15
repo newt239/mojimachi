@@ -33,7 +33,7 @@ const FamilyPage: React.FC = () => {
 
   useEffect(() => {
     getFontNameList();
-  }, []);
+  }, [family_name]);
 
   return (
     <Box p="1rem">
@@ -52,7 +52,7 @@ const FamilyPage: React.FC = () => {
       <Stack mt={5}>
         {styles.map((style) => (
           <Flex key={style} flexDirection="column">
-            <Link to={`/font/${style}`}>
+            <Link to={`/family/${family_name}/font/${style}`}>
               <Text>{style}</Text>
             </Link>
             <Text
