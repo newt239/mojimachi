@@ -27,7 +27,7 @@ const FontPage: React.FC = () => {
         as={Link}
         to="/"
         variant="ghost"
-        colorScheme="orange"
+        colorScheme="purple"
         leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}
       >
         戻る
@@ -35,7 +35,7 @@ const FontPage: React.FC = () => {
       <Heading as="h2" size="2xl">
         {font_name}
       </Heading>
-      <Tabs mt={5} colorScheme="orange">
+      <Tabs mt={5} colorScheme="purple">
         <TabList>
           <Tab>情報</Tab>
           <Tab>グリフ一覧</Tab>

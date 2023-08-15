@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   Heading,
+  Link,
   List,
   Stack,
   Switch,
@@ -34,7 +35,7 @@ const Sidebar: React.FC = () => {
         right: 0,
         height: "calc(100vh - 4rem)",
         width: "15rem",
-        bgColor: "gray.100",
+        bgColor: "purple.50",
         _dark: {
           bgColor: "gray.900",
         },
@@ -45,7 +46,7 @@ const Sidebar: React.FC = () => {
         <Box>
           <Button
             w="full"
-            colorScheme="orange"
+            colorScheme="purple"
             onClick={() => {
               setJaFilter(false);
               setFamilyKeyword("");
@@ -64,7 +65,7 @@ const Sidebar: React.FC = () => {
           </Heading>
           <Flex pt={3} alignItems="center" gap={1}>
             <Switch
-              colorScheme="orange"
+              colorScheme="purple"
               onChange={() => setJaFilter((v) => !v)}
               isChecked={jaFilter}
             />
@@ -77,22 +78,38 @@ const Sidebar: React.FC = () => {
               お気に入り
             </Heading>
           </ReactLink>
-          <List>
+          <List py={2}>
             {favoriteFamily.map((family_name) => (
-              <Button
+              <Link
+                aria-current={
+                  location.pathname.startsWith(`/family/${family_name}`)
+                    ? "page"
+                    : undefined
+                }
                 as={ReactLink}
                 to={`/family/${family_name}`}
                 key={family_name}
-                variant="link"
-                colorScheme="orange"
-                size="sm"
-                w="100%"
-                justifyContent="flex-start"
-                pt={3}
-                pl={3}
+                sx={{
+                  display: "block",
+                  w: "full",
+                  px: 4,
+                  py: 2,
+                  textDecoration: "none",
+                  borderRadius: "lg",
+                  transition: "all 0.2s ease-in-out",
+                  _hover: {
+                    textDecoration: "none",
+                    bgColor: "purple.100",
+                    color: "purple.500",
+                  },
+                  _activeLink: {
+                    bgColor: "purple.100",
+                    color: "purple.500",
+                  },
+                }}
               >
                 {family_name}
-              </Button>
+              </Link>
             ))}
           </List>
         </Box>

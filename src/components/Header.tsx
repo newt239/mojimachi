@@ -46,7 +46,7 @@ const Header: React.FC = () => {
         gap: "1rem",
         h: "4rem",
         w: "100%",
-        bgColor: "gray.100",
+        bgColor: "purple.50",
         _dark: {
           bgColor: "gray.900",
         },
@@ -57,7 +57,8 @@ const Header: React.FC = () => {
           {fontSize}px
         </Box>
         <Slider
-          aria-label="slider-ex-1"
+          colorScheme="purple"
+          aria-label="フォントサイズを変える"
           defaultValue={Number(fontSize)}
           onChange={onChange}
           min={10}
@@ -79,6 +80,10 @@ const Header: React.FC = () => {
             variant="outline"
             sx={{
               borderColor: "gray.300",
+              _focusVisible: {
+                borderColor: "purple.500",
+                boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
+              },
               _dark: {
                 borderColor: "gray.600",
               },

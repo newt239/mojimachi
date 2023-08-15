@@ -41,7 +41,7 @@ const FamilyPage: React.FC = () => {
         as={Link}
         to="/"
         variant="ghost"
-        colorScheme="orange"
+        colorScheme="purple"
         leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}
       >
         戻る

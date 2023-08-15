@@ -28,7 +28,7 @@ const Menubar: React.FC = () => {
         zIndex: 10,
         p: "0.5rem",
         h: "3.5rem",
-        bgColor: "gray.100",
+        bgColor: "purple.50",
         _dark: {
           bgColor: "gray.900",
         },
@@ -42,6 +42,10 @@ const Menubar: React.FC = () => {
           variant="outline"
           sx={{
             borderColor: "gray.300",
+            _focusVisible: {
+              borderColor: "purple.500",
+              boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
+            },
             _dark: {
               borderColor: "gray.600",
             },
@@ -55,6 +59,10 @@ const Menubar: React.FC = () => {
           }}
           sx={{
             borderColor: "gray.300",
+            _focusVisible: {
+              borderColor: "purple.500",
+              boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
+            },
             _dark: {
               borderColor: "gray.600",
             },
@@ -63,7 +71,12 @@ const Menubar: React.FC = () => {
           <option value="normal">通常</option>
           <option value="vertical">垂直</option>
         </Select>
-        <IconButton aria-label="Toggle color mode" onClick={toggleColorMode}>
+        <IconButton
+          aria-label="Toggle color mode"
+          onClick={toggleColorMode}
+          colorScheme="purple"
+          variant="ghost"
+        >
           {colorMode === "light" ? (
             <Sun weight="bold" />
           ) : (
