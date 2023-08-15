@@ -104,6 +104,9 @@ const Sidebar: React.FC = () => {
                     textDecoration: "none",
                     bgColor: "purple.100",
                     color: "purple.500",
+                    _dark: {
+                      bgColor: "rgba(50, 38, 89, 0.3)",
+                    },
                   },
                   _activeLink: {
                     bgColor: "purple.100",
