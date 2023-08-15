@@ -15,7 +15,7 @@ const FavoritePage: React.FC = () => {
   const jaFilter = useAtomValue(jaFilterAtom);
   const familyKeyword = useAtomValue(familyKeywordAtom);
   const favoriteFamilies = useAtomValue(favoriteFamiliesAtom);
-  const [familyList, setFamilyList] = useState<string[]>([]);
+  const [familyList, setFamilyList] = useState<string[] | null>(null);
 
   const getFontNameList = async () => {
     const familyNameList: string[] = await invoke(
@@ -34,7 +34,18 @@ const FavoritePage: React.FC = () => {
     getFontNameList();
   }, [familyKeyword, jaFilter]);
 
-  const FontsMemo = useMemo(() => <FontCards familyList={familyList} />, [familyList]);
+  const FontsMemo = useMemo(
+    () => (
+      <>
+        {familyList ? (
+          <FontCards familyList={familyList} />
+        ) : (
+          <p>フォントを取得中</p>
+        )}
+      </>
+    ),
+    [familyList]
+  );
 
   return <Box p="1rem">{FontsMemo}</Box>;
 };

@@ -2,6 +2,10 @@
 
 デバイス上にインストールされたフォントの一覧を表示します。
 
+## installation
+
+[Releases](https://github.com/newt239/mojimachi/releases)ページから最新のリリースを確認し、ご利用の環境に合ったインストーラをダウンロードしてください。
+
 ## development
 
 ### setup

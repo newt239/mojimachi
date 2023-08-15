@@ -45,7 +45,7 @@ const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
         lineHeight="initial"
       >
         <Checkbox
-          colorScheme="orange"
+          colorScheme="purple"
           onChange={onChange}
           isChecked={favoriteFamily.includes(family_name)}
         />

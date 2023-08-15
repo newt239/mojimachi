@@ -10,7 +10,7 @@ import { familyKeywordAtom, jaFilterAtom } from "~/utils/jotai";
 const HomePage: React.FC = () => {
   const jaFilter = useAtomValue(jaFilterAtom);
   const familyKeyword = useAtomValue(familyKeywordAtom);
-  const [familyList, setFamilyList] = useState<string[]>([]);
+  const [familyList, setFamilyList] = useState<string[] | null>(null);
 
   const getFontNameList = async () => {
     const familyNameList: string[] = await invoke(
@@ -27,7 +27,15 @@ const HomePage: React.FC = () => {
   }, [familyKeyword, jaFilter]);
 
   const FontsMemo = useMemo(
-    () => <FontCards familyList={familyList} />,
+    () => (
+      <>
+        {familyList ? (
+          <FontCards familyList={familyList} />
+        ) : (
+          <p>フォントを取得中...</p>
+        )}
+      </>
+    ),
     [familyList]
   );
 

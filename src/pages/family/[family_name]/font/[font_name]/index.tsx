@@ -17,7 +17,7 @@ import Info from "~/components/Info";
 import Playground from "~/components/Playground";
 
 const FontPage: React.FC = () => {
-  const { font_name } = useParams();
+  const { family_name, font_name } = useParams();
 
   if (!font_name) return null;
 
@@ -25,9 +25,9 @@ const FontPage: React.FC = () => {
     <Box p="1rem">
       <Button
         as={Link}
-        to="/"
+        to={`/family/${family_name}`}
         variant="ghost"
-        colorScheme="orange"
+        colorScheme="purple"
         leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}
       >
         戻る
@@ -35,7 +35,7 @@ const FontPage: React.FC = () => {
       <Heading as="h2" size="2xl">
         {font_name}
       </Heading>
-      <Tabs mt={5} colorScheme="orange">
+      <Tabs mt={5} colorScheme="purple">
         <TabList>
           <Tab>情報</Tab>
           <Tab>グリフ一覧</Tab>

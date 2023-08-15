@@ -33,7 +33,7 @@ const FamilyPage: React.FC = () => {
 
   useEffect(() => {
     getFontNameList();
-  }, []);
+  }, [family_name]);
 
   return (
     <Box p="1rem">
@@ -41,7 +41,7 @@ const FamilyPage: React.FC = () => {
         as={Link}
         to="/"
         variant="ghost"
-        colorScheme="orange"
+        colorScheme="purple"
         leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}
       >
         戻る
@@ -52,7 +52,7 @@ const FamilyPage: React.FC = () => {
       <Stack mt={5}>
         {styles.map((style) => (
           <Flex key={style} flexDirection="column">
-            <Link to={`/font/${style}`}>
+            <Link to={`/family/${family_name}/font/${style}`}>
               <Text>{style}</Text>
             </Link>
             <Text
