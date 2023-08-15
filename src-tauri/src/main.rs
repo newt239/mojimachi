@@ -2,7 +2,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use font_kit::source::SystemSource;
+use font_kit::sources::{fs::FsSource, multi::MultiSource};
 use serde::Serialize;
+use directories::UserDirs;
 use ttf_parser::name::Table;
 use ttf_parser::Tag;
 
@@ -12,9 +14,35 @@ struct FontInfo {
     postscript_name: Option<String>,
 }
 
+#[cfg(target_os = "windows")]
+fn get_additional_path() -> Option<FsSource> {
+    if let Some(user_dirs) = UserDirs::new() {
+        let home_dir = user_dirs.home_dir().to_str().unwrap();
+        return Some(FsSource::in_path(home_dir.to_string() +"\\AppData\\Local\\Microsoft\\Windows\\Fonts\\"));
+    }
+
+    None
+}
+
+#[cfg(not(target_os = "windows"))]
+fn get_additional_path() -> Option<FsSource> {
+    None
+}
+
+fn get_source() -> MultiSource {
+    let other_source = get_additional_path().unwrap();
+    let source = SystemSource::new();
+    MultiSource::from_sources(
+        vec![
+            Box::new(source),
+            Box::new(other_source),
+        ]
+    )
+}
+
 #[tauri::command]
 fn get_families(keyword: Option<String>) -> Vec<String> {
-    let source = SystemSource::new();
+    let source = get_source();
     let families = source.all_families().unwrap();
     let mut filtered_families = Vec::new();
     for family in families {
@@ -28,13 +56,14 @@ fn get_families(keyword: Option<String>) -> Vec<String> {
     }
     
     filtered_families.sort();
+    filtered_families.dedup();
 
     filtered_families
 }
 
 #[tauri::command]
 fn get_ja_families(keyword: Option<String>) -> Vec<String> {
-    let source = SystemSource::new();
+    let source = get_source();
     let fonts = source.all_fonts().unwrap();
     let mut filtered_families = Vec::new();
     for font in fonts {
@@ -60,7 +89,7 @@ fn get_ja_families(keyword: Option<String>) -> Vec<String> {
 
 #[tauri::command]
 fn get_fonts_info() -> Vec<FontInfo> {
-    let source = SystemSource::new();
+    let source = get_source();
     let all_fonts = source.all_fonts().unwrap();
     let mut fonts = Vec::new();
 
@@ -79,7 +108,7 @@ fn get_fonts_info() -> Vec<FontInfo> {
 #[tauri::command]
 fn get_fonts_head() -> Vec<Vec<Option<String>>> {
     let name_table_tag = Tag::from_bytes(b"name").as_u32();
-    let source = SystemSource::new();
+    let source = get_source();
     let all_fonts = source.all_fonts().unwrap();
     let mut fonts = Vec::new();
 
@@ -114,7 +143,7 @@ fn get_fonts_head() -> Vec<Vec<Option<String>>> {
 #[tauri::command]
 fn get_font_head(name: String) -> Vec<Option<String>> {
     let name_table_tag = Tag::from_bytes(b"name").as_u32();
-    let source = SystemSource::new();
+    let source = get_source();
     let font_handle = source.select_by_postscript_name(&name).unwrap();
     let font_object = font_handle.load().unwrap();
     let name_table_bytes = font_object.load_font_table(name_table_tag).unwrap();
@@ -142,7 +171,7 @@ fn get_font_head(name: String) -> Vec<Option<String>> {
 
 #[tauri::command]
 fn get_fonts_by_family(family: String) -> Vec<Option<String>> {
-    let source = SystemSource::new();
+    let source = get_source();
     let family_handle = source.select_family_by_name(&family).unwrap();
     let fonts = family_handle.fonts();
     let mut family_fonts = Vec::new();
