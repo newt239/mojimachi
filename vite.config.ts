@@ -14,10 +14,7 @@ export default defineConfig(async () => ({
     port: 1420,
     strictPort: true,
     fs: {
-      allow: [
-        searchForWorkspaceRoot(process.cwd()),
-        "C:\\Users\\ff192\\AppData\\Local\\Microsoft\\Windows\\Fonts",
-      ],
+      allow: [searchForWorkspaceRoot(process.cwd()), "C:\\Users"],
     },
   },
   // to make use of `TAURI_DEBUG` and other env variables

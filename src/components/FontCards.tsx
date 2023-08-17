@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import { Spacer, Stack } from "@chakra-ui/react";
-import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
 import FontCard from "./FontCard";
@@ -20,29 +19,22 @@ const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
     familyList.map(async (family) => {
       const font_name = family.font_path.split("Microsoft\\Windows\\Fonts")[1];
       if (font_name) {
-        const font_bytes: number[] = await invoke("get_file_as_byte_vec", {
-          filename: family.font_path,
-        });
-        const font_blob = new Blob([new Uint8Array(font_bytes)], {
-          type: "font/opentype",
-        });
-        const reader = new FileReader();
-        reader.readAsDataURL(font_blob);
-        reader.onloadend = () => {
-          const base64data = reader.result as string;
-          const fontFace = new FontFace(
-            family.family_name,
-            `url(${base64data})`
-          );
-          fontFace
-            .load()
-            .then((loadedFace) => {
-              document.fonts.add(loadedFace);
-            })
-            .catch((e) => {
-              console.error(e);
-            });
-        };
+        console.log(family.font_path);
+        const fontFace = new FontFace(
+          family.family_name,
+          `url("http://localhost:1420/@fs/${family.font_path.replaceAll(
+            "\\",
+            "/"
+          )}") format("opentype")`
+        );
+        fontFace
+          .load()
+          .then((loadedFace) => {
+            document.fonts.add(loadedFace);
+          })
+          .catch((e) => {
+            console.error(e);
+          });
       }
     });
   }, []);
