@@ -5,6 +5,7 @@ mod mojimachi;
 
 use std::fs::{File, self};
 use std::io::Read;
+use font_kit::font::Font;
 use serde::Serialize;
 use font_kit::handle::Handle;
 use ttf_parser::{Tag, name::Table};
@@ -14,7 +15,6 @@ struct FontInfo {
     family_name: String,
     postscript_name: Option<String>,
     font_path: String,
-    bitmap: Option<Vec<u8>>,
 }
 
 #[tauri::command]
@@ -29,7 +29,7 @@ fn get_file_as_byte_vec(filename: String) -> Vec<u8> {
 }
 
 #[tauri::command]
-fn get_families(keyword: String) -> Vec<FontInfo> {
+fn get_families(keyword: String, ja: bool) -> Vec<FontInfo> {
     let source = mojimachi::get_source();
     let mut families = source.all_families().unwrap();
     families.sort();
@@ -60,39 +60,19 @@ fn get_families(keyword: String) -> Vec<FontInfo> {
                 family_name: font.family_name().to_string(),
                 postscript_name: font.postscript_name(),
                 font_path: font_path,
-                bitmap: None,
             };
+            if check_ja_family(ja, font) {
             parsed_families.push(font_info);
+            }
         }
     }
 
     parsed_families
 }
 
-#[tauri::command]
-fn get_ja_families(keyword: String) -> Vec<String> {
-    let source = mojimachi::get_source();
-    let fonts = source.all_fonts().unwrap();
-    let mut filtered_families = Vec::new();
-    for font in fonts {
-        let font_object = font.load().unwrap();
-        let family_name = font_object.family_name().to_string();
-        let glyph = font_object.glyph_for_char('あ');
-        if glyph.is_some() && glyph.unwrap() != 0 {
-            if keyword != String::from("") {
-                if family_name.to_lowercase().contains(&keyword.to_lowercase()) {
-                    filtered_families.push(family_name);
-                }
-            } else {
-                filtered_families.push(family_name);
-            }
-        }
-    }
-    
-    filtered_families.sort();
-    filtered_families.dedup();
-
-    filtered_families
+fn check_ja_family(ja: bool, font: Font) -> bool {
+    let glyph = font.glyph_for_char('あ');
+    (ja && glyph.is_some() && glyph.unwrap() != 0) || !ja
 }
 
 #[tauri::command]
@@ -101,13 +81,16 @@ fn get_fonts_info() -> Vec<FontInfo> {
     let all_fonts = source.all_fonts().unwrap();
     let mut fonts = Vec::new();
 
-    for font in all_fonts {
-        let font_object = font.load().unwrap();
+    for font_handle in all_fonts {
+        let font = font_handle.load().unwrap();
+        let mut font_path = String::from("");
+        if let Handle::Path{path, font_index: _} = font_handle {
+            font_path = path.clone().into_os_string().into_string().unwrap();
+        }
         let font_info = FontInfo {
-            family_name: font_object.family_name().to_string(),
-            postscript_name: font_object.postscript_name(),
-            font_path: String::from(""),
-            bitmap: None,
+            family_name: font.family_name().to_string(),
+            postscript_name: font.postscript_name(),
+            font_path: font_path,
         };
         fonts.push(font_info);
     }
@@ -155,8 +138,8 @@ fn get_font_head(name: String) -> Vec<Option<String>> {
     let name_table_tag = Tag::from_bytes(b"name").as_u32();
     let source = mojimachi::get_source();
     let font_handle = source.select_by_postscript_name(&name).unwrap();
-    let font_object = font_handle.load().unwrap();
-    let name_table_bytes = font_object.load_font_table(name_table_tag).unwrap();
+    let font = font_handle.load().unwrap();
+    let name_table_bytes = font.load_font_table(name_table_tag).unwrap();
     let name_table_data = name_table_bytes.as_ref();
     let name_table = Table::parse(name_table_data).unwrap();
     let mut font_info = Vec::new();
@@ -180,19 +163,25 @@ fn get_font_head(name: String) -> Vec<Option<String>> {
 }
 
 #[tauri::command]
-fn get_fonts_by_family(family: String) -> Vec<Option<String>> {
+fn get_fonts_by_family(family: String) -> Vec<FontInfo> {
     let source = mojimachi::get_source();
     let family_handle = source.select_family_by_name(&family).unwrap();
-    let fonts = family_handle.fonts();
+    let fonts_handle = family_handle.fonts();
     let mut family_fonts = Vec::new();
 
-    for font in fonts {
-        let font_object = font.load().unwrap();
-        family_fonts.push(font_object.postscript_name());
+    for font_handle in fonts_handle {
+        let font = font_handle.load().unwrap();
+        let mut font_path = String::from("");
+        if let Handle::Path{path, font_index: _} = font_handle {
+            font_path = path.clone().into_os_string().into_string().unwrap();
+        }
+        let font_info = FontInfo {
+            family_name: font.family_name().to_string(),
+            postscript_name: font.postscript_name(),
+            font_path: font_path,
+        };
+        family_fonts.push(font_info);
     }
-
-    family_fonts.sort();
-    family_fonts.dedup();
 
     family_fonts
 }
@@ -201,7 +190,6 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             get_families,
-            get_ja_families,
             get_fonts_info,
             get_fonts_head,
             get_font_head,

@@ -19,13 +19,12 @@ const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
     familyList.map(async (family) => {
       const font_name = family.font_path.split("Microsoft\\Windows\\Fonts")[1];
       if (font_name) {
-        console.log(family.font_path);
         const fontFace = new FontFace(
           family.family_name,
           `url("http://localhost:1420/@fs/${family.font_path.replaceAll(
             "\\",
             "/"
-          )}") format("opentype")`
+          )}")`
         );
         fontFace
           .load()

@@ -14,12 +14,10 @@ const HomePage: React.FC = () => {
   const [familyList, setFamilyList] = useState<FontInfo[] | null>(null);
 
   const getFontNameList = async () => {
-    const familyNameList: FontInfo[] = await invoke(
-      jaFilter ? "get_ja_families" : "get_families",
-      {
-        keyword: familyKeyword,
-      }
-    );
+    const familyNameList: FontInfo[] = await invoke("get_families", {
+      ja: jaFilter,
+      keyword: familyKeyword,
+    });
     console.log(familyNameList);
     setFamilyList(familyNameList);
   };
