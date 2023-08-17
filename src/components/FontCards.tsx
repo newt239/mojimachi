@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { Spacer, Stack } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 
-import FontCard from "./FontCard";
-
+import FontCard from "~/components/FontCard";
 import { FontInfo } from "~/types/FontData";
 import { displayModeAtom } from "~/utils/jotai";
 
