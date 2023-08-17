@@ -5,20 +5,22 @@ import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
 import FontCards from "~/components/FontCards";
+import { FontInfo } from "~/types/FontData";
 import { familyKeywordAtom, jaFilterAtom } from "~/utils/jotai";
 
 const HomePage: React.FC = () => {
   const jaFilter = useAtomValue(jaFilterAtom);
   const familyKeyword = useAtomValue(familyKeywordAtom);
-  const [familyList, setFamilyList] = useState<string[] | null>(null);
+  const [familyList, setFamilyList] = useState<FontInfo[] | null>(null);
 
   const getFontNameList = async () => {
-    const familyNameList: string[] = await invoke(
+    const familyNameList: FontInfo[] = await invoke(
       jaFilter ? "get_ja_families" : "get_families",
       {
         keyword: familyKeyword,
       }
     );
+    console.log(familyNameList);
     setFamilyList(familyNameList);
   };
 

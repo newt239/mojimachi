@@ -3,34 +3,72 @@
 
 mod mojimachi;
 
+use std::fs::{File, self};
+use std::io::Read;
 use serde::Serialize;
+use font_kit::handle::Handle;
 use ttf_parser::{Tag, name::Table};
 
 #[derive(Serialize)]
 struct FontInfo {
-    family: String,
+    family_name: String,
     postscript_name: Option<String>,
+    font_path: String,
+    bitmap: Option<Vec<u8>>,
+}
+
+fn get_file_as_byte_vec(filename: &String) -> Vec<u8> {
+    let mut f = File::open(&filename).expect("no file found");
+    let metadata = fs::metadata(&filename).expect("unable to read metadata");
+    let mut buffer = vec![0; metadata.len() as usize];
+    f.read(&mut buffer).expect("buffer overflow");
+
+    buffer
 }
 
 #[tauri::command]
-fn get_families(keyword: String) -> Vec<String> {
+fn get_families(keyword: String) -> Vec<FontInfo> {
     let source = mojimachi::get_source();
-    let families = source.all_families().unwrap();
+    let mut families = source.all_families().unwrap();
+    families.sort();
+    families.dedup();
     let mut filtered_families = Vec::new();
-    for family in families {
+    for family_name in families {
         if keyword != String::from("") {
-            if family.to_lowercase().contains(&keyword.to_lowercase()) {
-                filtered_families.push(family);
+            if family_name.to_lowercase().contains(&keyword.to_lowercase()) {
+                filtered_families.push(family_name);
             }
         } else {
-            filtered_families.push(family);
+            filtered_families.push(family_name);
         }
     }
-    
-    filtered_families.sort();
-    filtered_families.dedup();
 
-    filtered_families
+    let mut parsed_families = Vec::new();
+    for family_name in filtered_families {
+        let family_handle = source.select_family_by_name(&family_name).unwrap();
+        if !family_handle.is_empty() {
+            let fonts = family_handle.fonts();
+            let font_handle = fonts.first().unwrap();
+            let mut font_path = String::from("");
+            if let Handle::Path{path, font_index: _} = font_handle {
+                font_path = path.clone().into_os_string().into_string().unwrap();
+            }
+            let font = font_handle.load().unwrap();
+            let file_bytes = get_file_as_byte_vec(&font_path);
+            let fontdue = fontdue::Font::from_bytes(file_bytes, fontdue::FontSettings::default()).unwrap();
+            // Rasterize and get the layout metrics for the letter 'g' at 17px.
+            let (_metrics, bitmap) = fontdue.rasterize('g', 17.0);
+            let font_info = FontInfo {
+                family_name: font.family_name().to_string(),
+                postscript_name: font.postscript_name(),
+                font_path: font_path,
+                bitmap: Some(bitmap),
+            };
+            parsed_families.push(font_info);
+        }
+    }
+
+    parsed_families
 }
 
 #[tauri::command]
@@ -68,8 +106,10 @@ fn get_fonts_info() -> Vec<FontInfo> {
     for font in all_fonts {
         let font_object = font.load().unwrap();
         let font_info = FontInfo {
-            family: font_object.family_name().to_string(),
+            family_name: font_object.family_name().to_string(),
             postscript_name: font_object.postscript_name(),
+            font_path: String::from(""),
+            bitmap: None,
         };
         fonts.push(font_info);
     }
