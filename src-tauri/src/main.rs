@@ -17,9 +17,11 @@ struct FontInfo {
     bitmap: Option<Vec<u8>>,
 }
 
-fn get_file_as_byte_vec(filename: &String) -> Vec<u8> {
-    let mut f = File::open(&filename).expect("no file found");
-    let metadata = fs::metadata(&filename).expect("unable to read metadata");
+#[tauri::command]
+fn get_file_as_byte_vec(filename: String) -> Vec<u8> {
+    let filename_ref = &filename;
+    let mut f = File::open(&filename_ref).expect("no file found");
+    let metadata = fs::metadata(&filename_ref).expect("unable to read metadata");
     let mut buffer = vec![0; metadata.len() as usize];
     f.read(&mut buffer).expect("buffer overflow");
 
@@ -54,15 +56,11 @@ fn get_families(keyword: String) -> Vec<FontInfo> {
                 font_path = path.clone().into_os_string().into_string().unwrap();
             }
             let font = font_handle.load().unwrap();
-            let file_bytes = get_file_as_byte_vec(&font_path);
-            let fontdue = fontdue::Font::from_bytes(file_bytes, fontdue::FontSettings::default()).unwrap();
-            // Rasterize and get the layout metrics for the letter 'g' at 17px.
-            let (_metrics, bitmap) = fontdue.rasterize('g', 17.0);
             let font_info = FontInfo {
                 family_name: font.family_name().to_string(),
                 postscript_name: font.postscript_name(),
                 font_path: font_path,
-                bitmap: Some(bitmap),
+                bitmap: None,
             };
             parsed_families.push(font_info);
         }
@@ -208,6 +206,7 @@ fn main() {
             get_fonts_head,
             get_font_head,
             get_fonts_by_family,
+            get_file_as_byte_vec
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
