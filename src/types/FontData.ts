@@ -1,8 +1,9 @@
 import { Blob } from "buffer";
 
 export type FontInfo = {
-  family: string;
+  family_name: string;
   postscript_name: string;
+  font_path: string;
 };
 
 export type FontData = {

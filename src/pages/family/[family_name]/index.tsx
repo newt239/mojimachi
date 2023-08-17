@@ -6,19 +6,26 @@ import { ArrowUUpLeft } from "@phosphor-icons/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
+import { FontInfo } from "~/types/FontData";
 import { previewStringAtom } from "~/utils/jotai";
 
 const FamilyPage: React.FC = () => {
   const { family_name } = useParams();
   const previewString = useAtomValue(previewStringAtom);
-  const [styles, setStyles] = useState<string[]>([]);
+  const [styles, setStyles] = useState<FontInfo[]>([]);
 
   const getFontNameList = async () => {
-    const fontNameList: string[] = await invoke("get_fonts_by_family", {
+    const fonts: FontInfo[] = await invoke("get_fonts_by_family", {
       family: family_name,
     });
-    for (const style of fontNameList) {
-      const fontFace = new FontFace(style, `local('${style}')`);
+    for (const font of fonts) {
+      const fontFace = new FontFace(
+        font.postscript_name,
+        `url("http://localhost:1420/@fs/${font.font_path.replaceAll(
+          "\\",
+          "/"
+        )}")`
+      );
       fontFace
         .load()
         .then(function (loadedFace) {
@@ -28,7 +35,7 @@ const FamilyPage: React.FC = () => {
           console.error(e);
         });
     }
-    setStyles(fontNameList);
+    setStyles(fonts);
   };
 
   useEffect(() => {
@@ -51,13 +58,13 @@ const FamilyPage: React.FC = () => {
       </Heading>
       <Stack mt={5}>
         {styles.map((style) => (
-          <Flex key={style} flexDirection="column">
-            <Link to={`/family/${family_name}/font/${style}`}>
-              <Text>{style}</Text>
+          <Flex key={style.postscript_name} flexDirection="column">
+            <Link to={`/family/${family_name}/font/${style.postscript_name}`}>
+              <Text>{style.postscript_name}</Text>
             </Link>
             <Text
               ml={2}
-              fontFamily={`'${style}', Tofu`}
+              fontFamily={`'${style.postscript_name}', Tofu`}
               fontSize="var(--font-size)"
               overflow="hidden"
               whiteSpace="nowrap"

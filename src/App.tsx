@@ -3,16 +3,15 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 
-import Header from "./components/Header";
-import Menubar from "./components/Menubar";
-import FontPage from "./pages/family/[family_name]/font/[font_name]";
-import { displayModeAtom } from "./utils/jotai";
-
+import Header from "~/components/Header";
+import Menubar from "~/components/Menubar";
 import Sidebar from "~/components/Sidebar";
 import FamilyPage from "~/pages/family/[family_name]";
+import FontPage from "~/pages/family/[family_name]/font/[font_name]";
 import FavoritePage from "~/pages/favorite";
 import HomePage from "~/pages/home";
 import NotFoundPage from "~/pages/not-found";
+import { displayModeAtom } from "~/utils/jotai";
 
 function App() {
   const location = useLocation();
