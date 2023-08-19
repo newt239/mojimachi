@@ -17,6 +17,11 @@ struct FontInfo {
     font_path: String,
 }
 
+fn check_ja_family(ja: bool, font: Font) -> bool {
+    let glyph = font.glyph_for_char('あ');
+    (ja && glyph.is_some() && glyph.unwrap() != 0) || !ja
+}
+
 #[tauri::command]
 fn get_file_as_byte_vec(filename: String) -> Vec<u8> {
     let filename_ref = &filename;
@@ -66,13 +71,33 @@ fn get_families(keyword: String, ja: bool) -> Vec<FontInfo> {
             }
         }
     }
-
     parsed_families
 }
 
-fn check_ja_family(ja: bool, font: Font) -> bool {
-    let glyph = font.glyph_for_char('あ');
-    (ja && glyph.is_some() && glyph.unwrap() != 0) || !ja
+#[tauri::command]
+fn get_fonts_by_family(family: String) -> Vec<FontInfo> {
+    let source = mojimachi::get_source();
+    let family_handle = source.select_family_by_name(&family).unwrap();
+    let fonts_handle = family_handle.fonts();
+    let mut family_fonts = Vec::new();
+
+    for font_handle in fonts_handle {
+        let font = font_handle.load().unwrap();
+        let postscript_name = font.postscript_name();
+        if !family_fonts.iter().any(|f: &FontInfo| f.postscript_name == postscript_name) {
+            let mut font_path = String::from("");
+            if let Handle::Path{path, font_index: _} = font_handle {
+                font_path = path.clone().into_os_string().into_string().unwrap();
+            }
+            let font_info = FontInfo {
+                family_name: font.family_name().to_string(),
+                postscript_name,
+                font_path: font_path,
+            };
+            family_fonts.push(font_info);
+        }
+    }
+    family_fonts
 }
 
 #[tauri::command]
@@ -160,30 +185,6 @@ fn get_font_head(name: String) -> Vec<Option<String>> {
         }
     font_info
 
-}
-
-#[tauri::command]
-fn get_fonts_by_family(family: String) -> Vec<FontInfo> {
-    let source = mojimachi::get_source();
-    let family_handle = source.select_family_by_name(&family).unwrap();
-    let fonts_handle = family_handle.fonts();
-    let mut family_fonts = Vec::new();
-
-    for font_handle in fonts_handle {
-        let font = font_handle.load().unwrap();
-        let mut font_path = String::from("");
-        if let Handle::Path{path, font_index: _} = font_handle {
-            font_path = path.clone().into_os_string().into_string().unwrap();
-        }
-        let font_info = FontInfo {
-            family_name: font.family_name().to_string(),
-            postscript_name: font.postscript_name(),
-            font_path: font_path,
-        };
-        family_fonts.push(font_info);
-    }
-
-    family_fonts
 }
 
 fn main() {
