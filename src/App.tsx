@@ -6,10 +6,10 @@ import { useAtomValue } from "jotai";
 import Header from "~/components/Header";
 import Menubar from "~/components/Menubar";
 import Sidebar from "~/components/Sidebar";
+import FavoritePage from "~/pages/Favorite";
+import HomePage from "~/pages/Home";
 import FamilyPage from "~/pages/family/[family_name]";
 import FontPage from "~/pages/family/[family_name]/font/[font_name]";
-import FavoritePage from "~/pages/favorite";
-import HomePage from "~/pages/home";
 import NotFoundPage from "~/pages/not-found";
 import { displayModeAtom } from "~/utils/jotai";
 
