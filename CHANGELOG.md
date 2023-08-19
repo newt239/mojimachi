@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.6.1
+
+- ファミリーページでフォントが重複して表示される不具合を修正
+- リンクホバー時のインタラクションを改善
+
 ## v0.6.0
 
 - Windows 環境で`C:\Users\${USER_NAME}\AppData\Local\Microsoft\Windows\Fonts`にあるフォントが適切に表示されるように
