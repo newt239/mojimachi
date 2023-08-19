@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link as ReactLink } from "react-router-dom";
 
-import { Box, Checkbox, Flex, Text } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Link, Text } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
 import {
@@ -49,7 +49,18 @@ const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
           onChange={onChange}
           isChecked={favoriteFamily.includes(family_name)}
         />
-        <Link to={`/family/${family_name}`}>{family_name}</Link>
+        <Link
+          as={ReactLink}
+          to={`/family/${family_name}`}
+          sx={{
+            transition: "all ease 0.2s",
+            _hover: {
+              color: "purple.500",
+            },
+          }}
+        >
+          {family_name}
+        </Link>
       </Flex>
       <Box sx={{ contentVisibility: "auto" }}>
         <Text
