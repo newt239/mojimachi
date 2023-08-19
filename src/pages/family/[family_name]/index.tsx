@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link as ReactLink, useParams } from "react-router-dom";
 
-import { Box, Button, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Link,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { ArrowUUpLeft } from "@phosphor-icons/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
@@ -45,7 +53,7 @@ const FamilyPage: React.FC = () => {
   return (
     <Box p="1rem">
       <Button
-        as={Link}
+        as={ReactLink}
         to="/"
         variant="ghost"
         colorScheme="purple"
@@ -59,8 +67,17 @@ const FamilyPage: React.FC = () => {
       <Stack mt={5}>
         {styles.map((style) => (
           <Flex key={style.postscript_name} flexDirection="column">
-            <Link to={`/family/${family_name}/font/${style.postscript_name}`}>
-              <Text>{style.postscript_name}</Text>
+            <Link
+              as={ReactLink}
+              to={`/family/${family_name}/font/${style.postscript_name}`}
+              sx={{
+                transition: "all ease 0.2s",
+                _hover: {
+                  color: "purple.500",
+                },
+              }}
+            >
+              {style.postscript_name}
             </Link>
             <Text
               ml={2}
