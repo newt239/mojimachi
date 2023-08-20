@@ -27,13 +27,14 @@ const FamilyPage: React.FC = () => {
       family: family_name,
     });
     for (const font of fonts) {
-      const fontFace = new FontFace(
-        font.postscript_name,
-        `url("http://localhost:1420/@fs/${font.font_path.replaceAll(
-          "\\",
-          "/"
-        )}")`
-      );
+      const is_subdir = !!font.font_path.split("\\")[1];
+      const source = is_subdir
+        ? `url("http://localhost:1420/@fs/${font.font_path.replaceAll(
+            "\\",
+            "/"
+          )}")`
+        : `local("${font.postscript_name}")`;
+      const fontFace = new FontFace(font.postscript_name, source);
       fontFace
         .load()
         .then(function (loadedFace) {

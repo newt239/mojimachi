@@ -5,6 +5,7 @@ mod mojimachi;
 
 use std::fs::{File, self};
 use std::io::Read;
+use std::time::Instant;
 use font_kit::font::Font;
 use serde::Serialize;
 use font_kit::handle::Handle;
@@ -35,6 +36,7 @@ fn get_file_as_byte_vec(filename: String) -> Vec<u8> {
 
 #[tauri::command]
 fn get_families(keyword: String, ja: bool) -> Vec<FontInfo> {
+    let start = Instant::now();
     let source = mojimachi::get_source();
     let mut families = source.all_families().unwrap();
     families.sort();
@@ -71,6 +73,9 @@ fn get_families(keyword: String, ja: bool) -> Vec<FontInfo> {
             }
         }
     }
+    let end = start.elapsed();
+    println!("[get_families] {}.{:03}s", end.as_secs(), end.subsec_nanos() / 1_000_000);
+    
     parsed_families
 }
 
