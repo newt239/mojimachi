@@ -9,6 +9,7 @@ use std::time::Instant;
 use font_kit::font::Font;
 use serde::Serialize;
 use font_kit::handle::Handle;
+use tauri::Menu;
 use ttf_parser::{Tag, name::Table};
 
 #[derive(Serialize)]
@@ -193,6 +194,7 @@ fn get_font_head(name: String) -> Vec<Option<String>> {
 }
 
 fn main() {
+    let menu = Menu::new();
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             get_families,
@@ -202,6 +204,7 @@ fn main() {
             get_fonts_by_family,
             get_file_as_byte_vec
         ])
+        .menu(menu)
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
