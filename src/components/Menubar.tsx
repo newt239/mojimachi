@@ -56,7 +56,12 @@ const Menubar: React.FC = () => {
           />
           {familyKeyword !== "" && (
             <InputRightElement>
-              <IconButton aria-label="リセット" size="sm" variant="ghost">
+              <IconButton
+                aria-label="リセット"
+                size="sm"
+                variant="ghost"
+                onClick={() => setFamilyKeyword("")}
+              >
                 <X weight="bold" />
               </IconButton>
             </InputRightElement>

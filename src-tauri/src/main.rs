@@ -39,9 +39,7 @@ fn get_file_as_byte_vec(filename: String) -> Vec<u8> {
 fn get_families(keyword: String, ja: bool) -> Vec<FontInfo> {
     let start = Instant::now();
     let source = mojimachi::get_source();
-    let mut families = source.all_families().unwrap();
-    families.sort();
-    families.dedup();
+    let families = source.all_families().unwrap();
     let mut filtered_families = Vec::new();
     for family_name in families {
         if keyword != String::from("") {
@@ -52,6 +50,9 @@ fn get_families(keyword: String, ja: bool) -> Vec<FontInfo> {
             filtered_families.push(family_name);
         }
     }
+
+    filtered_families.sort();
+    filtered_families.dedup();
 
     let mut parsed_families = Vec::new();
     for family_name in filtered_families {
