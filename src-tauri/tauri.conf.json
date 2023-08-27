@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "もじまち",
+    "productName": "mojimachi",
     "version": "0.7.0"
   },
   "tauri": {
