@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { Spacer, Stack } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 
@@ -18,29 +16,6 @@ const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
       familyList.map((family) => [family.postscript_name, family])
     ).values()
   );
-
-  useEffect(() => {
-    uniqueFamilyList.map(async (family) => {
-      const font_name = family.font_path.split("Microsoft\\Windows\\Fonts")[1];
-      if (font_name) {
-        const fontFace = new FontFace(
-          family.family_name,
-          `url("http://localhost:1420/@fs/${family.font_path.replaceAll(
-            "\\",
-            "/"
-          )}")`
-        );
-        fontFace
-          .load()
-          .then((loadedFace) => {
-            document.fonts.add(loadedFace);
-          })
-          .catch((e) => {
-            console.error(e);
-          });
-      }
-    });
-  }, []);
 
   if (uniqueFamilyList.length === 0)
     return <>条件に合うフォントが見つかりませんでした。</>;

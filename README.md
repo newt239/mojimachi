@@ -8,6 +8,10 @@
 
 [Releases](https://github.com/newt239/mojimachi/releases)ページから最新のリリースを確認し、ご利用の環境に合ったインストーラをダウンロードしてください。
 
+- Windows: `mojimachi-setup-x.x.x.exe`
+- macOS: `mojimachi_x.y.z_x64_en-US.msi`
+- Linux: `mojimachi_x.y.z_amd64.AppImage`
+
 ## development
 
 ### setup
