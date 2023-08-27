@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.7.3
+
+- Windows 環境で`C:\Users\${USER_NAME}\AppData\Local\Microsoft\Windows\Fonts`にあるフォントを非表示に
+
 ## v0.7.2
 
 - ファミリページでフォントが表示されない不具合を修正
@@ -21,7 +25,7 @@
 
 ## v0.6.0
 
-- Windows 環境で`C:\Users\${USER_NAME}\AppData\Local\Microsoft\Windows\Fonts`にあるフォントが適切に表示されるように
+- ~~Windows 環境で`C:\Users\${USER_NAME}\AppData\Local\Microsoft\Windows\Fonts`にあるフォントが適切に表示されるように~~
 
 ## v0.5.0
 
