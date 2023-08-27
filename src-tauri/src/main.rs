@@ -20,8 +20,11 @@ struct FontInfo {
 }
 
 fn check_ja_family(ja: bool, font: Font) -> bool {
-    let glyph = font.glyph_for_char('あ');
-    (ja && glyph.is_some() && glyph.unwrap() != 0) || !ja
+    let glyph1 = font.glyph_for_char('あ');
+    let glyph2 = font.glyph_for_char('ア');
+    (ja && (
+        (glyph1.is_some() && glyph1.unwrap() != 0) || (glyph2.is_some() && glyph2.unwrap() != 0)
+    )) || !ja
 }
 
 #[tauri::command]

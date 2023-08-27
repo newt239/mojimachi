@@ -1,5 +1,6 @@
 import {
   Box,
+  ButtonGroup,
   Flex,
   IconButton,
   Input,
@@ -14,15 +15,17 @@ import {
   SliderThumb,
   SliderTrack,
 } from "@chakra-ui/react";
-import { CaretDown } from "@phosphor-icons/react";
+import { CaretDown, TextBolder, TextItalic } from "@phosphor-icons/react";
 import { useAtom } from "jotai";
 
 import useFontSize from "~/hooks/useFontSize";
-import { previewStringAtom } from "~/utils/jotai";
+import { isBoldAtom, isItalicAtom, previewStringAtom } from "~/utils/jotai";
 
 const Header: React.FC = () => {
   const [fontSize, setFontSize] = useFontSize({ variableName: "--font-size" });
   const [previewString, setPreviewString] = useAtom(previewStringAtom);
+  const [isItalic, setIsItalic] = useAtom(isItalicAtom);
+  const [isBold, setIsBold] = useAtom(isBoldAtom);
 
   const onChange = (e: number) => {
     setFontSize(e);
@@ -94,6 +97,7 @@ const Header: React.FC = () => {
               <MenuButton
                 as={IconButton}
                 icon={<CaretDown />}
+                colorScheme="purple"
                 variant="ghost"
                 size="sm"
               />
@@ -108,6 +112,24 @@ const Header: React.FC = () => {
           </InputRightElement>
         </InputGroup>
       </Flex>
+      <ButtonGroup isAttached variant="outline">
+        <IconButton
+          colorScheme="purple"
+          variant={isItalic ? "solid" : "outline"}
+          aria-label="斜体"
+          onClick={() => setIsItalic((v) => !v)}
+        >
+          <TextItalic weight="bold" />
+        </IconButton>
+        <IconButton
+          colorScheme="purple"
+          variant={isBold ? "solid" : "outline"}
+          aria-label="太字"
+          onClick={() => setIsBold((v) => !v)}
+        >
+          <TextBolder weight="bold" />
+        </IconButton>
+      </ButtonGroup>
     </Flex>
   );
 };

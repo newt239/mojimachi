@@ -7,6 +7,8 @@ import { useAtom, useAtomValue } from "jotai";
 import {
   displayModeAtom,
   favoriteFamiliesAtom,
+  isBoldAtom,
+  isItalicAtom,
   previewStringAtom,
 } from "~/utils/jotai";
 
@@ -17,6 +19,8 @@ type EachFontProps = {
 const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
   const previewString = useAtomValue(previewStringAtom);
   const displayMode = useAtomValue(displayModeAtom);
+  const isItalic = useAtomValue(isItalicAtom);
+  const isBold = useAtomValue(isBoldAtom);
   const [favoriteFamily, setFavoriteFamily] = useAtom(favoriteFamiliesAtom);
 
   const onChange = (_e: ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +69,8 @@ const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
       <Box sx={{ contentVisibility: "auto" }}>
         <Text
           fontFamily={`'${family_name}', Tofu`}
+          fontStyle={isItalic ? "italic" : "normal"}
+          fontWeight={isBold ? "bold" : "normal"}
           whiteSpace="nowrap"
           fontSize="var(--font-size)"
           overflow="hidden"
