@@ -2,8 +2,9 @@ import { Link, useParams } from "react-router-dom";
 
 import {
   Box,
-  Button,
+  HStack,
   Heading,
+  IconButton,
   Tab,
   TabList,
   TabPanel,
@@ -23,18 +24,21 @@ const FontPage: React.FC = () => {
 
   return (
     <Box p="1rem">
-      <Button
-        as={Link}
-        to={`/family/${family_name}`}
-        variant="ghost"
-        colorScheme="purple"
-        leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}
-      >
-        戻る
-      </Button>
-      <Heading as="h2" size="2xl">
-        {font_name}
-      </Heading>
+      <HStack gap={3} alignItems="center">
+        <IconButton
+          aria-label="戻る"
+          as={Link}
+          to={`/family/${family_name}`}
+          variant="ghost"
+          colorScheme="purple"
+          size="lg"
+        >
+          <ArrowUUpLeft size="1.5rem" weight="duotone" />
+        </IconButton>
+        <Heading as="h2" fontSize="3rem" lineHeight="3rem">
+          {font_name}
+        </Heading>
+      </HStack>
       <Tabs mt={5} colorScheme="purple">
         <TabList>
           <Tab>情報</Tab>

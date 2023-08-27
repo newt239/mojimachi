@@ -50,6 +50,8 @@ const Glyphs: React.FC<GlyphsProps> = ({ font_name }) => {
         flexDirection="column"
         w="20%"
         flexGrow={1}
+        maxH="60vh"
+        overflowY="scroll"
       >
         {Object.keys(unicodeRanges).map((name) => (
           <Stack key={name}>
@@ -62,6 +64,8 @@ const Glyphs: React.FC<GlyphsProps> = ({ font_name }) => {
         w="80%"
         alignContent="flex-start"
         fontFamily={`'${font_name}', Tofu`}
+        maxH="60vh"
+        overflowY="scroll"
       >
         {glyphs.map((glyph) => (
           <Flex

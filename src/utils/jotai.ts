@@ -1,5 +1,9 @@
 import { atom } from "jotai";
 
+import { FontInfo } from "~/types/FontData";
+
+export const familyListAtom = atom<FontInfo[] | null>(null);
+
 export const familyKeywordAtom = atom<string>("");
 
 export const jaFilterAtom = atom<boolean>(false);

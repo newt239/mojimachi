@@ -13,9 +13,14 @@ type EachFontProps = {
 
 const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
   const displayMode = useAtomValue(displayModeAtom);
+  const uniqueFamilyList = Array.from(
+    new Map(
+      familyList.map((family) => [family.postscript_name, family])
+    ).values()
+  );
 
   useEffect(() => {
-    familyList.map(async (family) => {
+    uniqueFamilyList.map(async (family) => {
       const font_name = family.font_path.split("Microsoft\\Windows\\Fonts")[1];
       if (font_name) {
         const fontFace = new FontFace(
@@ -37,7 +42,7 @@ const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
     });
   }, []);
 
-  if (familyList.length === 0)
+  if (uniqueFamilyList.length === 0)
     return <>条件に合うフォントが見つかりませんでした。</>;
 
   return (
@@ -45,7 +50,7 @@ const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
       gap="0.5rem"
       direction={displayMode === "vertical" ? "row" : "column"}
     >
-      {familyList.map((family, i) => (
+      {uniqueFamilyList.map((family, i) => (
         <FontCard key={i} family_name={family.family_name} />
       ))}
       <Spacer w="1rem" h="1rem" />

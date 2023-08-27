@@ -16,7 +16,6 @@ const Info: React.FC<FontInfoProps> = ({ font_name }) => {
     const fontHead: string[] = await invoke("get_font_head", {
       name: font_name,
     });
-    console.log(fontHead);
     setHeadData(fontHead);
   };
 

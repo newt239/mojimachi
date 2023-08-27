@@ -1,13 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 import { Box } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 import FontCards from "~/components/FontCards";
 import { FontInfo } from "~/types/FontData";
 import {
   familyKeywordAtom,
+  familyListAtom,
   favoriteFamiliesAtom,
   jaFilterAtom,
 } from "~/utils/jotai";
@@ -16,7 +17,7 @@ const FavoritePage: React.FC = () => {
   const jaFilter = useAtomValue(jaFilterAtom);
   const familyKeyword = useAtomValue(familyKeywordAtom);
   const favoriteFamilies = useAtomValue(favoriteFamiliesAtom);
-  const [familyList, setFamilyList] = useState<FontInfo[] | null>(null);
+  const [familyList, setFamilyList] = useAtom(familyListAtom);
 
   const getFontNameList = async () => {
     const familyNameList: FontInfo[] = await invoke("get_families", {
