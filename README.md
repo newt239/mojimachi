@@ -1,4 +1,6 @@
-# mojimachi
+# もじまち
+
+![app logo](public/mojimachi_banner.png)
 
 デバイス上にインストールされたフォントの一覧を表示します。
 

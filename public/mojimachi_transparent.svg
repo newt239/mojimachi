@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-57.0908,-65)">
+        <g id="背景通過" transform="matrix(1,0,0,1,-292.909,0)">
+            <g transform="matrix(1.34382,0,0,1.34382,176.208,-120.882)">
+                <rect x="129.326" y="138.323" width="372.072" height="372.072" style="fill:none;"/>
+            </g>
+            <g>
+                <g transform="matrix(1,0,0,1,-41.7152,222.848)">
+                    <text x="491.015px" y="287.152px" style="font-family:'Montserrat-Black', 'Montserrat';font-weight:900;font-size:500px;fill:rgb(68,51,122);">F</text>
+                </g>
+                <g transform="matrix(1,0,0,1,-61.7652,202.848)">
+                    <text x="491.015px" y="287.152px" style="font-family:'Montserrat-Black', 'Montserrat';font-weight:900;font-size:500px;fill:rgb(128,90,213);">F</text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
