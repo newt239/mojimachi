@@ -27,10 +27,13 @@ const FamilyPage: React.FC = () => {
       family: family_name,
     });
     for (const font of fonts) {
-      const source = `url("http://localhost:1420/@fs/${font.font_path.replaceAll(
-        "\\",
-        "/"
-      )}")`;
+      const font_name = font.font_path.split("Microsoft\\Windows\\Fonts")[1];
+      const source = font_name
+        ? `url("http://localhost:1420/@fs/${font.font_path.replaceAll(
+            "\\",
+            "/"
+          )}")`
+        : `local('${font.postscript_name}')`;
       const fontFace = new FontFace(font.postscript_name, source);
       fontFace
         .load()
