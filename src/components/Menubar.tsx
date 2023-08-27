@@ -59,6 +59,7 @@ const Menubar: React.FC = () => {
               <IconButton
                 aria-label="リセット"
                 size="sm"
+                colorScheme="purple"
                 variant="ghost"
                 onClick={() => setFamilyKeyword("")}
               >
