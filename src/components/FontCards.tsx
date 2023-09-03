@@ -1,4 +1,4 @@
-import { Spacer, Stack } from "@chakra-ui/react";
+import { Card, Flex, Spacer, Stack } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 
 import FontCard from "~/components/FontCard";
@@ -19,6 +19,41 @@ const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
 
   if (uniqueFamilyList.length === 0)
     return <>条件に合うフォントが見つかりませんでした。</>;
+
+  if (displayMode === "grid") {
+    return (
+      <Flex
+        sx={{
+          gap: "0.5rem",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "stretch",
+        }}
+      >
+        {uniqueFamilyList.map((family, i) => (
+          <Card
+            sx={{
+              p: "0.5rem",
+              w: [
+                "calc(100% - 0.5rem)",
+                "calc(100% - 0.5rem)",
+                "calc(100% / 2 - 0.5rem)",
+                "calc(100% / 3 - 0.5rem)",
+                "calc(100% / 4 - 0.5rem)",
+              ],
+              bgColor: "purple.100",
+              _dark: {
+                bgColor: "gray.700",
+              },
+            }}
+            key={i}
+          >
+            <FontCard family_name={family.family_name} />
+          </Card>
+        ))}
+      </Flex>
+    );
+  }
 
   return (
     <Stack

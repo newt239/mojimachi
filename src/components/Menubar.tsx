@@ -90,6 +90,7 @@ const Menubar: React.FC = () => {
         >
           <option value="normal">通常</option>
           <option value="vertical">垂直</option>
+          <option value="grid">グリッド</option>
         </Select>
         <IconButton
           aria-label="Toggle color mode"
