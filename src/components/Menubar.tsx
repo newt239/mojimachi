@@ -96,7 +96,7 @@ const Menubar: React.FC = () => {
           aria-label="Toggle color mode"
           onClick={toggleColorMode}
           colorScheme="purple"
-          variant="ghost"
+          variant="outline"
         >
           {colorMode === "light" ? (
             <Sun weight="bold" />

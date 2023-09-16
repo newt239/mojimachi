@@ -68,12 +68,19 @@ const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
       </Flex>
       <Box sx={{ contentVisibility: "auto" }}>
         <Text
-          fontFamily={`'${family_name}', Tofu`}
-          fontStyle={isItalic ? "italic" : "normal"}
-          fontWeight={isBold ? "bold" : "normal"}
-          whiteSpace="nowrap"
-          fontSize="var(--font-size)"
-          overflow="hidden"
+          sx={{
+            fontFamily: `'${family_name}', Tofu`,
+            fontStyle: isItalic ? "italic" : "normal",
+            fontWeight: isBold ? "bold" : "normal",
+            whiteSpace: displayMode !== "grid" ? "nowrap" : "normal",
+            fontSize: "var(--font-size)",
+            lineHeight: "var(--font-size)",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+          }}
         >
           {previewString}
         </Text>

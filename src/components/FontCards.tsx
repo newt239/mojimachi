@@ -2,6 +2,7 @@ import { Card, Flex, Spacer, Stack } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 
 import FontCard from "~/components/FontCard";
+import useFontSize from "~/hooks/useFontSize";
 import { FontInfo } from "~/types/FontData";
 import { displayModeAtom } from "~/utils/jotai";
 
@@ -11,6 +12,7 @@ type EachFontProps = {
 
 const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
   const displayMode = useAtomValue(displayModeAtom);
+  const [fontSize] = useFontSize();
   const uniqueFamilyList = Array.from(
     new Map(
       familyList.map((family) => [family.postscript_name, family])
@@ -35,13 +37,13 @@ const FontCards: React.FC<EachFontProps> = ({ familyList }) => {
             sx={{
               p: "0.5rem",
               w: [
-                "calc(100% - 0.5rem)",
-                "calc(100% - 0.5rem)",
-                "calc(100% / 2 - 0.5rem)",
-                "calc(100% / 3 - 0.5rem)",
-                "calc(100% / 4 - 0.5rem)",
+                `calc(100% - 0.5rem)`,
+                `calc(100% - 0.5rem)`,
+                `calc(100% / ${2} - 0.5rem)`,
+                `calc(100% / ${3} - 0.5rem)`,
+                `calc(100% / ${4} - 0.5rem)`,
               ],
-              bgColor: "purple.100",
+              bgColor: "purple.50",
               _dark: {
                 bgColor: "gray.700",
               },
