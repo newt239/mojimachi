@@ -34,11 +34,12 @@
     "withGlobalTauri": false,
     "windows": [
       {
-        "maximized": true,
-        "resizable": true,
-        "minWidth": 600,
-        "minHeight": 400,
         "title": "もじまち",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 720,
+        "minHeight": 480,
+        "resizable": true,
         "useHttpsScheme": true
       }
     ],
