@@ -1,4 +1,3 @@
-import { Blob } from "buffer";
 
 export type FontInfo = {
   family_name: string;
