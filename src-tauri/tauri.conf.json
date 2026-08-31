@@ -2,54 +2,48 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": false
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "mojimachi",
-    "version": "0.7.3"
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "createUpdaterArtifacts": "v1Compatible"
   },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "shell": {
-        "all": false,
-        "open": true
+  "productName": "mojimachi",
+  "mainBinaryName": "mojimachi",
+  "version": "0.7.3",
+  "identifier": "dev.newt239.mojimachi",
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENCMkM2ODQ2NEVFMDUzQkYKUldTL1UrQk9SbWdzeTdVNUN0YmRLS21GcWt3Z1BDOEZ5L1NqM1RRSTZ5blcxRFlmTnc4dUFMb2UK",
+      "endpoints": ["https://github.com/newt239/mojimachi/releases/latest/download/latest.json"],
+      "windows": {
+        "installMode": "passive"
       }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "dev.newt239.mojimachi",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ]
-    },
-    "security": {
-      "csp": null
-    },
+    }
+  },
+  "app": {
+    "withGlobalTauri": false,
     "windows": [
       {
         "maximized": true,
         "resizable": true,
         "minWidth": 600,
         "minHeight": 400,
-        "title": "もじまち"
+        "title": "もじまち",
+        "useHttpsScheme": true
       }
     ],
-    "updater": {
-      "active": true,
-      "endpoints": ["https://github.com/newt239/mojimachi/releases/latest/download/latest.json"],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENCMkM2ODQ2NEVFMDUzQkYKUldTL1UrQk9SbWdzeTdVNUN0YmRLS21GcWt3Z1BDOEZ5L1NqM1RRSTZ5blcxRFlmTnc4dUFMb2UK",
-      "windows": {
-        "installMode": "passive"
-      }
+    "security": {
+      "csp": null
     }
   }
 }

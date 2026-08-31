@@ -2,3 +2,6 @@
 # will have compiled files and executables
 /target/
 
+
+# Tauri が生成するスキーマ
+/gen/schemas

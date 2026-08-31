@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "もじまちのウィンドウに付与する権限",
+  "windows": ["main"],
+  "permissions": ["core:default", "dialog:default", "process:allow-restart", "updater:default"]
+}
