@@ -26,27 +26,29 @@
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@phosphor-icons/react": "2.1.10",
-    "@tauri-apps/api": "1.6.0",
+    "@tauri-apps/api": "2.11.1",
+    "@tauri-apps/plugin-dialog": "^2.7.2",
+    "@tauri-apps/plugin-process": "^2.3.1",
+    "@tauri-apps/plugin-updater": "~2.10.1",
     "framer-motion": "10.18.0",
     "jotai": "2.20.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "6.30.6"
+    "react-router-dom": "7.18.2"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "1.6.3",
-    "@types/node": "22.20.0",
+    "@tauri-apps/cli": "2.11.4",
+    "@types/node": "26.2.0",
     "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
-    "@vitejs/plugin-react": "3.1.0",
+    "@vitejs/plugin-react": "6.1.0",
     "knip": "6.32.2",
     "lefthook": "2.1.10",
     "oxfmt": "0.64.0",
     "oxlint": "1.79.0",
     "oxlint-tsgolint": "7.0.2001",
     "typescript": "5.9.3",
-    "vite": "4.5.14",
-    "vite-tsconfig-paths": "4.3.2"
+    "vite": "8.2.2"
   },
   "devEngines": {
     "runtime": {
