@@ -15,7 +15,7 @@ import {
   SliderThumb,
   SliderTrack,
 } from "@chakra-ui/react";
-import { CaretDown, TextBolder, TextItalic } from "@phosphor-icons/react";
+import { CaretDown, TextB, TextItalic } from "@phosphor-icons/react";
 import { useAtom } from "jotai";
 
 import useFontSize from "~/hooks/useFontSize";
@@ -127,7 +127,7 @@ const Header: React.FC = () => {
           aria-label="太字"
           onClick={() => setIsBold((v) => !v)}
         >
-          <TextBolder weight="bold" />
+          <TextB weight="bold" />
         </IconButton>
       </ButtonGroup>
     </Flex>
