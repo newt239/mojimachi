@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": ["node_modules/", "dist/", "src-tauri/target/"],
+  "sortImports": {
+    "groups": [
+      "react",
+      ["value-builtin", "value-external"],
+      "value-internal",
+      ["value-parent", "value-sibling", "value-index"],
+      ["type-parent", "type-sibling", "type-index"],
+      "type-internal",
+      "type-import",
+      "unknown"
+    ],
+    "customGroups": [
+      {
+        "groupName": "react",
+        "elementNamePattern": ["react", "react-dom", "react-router-dom"]
+      }
+    ],
+    "internalPattern": ["#/"],
+    "newlinesBetween": true,
+    "order": "asc",
+    "ignoreCase": true
+  },
+  "sortPackageJson": {
+    "sortScripts": true
+  }
+}

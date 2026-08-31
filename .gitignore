@@ -7,10 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# dependencies
 node_modules
+
+# build output
 dist
 dist-ssr
 *.local
+
+# typescript
+*.tsbuildinfo
 
 # Editor directories and files
 .idea
@@ -21,4 +27,5 @@ dist-ssr
 *.sln
 *.sw?
 
+# env files
 .env
