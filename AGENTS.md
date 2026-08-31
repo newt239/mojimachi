@@ -30,9 +30,8 @@
 - `pnpm run tauri dev` - デスクトップアプリとして開発起動
 - `pnpm run tauri build` - 配布用バイナリをビルド
 - `pnpm run typecheck` - TypeScript で型チェック
-- `pnpm run codecheck` - 型チェック・Lint・フォーマット・ファイル名規約・未使用コード検出をまとめて実行
+- `pnpm run codecheck` - 型チェック・Lint・フォーマット・未使用コード検出をまとめて実行
 - `pnpm run rust:check` - Rust の fmt・clippy・test をまとめて実行
-- `pnpm run setup:repo` - GitHub リポジトリ設定とブランチ保護ルールを適用
 
 ### 動作確認
 

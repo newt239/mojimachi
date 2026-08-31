@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "quarterly"
       timezone: "Asia/Tokyo"
       time: "08:00"
     target-branch: "main"
@@ -16,7 +16,7 @@ updates:
   - package-ecosystem: "cargo"
     directory: "/src-tauri"
     schedule:
-      interval: "weekly"
+      interval: "quarterly"
       timezone: "Asia/Tokyo"
       time: "08:00"
     target-branch: "main"
@@ -29,7 +29,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "quarterly"
       timezone: "Asia/Tokyo"
       time: "08:00"
     target-branch: "main"
