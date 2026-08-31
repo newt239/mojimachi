@@ -3,7 +3,7 @@ import { Link as ReactLink, useParams } from "react-router-dom";
 
 import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
 import { ArrowUUpLeftIcon } from "@phosphor-icons/react";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { useAtomValue } from "jotai";
 
 import { previewStringAtom } from "#/utils/jotai";

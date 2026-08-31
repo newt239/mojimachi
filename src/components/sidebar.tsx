@@ -46,7 +46,7 @@ export const Sidebar: React.FC = () => {
             onClick={() => {
               setJaFilter(false);
               setFamilyKeyword("");
-              navigate("/");
+              void navigate("/");
             }}
             isDisabled={!jaFilter && location.pathname === "/" && familyKeyword === ""}
           >

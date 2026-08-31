@@ -7,7 +7,6 @@ use font_kit::font::Font;
 use font_kit::handle::Handle;
 use serde::Serialize;
 use std::time::Instant;
-use tauri::Menu;
 use ttf_parser::{name::Table, Tag};
 
 const NAME_TABLE_LIMIT: u16 = 25;
@@ -147,14 +146,15 @@ fn get_font_head(name: String) -> Vec<Option<String>> {
 }
 
 fn main() {
-    let menu = Menu::new();
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![
             get_families,
             get_font_head,
             get_fonts_by_family
         ])
-        .menu(menu)
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

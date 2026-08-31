@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Table, TableContainer, Tbody, Td, Th, Tr } from "@chakra-ui/react";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 import { fontNameTableIds } from "#/utils/font";
 

@@ -7,6 +7,7 @@ import ReactDOM from "react-dom/client";
 import { App } from "#/app";
 import "#/global.css";
 import { theme } from "#/utils/theme";
+import { checkForUpdate } from "#/utils/updater";
 
 const rootElement = document.querySelector("#root");
 
@@ -23,3 +24,7 @@ ReactDOM.createRoot(rootElement).render(
     </BrowserRouter>
   </React.StrictMode>,
 );
+
+void checkForUpdate().catch((error: unknown) => {
+  console.error(error);
+});
