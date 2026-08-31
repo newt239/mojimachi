@@ -1,6 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod menu;
 mod mojimachi;
 
 use font_kit::font::Font;
@@ -148,8 +149,10 @@ fn get_font_head(name: String) -> Vec<Option<String>> {
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_window_state::Builder::default().build())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_process::init())
+        .menu(menu::build)
         .invoke_handler(tauri::generate_handler![
             get_families,
             get_font_head,
