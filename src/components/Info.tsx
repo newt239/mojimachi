@@ -3,27 +3,33 @@ import { useEffect, useState } from "react";
 import { Table, TableContainer, Tbody, Td, Th, Tr } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
 
-import { fontNameTableIds } from "~/utils/font";
+import { fontNameTableIds } from "#/utils/font";
 
 type FontInfoProps = {
   font_name: string;
 };
 
-const Info: React.FC<FontInfoProps> = ({ font_name }) => {
+export const Info: React.FC<FontInfoProps> = ({ font_name }) => {
   const [headData, setHeadData] = useState<string[]>([]);
 
-  const getFontHead = async (font_name: string) => {
-    const fontHead: string[] = await invoke("get_font_head", {
-      name: font_name,
-    });
-    setHeadData(fontHead);
-  };
-
   useEffect(() => {
-    if (font_name) {
-      getFontHead(font_name);
-    }
-  }, []);
+    let cancelled = false;
+
+    const getFontHead = async () => {
+      const fontHead: string[] = await invoke("get_font_head", {
+        name: font_name,
+      });
+      if (!cancelled) {
+        setHeadData(fontHead);
+      }
+    };
+
+    void getFontHead();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [font_name]);
 
   return (
     <TableContainer>
@@ -40,5 +46,3 @@ const Info: React.FC<FontInfoProps> = ({ font_name }) => {
     </TableContainer>
   );
 };
-
-export default Info;

@@ -15,14 +15,14 @@ import {
   SliderThumb,
   SliderTrack,
 } from "@chakra-ui/react";
-import { CaretDown, TextB, TextItalic } from "@phosphor-icons/react";
+import { CaretDownIcon, TextBIcon, TextItalicIcon } from "@phosphor-icons/react";
 import { useAtom } from "jotai";
 
-import useFontSize from "~/hooks/useFontSize";
-import { isBoldAtom, isItalicAtom, previewStringAtom } from "~/utils/jotai";
+import { useFontSize } from "#/hooks/use-font-size";
+import { isBoldAtom, isItalicAtom, previewStringAtom } from "#/utils/jotai";
 
-const Header: React.FC = () => {
-  const [fontSize, setFontSize] = useFontSize({ variableName: "--font-size" });
+export const Header: React.FC = () => {
+  const { fontSize, setFontSize } = useFontSize({ variableName: "--font-size" });
   const [previewString, setPreviewString] = useAtom(previewStringAtom);
   const [isItalic, setIsItalic] = useAtom(isItalicAtom);
   const [isBold, setIsBold] = useAtom(isBoldAtom);
@@ -41,18 +41,18 @@ const Header: React.FC = () => {
   return (
     <Flex
       sx={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 100,
-        p: "0.5rem",
-        gap: "1rem",
-        h: "4rem",
-        w: "100%",
-        bgColor: "purple.50",
         _dark: {
           bgColor: "gray.900",
         },
+        bgColor: "purple.50",
+        gap: "1rem",
+        h: "4rem",
+        left: 0,
+        p: "0.5rem",
+        position: "fixed",
+        top: 0,
+        w: "100%",
+        zIndex: 100,
       }}
     >
       <Flex w="50%">
@@ -62,7 +62,7 @@ const Header: React.FC = () => {
         <Slider
           colorScheme="purple"
           aria-label="フォントサイズを変える"
-          defaultValue={Number(fontSize)}
+          defaultValue={fontSize}
           onChange={onChange}
           min={10}
           max={100}
@@ -79,31 +79,38 @@ const Header: React.FC = () => {
           <Input
             placeholder="プレビューする文字"
             value={previewString}
-            onChange={(e) => setPreviewString(e.target.value)}
+            onChange={(e) => {
+              setPreviewString(e.target.value);
+            }}
             variant="outline"
             sx={{
-              borderColor: "gray.300",
+              _dark: {
+                borderColor: "gray.600",
+              },
               _focusVisible: {
                 borderColor: "purple.500",
                 boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
               },
-              _dark: {
-                borderColor: "gray.600",
-              },
+              borderColor: "gray.300",
             }}
           />
           <InputRightElement>
             <Menu>
               <MenuButton
                 as={IconButton}
-                icon={<CaretDown />}
+                icon={<CaretDownIcon />}
                 colorScheme="purple"
                 variant="ghost"
                 size="sm"
               />
               <MenuList>
                 {sampleTexts.map((text) => (
-                  <MenuItem key={text} onClick={() => setPreviewString(text)}>
+                  <MenuItem
+                    key={text}
+                    onClick={() => {
+                      setPreviewString(text);
+                    }}
+                  >
                     {text}
                   </MenuItem>
                 ))}
@@ -117,21 +124,23 @@ const Header: React.FC = () => {
           colorScheme="purple"
           variant={isItalic ? "solid" : "outline"}
           aria-label="斜体"
-          onClick={() => setIsItalic((v) => !v)}
+          onClick={() => {
+            setIsItalic((v) => !v);
+          }}
         >
-          <TextItalic weight="bold" />
+          <TextItalicIcon weight="bold" />
         </IconButton>
         <IconButton
           colorScheme="purple"
           variant={isBold ? "solid" : "outline"}
           aria-label="太字"
-          onClick={() => setIsBold((v) => !v)}
+          onClick={() => {
+            setIsBold((v) => !v);
+          }}
         >
-          <TextB weight="bold" />
+          <TextBIcon weight="bold" />
         </IconButton>
       </ButtonGroup>
     </Flex>
   );
 };
-
-export default Header;

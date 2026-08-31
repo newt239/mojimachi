@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-import { FontInfo } from "~/types/FontData";
+import type { FontInfo } from "#/types/font";
 
 export const familyListAtom = atom<FontInfo[] | null>(null);
 
@@ -12,9 +12,7 @@ export const isItalicAtom = atom<boolean>(false);
 
 export const isBoldAtom = atom<boolean>(false);
 
-export const previewStringAtom = atom<string>(
-  "The quick brown fox jumps over the lazy dog."
-);
+export const previewStringAtom = atom<string>("The quick brown fox jumps over the lazy dog.");
 
 export const favoriteFamiliesAtom = atom<string[]>([]);
 

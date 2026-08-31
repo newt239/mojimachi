@@ -18,14 +18,12 @@ type PlaygroundProps = {
   font_name: string;
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ font_name }) => {
+export const Playground: React.FC<PlaygroundProps> = ({ font_name }) => {
   const [text, setText] = useState("あいうえお");
   const [fontSize, setFontSize] = useState("16");
   const [lineHeight, setLineHeight] = useState("1");
   const [color, setColor] = useState("hsla(0, 0%, 0%, 1)");
-  const [backgroundColor, setBackgroundColor] = useState(
-    "hsla(0, 0%, 100%, 1)"
-  );
+  const [backgroundColor, setBackgroundColor] = useState("hsla(0, 0%, 100%, 1)");
 
   return (
     <Flex w="100%" justify="space-between" gap={3}>
@@ -34,11 +32,11 @@ const Playground: React.FC<PlaygroundProps> = ({ font_name }) => {
         p="2rem"
         w="70%"
         sx={{
+          backgroundColor,
+          color,
           fontFamily: `'${font_name}', Tofu`,
           fontSize,
           lineHeight,
-          color,
-          backgroundColor,
         }}
       >
         {text}
@@ -46,13 +44,22 @@ const Playground: React.FC<PlaygroundProps> = ({ font_name }) => {
       <Card w="30%" shadow="xs" p={3}>
         <FormControl>
           <FormLabel>文字</FormLabel>
-          <Input value={text} onChange={(n) => setText(n.target.value)} />
+          <Input
+            value={text}
+            onChange={(n) => {
+              setText(n.target.value);
+            }}
+          />
         </FormControl>
         <FormControl>
           <FormLabel>文字サイズ</FormLabel>
           <NumberInput
             defaultValue={fontSize}
-            onChange={(n) => n && setFontSize(n)}
+            onChange={(n) => {
+              if (n) {
+                setFontSize(n);
+              }
+            }}
           >
             <NumberInputField />
             <NumberInputStepper>
@@ -67,7 +74,11 @@ const Playground: React.FC<PlaygroundProps> = ({ font_name }) => {
             defaultValue={lineHeight}
             step={0.1}
             precision={2}
-            onChange={(n) => n && setLineHeight(n)}
+            onChange={(n) => {
+              if (n) {
+                setLineHeight(n);
+              }
+            }}
           >
             <NumberInputField />
             <NumberInputStepper>
@@ -81,7 +92,9 @@ const Playground: React.FC<PlaygroundProps> = ({ font_name }) => {
           <input
             type="color"
             defaultValue={color}
-            onChange={(e) => setColor(e.target.value)}
+            onChange={(e) => {
+              setColor(e.target.value);
+            }}
           />
         </FormControl>
         <FormControl>
@@ -89,12 +102,12 @@ const Playground: React.FC<PlaygroundProps> = ({ font_name }) => {
           <input
             type="color"
             defaultValue={backgroundColor}
-            onChange={(e) => setBackgroundColor(e.target.value)}
+            onChange={(e) => {
+              setBackgroundColor(e.target.value);
+            }}
           />
         </FormControl>
       </Card>
     </Flex>
   );
 };
-
-export default Playground;
