@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 
 import { Box } from "@chakra-ui/react";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { useAtom, useAtomValue } from "jotai";
 
 import { FontCards } from "#/components/font-cards";
