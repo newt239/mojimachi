@@ -1,48 +1,49 @@
 import { useEffect, useState } from "react";
 import { Link as ReactLink, useParams } from "react-router-dom";
 
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Link,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { ArrowUUpLeft } from "@phosphor-icons/react";
+import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
+import { ArrowUUpLeftIcon } from "@phosphor-icons/react";
 import { invoke } from "@tauri-apps/api";
 import { useAtomValue } from "jotai";
 
-import { FontInfo } from "~/types/FontData";
-import { previewStringAtom } from "~/utils/jotai";
+import { previewStringAtom } from "#/utils/jotai";
 
-const FamilyPage: React.FC = () => {
+import type { FontInfo } from "#/types/font";
+
+export const FamilyPage: React.FC = () => {
   const { family_name } = useParams();
   const previewString = useAtomValue(previewStringAtom);
   const [styles, setStyles] = useState<FontInfo[]>([]);
 
-  const getFontNameList = async () => {
-    const fonts: FontInfo[] = await invoke("get_fonts_by_family", {
-      family: family_name,
-    });
-    for (const font of fonts) {
-      const source = `local('${font.postscript_name}')`;
-      const fontFace = new FontFace(font.postscript_name, source);
-      fontFace
-        .load()
-        .then(function (loadedFace) {
-          document.fonts.add(loadedFace);
-        })
-        .catch(function (e) {
-          console.error(e);
-        });
-    }
-    setStyles(fonts);
-  };
-
   useEffect(() => {
-    getFontNameList();
+    let cancelled = false;
+
+    const getFontNameList = async () => {
+      const fonts: FontInfo[] = await invoke("get_fonts_by_family", {
+        family: family_name,
+      });
+      for (const font of fonts) {
+        const source = `local('${font.postscript_name}')`;
+        const fontFace = new FontFace(font.postscript_name, source);
+        fontFace
+          .load()
+          .then((loadedFace) => {
+            document.fonts.add(loadedFace);
+          })
+          .catch((error: unknown) => {
+            console.error(error);
+          });
+      }
+      if (!cancelled) {
+        setStyles(fonts);
+      }
+    };
+
+    void getFontNameList();
+
+    return () => {
+      cancelled = true;
+    };
   }, [family_name]);
 
   return (
@@ -52,7 +53,7 @@ const FamilyPage: React.FC = () => {
         to="/"
         variant="ghost"
         colorScheme="purple"
-        leftIcon={<ArrowUUpLeft size="1.5rem" weight="duotone" />}
+        leftIcon={<ArrowUUpLeftIcon size="1.5rem" weight="duotone" />}
       >
         戻る
       </Button>
@@ -66,10 +67,10 @@ const FamilyPage: React.FC = () => {
               as={ReactLink}
               to={`/family/${family_name}/font/${style.postscript_name}`}
               sx={{
-                transition: "all ease 0.2s",
                 _hover: {
                   color: "purple.500",
                 },
+                transition: "all ease 0.2s",
               }}
             >
               {style.postscript_name}
@@ -89,5 +90,3 @@ const FamilyPage: React.FC = () => {
     </Box>
   );
 };
-
-export default FamilyPage;

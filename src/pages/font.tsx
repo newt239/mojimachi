@@ -11,16 +11,18 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { ArrowUUpLeft } from "@phosphor-icons/react";
+import { ArrowUUpLeftIcon } from "@phosphor-icons/react";
 
-import Glyphs from "~/components/Glyphs";
-import Info from "~/components/Info";
-import Playground from "~/components/Playground";
+import { Glyphs } from "#/components/glyphs";
+import { Info } from "#/components/info";
+import { Playground } from "#/components/playground";
 
-const FontPage: React.FC = () => {
+export const FontPage: React.FC = () => {
   const { family_name, font_name } = useParams();
 
-  if (!font_name) return null;
+  if (!font_name) {
+    return null;
+  }
 
   return (
     <Box p="1rem">
@@ -33,7 +35,7 @@ const FontPage: React.FC = () => {
           colorScheme="purple"
           size="lg"
         >
-          <ArrowUUpLeft size="1.5rem" weight="duotone" />
+          <ArrowUUpLeftIcon size="1.5rem" weight="duotone" />
         </IconButton>
         <Heading as="h2" fontSize="3rem" lineHeight="3rem">
           {font_name}
@@ -60,5 +62,3 @@ const FontPage: React.FC = () => {
     </Box>
   );
 };
-
-export default FontPage;

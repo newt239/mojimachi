@@ -8,12 +8,12 @@ import {
   Select,
   useColorMode,
 } from "@chakra-ui/react";
-import { Moon, Sun, X } from "@phosphor-icons/react";
+import { MoonIcon, SunIcon, XIcon } from "@phosphor-icons/react";
 import { useAtom } from "jotai";
 
-import { displayModeAtom, familyKeywordAtom } from "~/utils/jotai";
+import { displayModeAtom, familyKeywordAtom } from "#/utils/jotai";
 
-const Menubar: React.FC = () => {
+export const Menubar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [displayMode, setDisplayMode] = useAtom(displayModeAtom);
   const [familyKeyword, setFamilyKeyword] = useAtom(familyKeywordAtom);
@@ -22,36 +22,38 @@ const Menubar: React.FC = () => {
     <Box
       as="header"
       sx={{
-        position: "fixed",
-        top: "4rem",
-        right: "15rem",
-        height: "3.5rem",
-        width: "calc(100% - 15rem)",
-        zIndex: 10,
-        p: "0.5rem",
-        h: "3.5rem",
-        bgColor: "purple.50",
         _dark: {
           bgColor: "gray.900",
         },
+        bgColor: "purple.50",
+        h: "3.5rem",
+        height: "3.5rem",
+        p: "0.5rem",
+        position: "fixed",
+        right: "15rem",
+        top: "4rem",
+        width: "calc(100% - 15rem)",
+        zIndex: 10,
       }}
     >
-      <Flex alignItems={"center"} justifyContent={"space-between"} gap="0.5rem">
+      <Flex alignItems="center" justifyContent="space-between" gap="0.5rem">
         <InputGroup>
           <Input
             placeholder="フォントを検索"
             value={familyKeyword}
-            onChange={(e) => setFamilyKeyword(e.target.value)}
+            onChange={(e) => {
+              setFamilyKeyword(e.target.value);
+            }}
             variant="outline"
             sx={{
-              borderColor: "gray.300",
+              _dark: {
+                borderColor: "gray.600",
+              },
               _focusVisible: {
                 borderColor: "purple.500",
                 boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
               },
-              _dark: {
-                borderColor: "gray.600",
-              },
+              borderColor: "gray.300",
             }}
           />
           {familyKeyword !== "" && (
@@ -61,9 +63,11 @@ const Menubar: React.FC = () => {
                 size="sm"
                 colorScheme="purple"
                 variant="ghost"
-                onClick={() => setFamilyKeyword("")}
+                onClick={() => {
+                  setFamilyKeyword("");
+                }}
               >
-                <X weight="bold" />
+                <XIcon weight="bold" />
               </IconButton>
             </InputRightElement>
           )}
@@ -72,20 +76,20 @@ const Menubar: React.FC = () => {
           w="10rem"
           value={displayMode}
           onChange={(e) => {
-            setDisplayMode(e.target.value as "normal" | "vertical");
+            setDisplayMode(e.target.value === "vertical" ? "vertical" : "normal");
           }}
           sx={{
-            borderColor: "gray.300",
-            _focusVisible: {
-              borderColor: "purple.500",
-              boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
-            },
             _dark: {
               borderColor: "gray.600",
               option: {
                 backgroundColor: "gray.900",
               },
             },
+            _focusVisible: {
+              borderColor: "purple.500",
+              boxShadow: "0 0 0 1px var(--chakra-colors-purple-500)",
+            },
+            borderColor: "gray.300",
           }}
         >
           <option value="normal">通常</option>
@@ -97,15 +101,9 @@ const Menubar: React.FC = () => {
           colorScheme="purple"
           variant="ghost"
         >
-          {colorMode === "light" ? (
-            <Sun weight="bold" />
-          ) : (
-            <Moon weight="bold" />
-          )}
+          {colorMode === "light" ? <SunIcon weight="bold" /> : <MoonIcon weight="bold" />}
         </IconButton>
       </Flex>
     </Box>
   );
 };
-
-export default Menubar;

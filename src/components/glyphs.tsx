@@ -1,45 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Box, Flex, Radio, RadioGroup, Stack } from "@chakra-ui/react";
 
-import { unicodeRanges } from "~/utils/unicode";
+import { unicodeRanges } from "#/utils/unicode";
 
 type GlyphsProps = {
   font_name: string;
 };
 
-const Glyphs: React.FC<GlyphsProps> = ({ font_name }) => {
-  const [range, setRange] = useState<string>("Basic Latin");
-  const [glyphs, setGlyphs] = useState<string[]>([]);
+const loadFont = (postscriptName: string) => {
+  const fontFace = new FontFace(postscriptName, `local('${postscriptName}')`);
+  fontFace
+    .load()
+    .then((loadedFace) => {
+      document.fonts.add(loadedFace);
+    })
+    .catch((error: unknown) => {
+      console.error(error);
+    });
+};
 
-  const loadFont = async (font_name: string) => {
-    const fontFace = new FontFace(font_name, `local('${font_name}')`);
-    fontFace
-      .load()
-      .then((loadedFace) => {
-        document.fonts.add(loadedFace);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  };
+export const Glyphs: React.FC<GlyphsProps> = ({ font_name }) => {
+  const [range, setRange] = useState<string>("Basic Latin");
 
   useEffect(() => {
     if (font_name) {
       loadFont(font_name);
     }
-  }, []);
+  }, [font_name]);
 
-  useEffect(() => {
-    const newGlyphs = [];
-    for (
-      let i = unicodeRanges[range].start;
-      i < unicodeRanges[range].end;
-      i++
-    ) {
-      newGlyphs.push(String.fromCodePoint(i));
+  const glyphs = useMemo(() => {
+    const { start, end } = unicodeRanges[range];
+    const codePoints: string[] = [];
+    for (let i = start; i < end; i++) {
+      codePoints.push(String.fromCodePoint(i));
     }
-    setGlyphs(newGlyphs);
+    return codePoints;
   }, [range]);
 
   return (
@@ -84,5 +80,3 @@ const Glyphs: React.FC<GlyphsProps> = ({ font_name }) => {
     </Flex>
   );
 };
-
-export default Glyphs;

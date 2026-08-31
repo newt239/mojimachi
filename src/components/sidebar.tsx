@@ -13,13 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { useAtom, useAtomValue } from "jotai";
 
-import {
-  familyKeywordAtom,
-  favoriteFamiliesAtom,
-  jaFilterAtom,
-} from "~/utils/jotai";
+import { familyKeywordAtom, favoriteFamiliesAtom, jaFilterAtom } from "#/utils/jotai";
 
-const Sidebar: React.FC = () => {
+export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const favoriteFamily = useAtomValue(favoriteFamiliesAtom);
@@ -29,16 +25,16 @@ const Sidebar: React.FC = () => {
   return (
     <Box
       sx={{
-        display: "block",
-        position: "fixed",
-        top: "4rem",
-        right: 0,
-        height: "calc(100vh - 4rem)",
-        width: "15rem",
-        bgColor: "purple.50",
         _dark: {
           bgColor: "gray.900",
         },
+        bgColor: "purple.50",
+        display: "block",
+        height: "calc(100vh - 4rem)",
+        position: "fixed",
+        right: 0,
+        top: "4rem",
+        width: "15rem",
       }}
       zIndex={50}
     >
@@ -52,9 +48,7 @@ const Sidebar: React.FC = () => {
               setFamilyKeyword("");
               navigate("/");
             }}
-            isDisabled={
-              !jaFilter && location.pathname === "/" && familyKeyword === ""
-            }
+            isDisabled={!jaFilter && location.pathname === "/" && familyKeyword === ""}
           >
             すべて表示
           </Button>
@@ -67,7 +61,9 @@ const Sidebar: React.FC = () => {
             <Switch
               id="only-ja"
               colorScheme="purple"
-              onChange={() => setJaFilter((v) => !v)}
+              onChange={() => {
+                setJaFilter((v) => !v);
+              }}
               isChecked={jaFilter}
             />
             <FormLabel htmlFor="only-ja" mb={0} cursor="pointer">
@@ -85,33 +81,31 @@ const Sidebar: React.FC = () => {
             {favoriteFamily.map((family_name) => (
               <Link
                 aria-current={
-                  location.pathname.startsWith(`/family/${family_name}`)
-                    ? "page"
-                    : undefined
+                  location.pathname.startsWith(`/family/${family_name}`) ? "page" : undefined
                 }
                 as={ReactLink}
                 to={`/family/${family_name}`}
                 key={family_name}
                 sx={{
-                  display: "block",
-                  w: "full",
-                  px: 4,
-                  py: 2,
-                  textDecoration: "none",
-                  borderRadius: "lg",
-                  transition: "all 0.2s ease-in-out",
-                  _hover: {
-                    textDecoration: "none",
-                    bgColor: "purple.100",
-                    color: "purple.500",
-                    _dark: {
-                      bgColor: "rgba(50, 38, 89, 0.3)",
-                    },
-                  },
                   _activeLink: {
                     bgColor: "purple.100",
                     color: "purple.500",
                   },
+                  _hover: {
+                    _dark: {
+                      bgColor: "rgba(50, 38, 89, 0.3)",
+                    },
+                    bgColor: "purple.100",
+                    color: "purple.500",
+                    textDecoration: "none",
+                  },
+                  borderRadius: "lg",
+                  display: "block",
+                  px: 4,
+                  py: 2,
+                  textDecoration: "none",
+                  transition: "all 0.2s ease-in-out",
+                  w: "full",
                 }}
               >
                 {family_name}
@@ -123,5 +117,3 @@ const Sidebar: React.FC = () => {
     </Box>
   );
 };
-
-export default Sidebar;

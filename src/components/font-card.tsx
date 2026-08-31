@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import { Link as ReactLink } from "react-router-dom";
 
 import { Box, Checkbox, Flex, Link, Text } from "@chakra-ui/react";
@@ -10,13 +10,13 @@ import {
   isBoldAtom,
   isItalicAtom,
   previewStringAtom,
-} from "~/utils/jotai";
+} from "#/utils/jotai";
 
 type EachFontProps = {
   family_name: string;
 };
 
-const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
+export const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
   const previewString = useAtomValue(previewStringAtom);
   const displayMode = useAtomValue(displayModeAtom);
   const isItalic = useAtomValue(isItalicAtom);
@@ -35,8 +35,7 @@ const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
     <Flex
       flexDirection="column"
       sx={{
-        writingMode:
-          displayMode === "vertical" ? "vertical-rl" : "horizontal-tb",
+        writingMode: displayMode === "vertical" ? "vertical-rl" : "horizontal-tb",
       }}
       gap="0.5rem"
     >
@@ -57,10 +56,10 @@ const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
           as={ReactLink}
           to={`/family/${family_name}`}
           sx={{
-            transition: "all ease 0.2s",
             _hover: {
               color: "purple.500",
             },
+            transition: "all ease 0.2s",
           }}
         >
           {family_name}
@@ -81,5 +80,3 @@ const FontCard: React.FC<EachFontProps> = ({ family_name }) => {
     </Flex>
   );
 };
-
-export default FontCard;
