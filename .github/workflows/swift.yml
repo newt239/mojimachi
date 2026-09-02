@@ -1,0 +1,37 @@
+name: Swift
+
+on:
+  pull_request:
+    paths:
+      - "apple/**"
+      - "Makefile"
+      - ".swift-format"
+      - ".github/workflows/swift.yml"
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    timeout-minutes: 20
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Show toolchain versions
+        run: |
+          xcodebuild -version
+          xcrun swift-format --version
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Lint
+        run: make lint
+      - name: Build
+        run: make build
