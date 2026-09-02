@@ -2,12 +2,23 @@
 
 ## 目次
 
+- [現在の状況](#現在の状況)
 - [基本原則](#基本原則)
 - [開発コマンド](#開発コマンド)
 - [アーキテクチャ](#アーキテクチャ)
 - [コーディングガイドライン](#コーディングガイドライン)
+- [Swift ガイドライン](#swift-ガイドライン)
 - [Rust ガイドライン](#rust-ガイドライン)
 - [Git 運用](#git-運用)
+
+## 現在の状況
+
+このリポジトリは **Tauri + React から SwiftUI へ書き直している最中**です。
+
+- `apple/` - SwiftUI 版。今後の実装はすべてここに行ってください
+- `src/` `src-tauri/` - Tauri 版。**新規の変更は行わないでください**。移行完了後に削除します
+
+後方互換や既存デザインの維持は考慮しません。SwiftUI 版はゼロから設計して構いません。
 
 ## 基本原則
 
@@ -17,14 +28,26 @@
   - 実行する変更の詳細説明
   - 影響範囲の説明
 - 不明な点がある場合は常に質問し、推測で進めてはなりません。
-- 実装後の必須作業として、`pnpm run codecheck`を実行してください。
-  - 型エラーやリンターのエラーが出た場合は、コミット前に必ず修正してください。
-  - エラーを解消するために`.oxlintrc.json`や`tsconfig.json`を変更してはなりません。
-- Rust 側を変更した場合は`pnpm run rust:check`も実行してください。
+- 実装後の必須作業として、`make codecheck`を実行してください。
+  - エラーが出た場合は、コミット前に必ず修正してください。
+  - エラーを解消するために`.swift-format`を変更してはなりません。
 
 ## 開発コマンド
 
-### 基本コマンド
+### SwiftUI 版
+
+Xcode プロジェクトは`apple/project.yml`から XcodeGen で生成します。`.xcodeproj`はコミットしません。
+
+- `make generate` - Xcode プロジェクトを生成
+- `make build` - ビルド
+- `make run` - ビルドして起動
+- `make format` - swift-format で整形
+- `make lint` - swift-format で検査
+- `make codecheck` - lint とビルドをまとめて実行
+
+実装後は必ず`make codecheck`を実行してください。
+
+### Tauri 版（保守のみ）
 
 - `pnpm run dev` - Vite 開発サーバーのみを起動（ブラウザでは Tauri command が使えないため通常は使わない）
 - `pnpm run tauri dev` - デスクトップアプリとして開発起動
@@ -35,23 +58,32 @@
 
 ### 動作確認
 
-- このアプリはデバイスにインストールされたフォントを読み取るため、**ブラウザでは動作確認できません**。必ず`pnpm run tauri dev`で起動して確認してください。
+- 実装した画面は`make run`で実際に起動して確認してください。
 - スクリーンショット等の検証用ファイルはプロジェクトルート直下に置かないでください。
 
 ## アーキテクチャ
 
 ### 技術スタック
 
-- **言語**: TypeScript / Rust
-- **デスクトップフレームワーク**: Tauri v2
-- **フロントエンド**: React + Vite（SPA）
-- **ルーティング**: React Router
-- **状態管理**: Jotai
-- **コード品質**: Oxlint / Oxfmt
-- **Git hooks**: Lefthook
-- **フォント読み取り**: font-kit / ttf-parser（Rust 側）
+- **言語**: Swift
+- **UI**: SwiftUI
+- **プロジェクト生成**: XcodeGen
+- **依存管理**: SwiftPM
+- **コード品質**: swift-format（Xcode 同梱）
+- **フォント読み取り**: CoreText
 
 ### プロジェクト構造
+
+```bash
+apple/
+├── project.yml             XcodeGen のプロジェクト定義
+└── Sources/
+    ├── App/                エントリポイントとメニュー
+    ├── Views/              画面
+    └── Resources/          アセットカタログとローカライズ
+```
+
+### Tauri 版の構造（削除予定）
 
 ```bash
 src/                        フロントエンド
@@ -129,6 +161,25 @@ src-tauri/                  Rust バックエンド
 ### `console.log`の禁止
 
 - `console.log`をコミットしてはなりません。`console.warn`と`console.error`のみ許可します。
+
+## Swift ガイドライン
+
+### 強制アンラップの禁止
+
+- `!`による強制アンラップと`try!`を使用してはなりません。`.swift-format`の`NeverForceUnwrap`と`NeverUseForceTry`で検査しています。
+- 暗黙的アンラップ型（`Type!`）も使用してはなりません。
+- **フォント単位の失敗はスキップし、一覧の取得自体は続行してください**。デバイス上には壊れたフォントや読み取れないフォントが必ず存在します。
+
+### 命名とファイル配置
+
+- 型名は UpperCamelCase、それ以外は lowerCamelCase で命名してください。
+- 1 ファイル 1 型を原則とし、ファイル名は型名に合わせてください。
+- `apple/Sources/App/`にアプリのエントリポイントとメニュー、`apple/Sources/Views/`に画面、`apple/Sources/`配下にその他を配置します。
+
+### 並行性
+
+- `SWIFT_STRICT_CONCURRENCY`を`complete`に設定しています。警告はエラー扱いです。
+- UI に触れる型は`@MainActor`で隔離し、フォント列挙のような重い処理はアクター外で行ってください。
 
 ## Rust ガイドライン
 

@@ -12,10 +12,8 @@
 
 <!-- 確認した内容にチェックを入れてください -->
 
-- [ ] `pnpm run codecheck` が通ることを確認した
-- [ ] `pnpm run rust:check` が通ることを確認した
-- [ ] `pnpm run tauri build` が通ることを確認した
-- [ ] `pnpm run tauri dev` で影響範囲の動作を確認した
+- [ ] `make codecheck` が通ることを確認した
+- [ ] `make run` で影響範囲の動作を確認した
 
 ## 補足
 
