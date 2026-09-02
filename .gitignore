@@ -29,3 +29,10 @@ dist-ssr
 
 # env files
 .env
+
+# Xcode
+apple/Mojimachi.xcodeproj/
+.build/
+DerivedData/
+*.xcworkspace/
+xcuserdata/
