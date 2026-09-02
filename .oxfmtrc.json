@@ -1,6 +1,13 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["node_modules/", "dist/", "src-tauri/target/", "src-tauri/gen/"],
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "src-tauri/target/",
+    "src-tauri/gen/",
+    "apple/",
+    ".build/"
+  ],
   "sortImports": {
     "groups": [
       "react",
