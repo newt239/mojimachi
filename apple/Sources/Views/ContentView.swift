@@ -9,7 +9,12 @@ struct ContentView: View {
       SidebarView(model: model)
         .navigationSplitViewColumnWidth(min: 200, ideal: 240, max: 320)
     } detail: {
-      FontListView(model: model)
+      NavigationStack {
+        FontListView(model: model)
+          .navigationDestination(for: FontFamily.self) { family in
+            FontDetailView(browser: model, family: family)
+          }
+      }
     }
     .frame(minWidth: 900, minHeight: 520)
     .background(

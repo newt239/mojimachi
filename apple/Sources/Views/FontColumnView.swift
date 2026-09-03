@@ -20,11 +20,15 @@ struct FontColumnView: View {
         .frame(maxHeight: .infinity, alignment: .top)
       }
 
-      Text(family.name)
-        .font(.caption)
-        .lineLimit(2)
-        .multilineTextAlignment(.center)
-        .foregroundStyle(model.isFavorite(family) ? .primary : .secondary)
+      NavigationLink(value: family) {
+        Text(family.name)
+          .font(.caption)
+          .lineLimit(2)
+          .multilineTextAlignment(.center)
+          .foregroundStyle(model.isFavorite(family) ? .primary : .secondary)
+      }
+      .buttonStyle(.plain)
+      .help("詳細を見る")
     }
     .frame(width: columnWidth)
     .contentShape(.rect)
