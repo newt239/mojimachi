@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct ContentView: View {
@@ -11,6 +12,9 @@ struct ContentView: View {
       FontListView(model: model)
     }
     .frame(minWidth: 900, minHeight: 520)
+    .background(
+      WindowFrameRestorer(key: "windowFrame", defaultSize: NSSize(width: 1200, height: 800))
+    )
     .task { model.load() }
   }
 }
