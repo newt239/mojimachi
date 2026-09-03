@@ -1,16 +1,16 @@
 import SwiftUI
 
 struct ContentView: View {
-  var body: some View {
-    ContentUnavailableView {
-      Label("もじまち", systemImage: "textformat")
-    } description: {
-      Text("フォント一覧はこれから実装します。")
-    }
-    .frame(minWidth: 720, minHeight: 480)
-  }
-}
+  @State private var model = FontBrowserModel()
 
-#Preview {
-  ContentView()
+  var body: some View {
+    NavigationSplitView {
+      SidebarView(model: model)
+        .navigationSplitViewColumnWidth(min: 200, ideal: 240, max: 320)
+    } detail: {
+      FontListView(model: model)
+    }
+    .frame(minWidth: 900, minHeight: 520)
+    .task { model.load() }
+  }
 }
