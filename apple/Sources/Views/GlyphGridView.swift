@@ -47,7 +47,7 @@ struct GlyphGridView: View {
     } else if model.glyphs.isEmpty {
       ContentUnavailableView(
         "該当するグリフがありません",
-        systemImage: "character.magnify",
+        systemImage: "magnifyingglass",
         description: Text(model.isSearching ? "検索条件を変えてみてください。" : "このフォントは収録字が読み取れませんでした。")
       )
     } else {

@@ -12,8 +12,9 @@ struct SampleWritingView: View {
   }
 
   private var controls: some View {
-    HStack(spacing: 16) {
-      LabeledContent("サイズ") {
+    HStack(spacing: 20) {
+      HStack(spacing: 8) {
+        Text("サイズ")
         Slider(value: $model.sampleSize, in: 8...160)
           .frame(width: 140)
         Text(model.sampleSize.formatted(.number.precision(.fractionLength(0))))
@@ -21,7 +22,8 @@ struct SampleWritingView: View {
           .frame(width: 32, alignment: .trailing)
       }
 
-      LabeledContent("行間") {
+      HStack(spacing: 8) {
+        Text("行間")
         Slider(value: $model.lineSpacing, in: 0...60)
           .frame(width: 120)
         Text(model.lineSpacing.formatted(.number.precision(.fractionLength(0))))
@@ -38,17 +40,15 @@ struct SampleWritingView: View {
   }
 
   private var canvas: some View {
-    ScrollView {
-      TextEditor(text: $model.sampleText)
-        .font(model.font(size: model.sampleSize))
-        .lineSpacing(model.lineSpacing)
-        .foregroundStyle(Color(nsColor: model.foreground))
-        .scrollContentBackground(.hidden)
-        .scrollDisabled(true)
-        .frame(minHeight: 320)
-        .padding(16)
-    }
-    .background(Color(nsColor: model.background))
+    TextEditor(text: $model.sampleText)
+      .font(model.font(size: model.sampleSize))
+      .lineSpacing(model.lineSpacing)
+      .foregroundStyle(Color(nsColor: model.foreground))
+      .scrollContentBackground(.hidden)
+      .background(Color(nsColor: model.background))
+      .padding(16)
+      .background(Color(nsColor: model.background))
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
 
   private var foregroundBinding: Binding<Color> {
