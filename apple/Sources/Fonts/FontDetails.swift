@@ -65,12 +65,26 @@ enum FontDetails {
     return String(decoding: bytes, as: UTF8.self)
   }
 
-  private static func makeFont(postScriptName: String) -> CTFont? {
-    let descriptor = CTFontDescriptorCreateWithNameAndSize(postScriptName as CFString, 0)
-    let font = CTFontCreateWithFontDescriptor(descriptor, 0, nil)
+  static func font(
+    postScriptName: String,
+    size: CGFloat,
+    variations: [Int: Double] = [:]
+  ) -> CTFont? {
+    var attributes: [CFString: Any] = [kCTFontNameAttribute: postScriptName]
+    if !variations.isEmpty {
+      attributes[kCTFontVariationAttribute] = Dictionary(
+        uniqueKeysWithValues: variations.map { (NSNumber(value: $0.key), $0.value) }
+      )
+    }
+    let descriptor = CTFontDescriptorCreateWithAttributes(attributes as CFDictionary)
+    let font = CTFontCreateWithFontDescriptor(descriptor, size, nil)
     guard CTFontCopyPostScriptName(font) as String == postScriptName else {
       return nil
     }
     return font
+  }
+
+  private static func makeFont(postScriptName: String) -> CTFont? {
+    font(postScriptName: postScriptName, size: 0)
   }
 }
