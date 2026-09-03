@@ -22,22 +22,25 @@ final class FontBrowserModel {
     "0123456789 ¿?¡! &@ “” «» %*^#$£€¢ ()[]{} .,®©",
   ]
 
+  private enum Key {
+    static let favorites = "favorites"
+    static let previewText = "previewText"
+    static let fontSize = "fontSize"
+    static let weight = "weight"
+    static let isItalic = "isItalic"
+    static let japaneseOnly = "japaneseOnly"
+    static let orientation = "orientation"
+  }
+
   private let catalog = FontCatalog()
+  private let defaults: UserDefaults
   private var reloadTask: Task<Void, Never>?
 
   private(set) var families: [FontFamily] = []
   private(set) var loadState: LoadState = .loading
 
   var scope: Scope = .all
-  var favorites: Set<String> = []
   var scrollTarget: FontFamily.ID?
-
-  var previewText = presetTexts[0]
-  var fontSize: Double = 28
-  var weight: PreviewWeight = .regular
-  var isItalic = false
-  var orientation: PreviewOrientation = .horizontal
-
   var searchText = "" {
     didSet {
       guard searchText != oldValue else { return }
@@ -45,11 +48,48 @@ final class FontBrowserModel {
     }
   }
 
-  var japaneseOnly = false {
+  var favorites: Set<String> {
+    didSet { defaults.set(favorites.sorted(), forKey: Key.favorites) }
+  }
+
+  var previewText: String {
+    didSet { defaults.set(previewText, forKey: Key.previewText) }
+  }
+
+  var fontSize: Double {
+    didSet { defaults.set(fontSize, forKey: Key.fontSize) }
+  }
+
+  var weight: PreviewWeight {
+    didSet { defaults.set(weight.rawValue, forKey: Key.weight) }
+  }
+
+  var isItalic: Bool {
+    didSet { defaults.set(isItalic, forKey: Key.isItalic) }
+  }
+
+  var orientation: PreviewOrientation {
+    didSet { defaults.set(orientation.rawValue, forKey: Key.orientation) }
+  }
+
+  var japaneseOnly: Bool {
     didSet {
+      defaults.set(japaneseOnly, forKey: Key.japaneseOnly)
       guard japaneseOnly != oldValue else { return }
       scheduleReload(debounce: .zero)
     }
+  }
+
+  init(defaults: UserDefaults = .standard) {
+    self.defaults = defaults
+    favorites = Set(defaults.stringArray(forKey: Key.favorites) ?? [])
+    previewText = defaults.string(forKey: Key.previewText) ?? Self.presetTexts[0]
+    fontSize = defaults.object(forKey: Key.fontSize) as? Double ?? 28
+    weight = PreviewWeight(rawValue: defaults.double(forKey: Key.weight)) ?? .regular
+    isItalic = defaults.bool(forKey: Key.isItalic)
+    japaneseOnly = defaults.bool(forKey: Key.japaneseOnly)
+    orientation =
+      PreviewOrientation(rawValue: defaults.string(forKey: Key.orientation) ?? "") ?? .horizontal
   }
 
   var visibleFamilies: [FontFamily] {
