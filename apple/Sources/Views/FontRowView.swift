@@ -34,6 +34,13 @@ struct FontRowView: View {
         }
 
         Spacer(minLength: 0)
+
+        NavigationLink(value: family) {
+          Image(systemName: "chevron.right")
+            .foregroundStyle(.secondary)
+        }
+        .buttonStyle(.plain)
+        .help("詳細を見る")
       }
 
       if let style {
