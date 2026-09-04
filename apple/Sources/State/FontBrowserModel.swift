@@ -37,6 +37,7 @@ final class FontBrowserModel {
   }
 
   private let catalog = FontCatalog()
+  private let exporter = FontExporter()
   private let monitor: FontChangeMonitor
   private let defaults: UserDefaults
   private var reloadTask: Task<Void, Never>?
@@ -47,6 +48,8 @@ final class FontBrowserModel {
   private(set) var loadState: LoadState = .loading
 
   var scope: Scope = .all
+  var exportPlan: FontExportPlan?
+  var exportMessage: String?
   var scrollTarget: FontFamily.ID?
   var selection: Set<FontFamily.ID> = []
   var searchText = "" {
@@ -93,6 +96,7 @@ final class FontBrowserModel {
   }
 
   private(set) var coverageScalars: [Unicode.Scalar] = []
+  private(set) var isExporting = false
 
   var showsSystemDuplicates: Bool {
     didSet { defaults.set(showsSystemDuplicates, forKey: Key.showsSystemDuplicates) }
@@ -227,6 +231,38 @@ final class FontBrowserModel {
 
   func families(for ids: Set<FontFamily.ID>) -> [FontFamily] {
     visibleFamilies.filter { ids.contains($0.id) }
+  }
+
+  func prepareExport(_ families: [FontFamily]) {
+    exportPlan = FontExporter.plan(for: families)
+  }
+
+  func cancelExport() {
+    exportPlan = nil
+  }
+
+  func confirmExport() {
+    guard let plan = exportPlan else { return }
+    exportPlan = nil
+    guard let directory = chooseExportDirectory() else { return }
+
+    isExporting = true
+    Task { [exporter] in
+      let result = await exporter.export(plan, to: directory)
+      isExporting = false
+      exportMessage = result.summary
+    }
+  }
+
+  private func chooseExportDirectory() -> URL? {
+    let panel = NSOpenPanel()
+    panel.canChooseFiles = false
+    panel.canChooseDirectories = true
+    panel.allowsMultipleSelection = false
+    panel.canCreateDirectories = true
+    panel.prompt = "書き出す"
+    panel.message = "フォントの書き出し先フォルダを選んでください"
+    return panel.runModal() == .OK ? panel.url : nil
   }
 
   private func scheduleReload(debounce: Duration) {

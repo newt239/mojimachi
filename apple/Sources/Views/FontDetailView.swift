@@ -38,6 +38,13 @@ struct FontDetailView: View {
       }
       ToolbarItem {
         Button {
+          browser.prepareExport([model.family])
+        } label: {
+          Label("書き出す…", systemImage: "square.and.arrow.up")
+        }
+      }
+      ToolbarItem {
+        Button {
           model.revealInFinder()
         } label: {
           Label("Finder で表示", systemImage: "folder")
