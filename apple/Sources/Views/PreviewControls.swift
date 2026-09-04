@@ -26,6 +26,7 @@ struct PreviewControls: ToolbarContent {
       Picker("表示方向", selection: $model.orientation) {
         ForEach(PreviewOrientation.allCases) { orientation in
           Image(systemName: orientation.symbolName)
+            .accessibilityLabel(orientation.label)
             .help(orientation.label)
             .tag(orientation)
         }

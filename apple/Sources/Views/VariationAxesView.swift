@@ -22,6 +22,7 @@ struct VariationAxesView: View {
             value: binding(for: axis),
             in: axis.minimumValue...axis.maximumValue
           )
+          .frame(maxWidth: 320)
 
           Text(value(for: axis).formatted(.number.precision(.fractionLength(0...1))))
             .font(.callout.monospacedDigit())
@@ -30,6 +31,8 @@ struct VariationAxesView: View {
           Text(FontDetails.tag(for: axis.identifier))
             .font(.caption.monospaced())
             .foregroundStyle(.secondary)
+
+          Spacer(minLength: 0)
         }
       }
     }

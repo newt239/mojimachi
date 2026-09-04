@@ -41,6 +41,7 @@ struct FontRowView: View {
         }
         .buttonStyle(.plain)
         .help("詳細を見る")
+        .accessibilityLabel("\(family.name) の詳細")
       }
 
       if let style {

@@ -112,12 +112,16 @@ final class FontDetailModel {
     loadStyle()
   }
 
+  var usesCustomAxisValues: Bool {
+    axes.contains { axisValues[$0.identifier] != $0.defaultValue }
+  }
+
   func font(size: Double) -> Font {
     guard
       let ctFont = FontDetails.font(
         postScriptName: selectedStyle.postScriptName,
         size: size,
-        variations: axisValues
+        variations: usesCustomAxisValues ? axisValues : [:]
       )
     else {
       return .system(size: size)
