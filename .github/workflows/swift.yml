@@ -2,11 +2,6 @@ name: Swift
 
 on:
   pull_request:
-    paths:
-      - "apple/**"
-      - "Makefile"
-      - ".swift-format"
-      - ".github/workflows/swift.yml"
   push:
     branches: ["main"]
   workflow_dispatch:
