@@ -37,7 +37,9 @@ enum FontDetails {
   }
 
   static func variationAxes(forPostScriptName postScriptName: String) -> [FontVariationAxis] {
-    guard let font = makeFont(postScriptName: postScriptName),
+    guard
+      let font = variableFont(postScriptName: postScriptName, size: 0)
+        ?? registeredFont(postScriptName: postScriptName, size: 0),
       let axes = CTFontCopyVariationAxes(font) as? [[String: Any]]
     else {
       return []
@@ -70,15 +72,14 @@ enum FontDetails {
     size: CGFloat,
     variations: [Int: Double] = [:]
   ) -> CTFont? {
-    let descriptor = CTFontDescriptorCreateWithAttributes(
-      [kCTFontNameAttribute: postScriptName] as CFDictionary
-    )
-    let font = CTFontCreateWithFontDescriptor(descriptor, size, nil)
-    guard CTFontCopyPostScriptName(font) as String == postScriptName else {
-      return nil
-    }
     guard !variations.isEmpty else {
-      return font
+      return registeredFont(postScriptName: postScriptName, size: size)
+    }
+    guard
+      let font = variableFont(postScriptName: postScriptName, size: size)
+        ?? registeredFont(postScriptName: postScriptName, size: size)
+    else {
+      return nil
     }
     let settings = Dictionary(
       uniqueKeysWithValues: variations.map { (NSNumber(value: $0.key), $0.value) }
@@ -89,7 +90,24 @@ enum FontDetails {
     return CTFontCreateCopyWithAttributes(font, size, nil, varied)
   }
 
+  private static func registeredFont(postScriptName: String, size: CGFloat) -> CTFont? {
+    let query = CTFontDescriptorCreateWithAttributes(
+      [kCTFontNameAttribute: postScriptName] as CFDictionary
+    )
+    let font = CTFontCreateWithFontDescriptor(query, size, nil)
+    return CTFontCopyPostScriptName(font) as String == postScriptName ? font : nil
+  }
+
+  private static func variableFont(postScriptName: String, size: CGFloat) -> CTFont? {
+    guard let descriptor = VariableFontIndex.shared.descriptor(forPostScriptName: postScriptName)
+    else {
+      return nil
+    }
+    let font = CTFontCreateWithFontDescriptor(descriptor, size, nil)
+    return CTFontCopyPostScriptName(font) as String == postScriptName ? font : nil
+  }
+
   private static func makeFont(postScriptName: String) -> CTFont? {
-    font(postScriptName: postScriptName, size: 0)
+    registeredFont(postScriptName: postScriptName, size: 0)
   }
 }

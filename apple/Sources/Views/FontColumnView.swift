@@ -29,6 +29,7 @@ struct FontColumnView: View {
       }
       .buttonStyle(.plain)
       .help("詳細を見る")
+      .accessibilityLabel("\(family.name) の詳細")
     }
     .frame(width: columnWidth)
     .contentShape(.rect)

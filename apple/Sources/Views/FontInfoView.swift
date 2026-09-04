@@ -14,27 +14,34 @@ struct FontInfoView: View {
       Form {
         Section {
           ForEach(model.nameRecords) { record in
-            LabeledContent(record.label) {
+            row(record.label) {
               Text(record.value)
                 .textSelection(.enabled)
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
           }
         }
 
         if let url = model.selectedStyle.fileURL {
           Section("ファイル") {
-            LabeledContent("場所") {
+            row("場所") {
               Text(url.path(percentEncoded: false))
                 .textSelection(.enabled)
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
             Button("Finder で表示") { model.revealInFinder() }
           }
         }
       }
       .formStyle(.grouped)
+    }
+  }
+
+  private func row(_ label: String, @ViewBuilder value: () -> some View) -> some View {
+    HStack(alignment: .firstTextBaseline, spacing: 16) {
+      Text(label)
+        .foregroundStyle(.secondary)
+        .frame(width: 140, alignment: .leading)
+      value()
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
   }
 }
