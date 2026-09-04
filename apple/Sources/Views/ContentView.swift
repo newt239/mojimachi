@@ -16,6 +16,9 @@ struct ContentView: View {
           .navigationDestination(for: FontFamily.self) { family in
             FontDetailView(browser: model, family: family)
           }
+          .navigationDestination(for: FontComparison.self) { comparison in
+            FontComparisonView(model: model, comparison: comparison)
+          }
       }
     }
     .frame(minWidth: 900, minHeight: 520)

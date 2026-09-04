@@ -80,7 +80,7 @@ struct FontListView: View {
           .id(family.id)
       }
       .contextMenu(forSelectionType: FontFamily.ID.self) { ids in
-        FontSelectionMenu(model: model, printModel: printModel, ids: ids)
+        FontSelectionMenu(model: model, printModel: printModel, path: $path, ids: ids)
       } primaryAction: { ids in
         guard ids.count == 1, let id = ids.first,
           let family = model.visibleFamilies.first(where: { $0.id == id })
