@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
   let model: FontBrowserModel
+  @Bindable var printModel: FontPrintModel
 
   @State private var path = NavigationPath()
 
@@ -11,7 +12,7 @@ struct ContentView: View {
         .navigationSplitViewColumnWidth(min: 200, ideal: 240, max: 320)
     } detail: {
       NavigationStack(path: $path) {
-        FontListView(model: model, path: $path)
+        FontListView(model: model, printModel: printModel, path: $path)
           .navigationDestination(for: FontFamily.self) { family in
             FontDetailView(browser: model, family: family)
           }
@@ -41,6 +42,9 @@ struct ContentView: View {
       Button("OK") { model.exportMessage = nil }
     } message: {
       Text(model.exportMessage ?? "")
+    }
+    .sheet(isPresented: $printModel.isPresented) {
+      FontPrintOptionsSheet(model: printModel)
     }
     .task { model.load() }
   }

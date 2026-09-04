@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FontSelectionMenu: View {
   let model: FontBrowserModel
+  let printModel: FontPrintModel
   let ids: Set<FontFamily.ID>
 
   var body: some View {
@@ -16,6 +17,11 @@ struct FontSelectionMenu: View {
 
       Button("書き出す…") {
         model.prepareExport(families)
+      }
+
+      Button("プリント…") {
+        printModel.prepare(families, weight: model.weight, isItalic: model.isItalic)
+        printModel.isPresented = true
       }
 
       Divider()

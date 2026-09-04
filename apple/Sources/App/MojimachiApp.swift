@@ -4,13 +4,14 @@ import SwiftUI
 struct MojimachiApp: App {
   @State private var updater = UpdaterModel()
   @State private var model = FontBrowserModel()
+  @State private var printModel = FontPrintModel()
 
   var body: some Scene {
     WindowGroup {
-      ContentView(model: model)
+      ContentView(model: model, printModel: printModel)
     }
     .commands {
-      AppCommands(updater: updater)
+      AppCommands(updater: updater, browser: model, printModel: printModel)
     }
   }
 }
