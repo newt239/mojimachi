@@ -21,11 +21,25 @@ struct FontInfoView: View {
           }
         }
 
+        Section("フォント") {
+          row("種類") { Text(model.selectedStyle.format.label) }
+          row("場所") { Text(model.selectedStyle.location.label) }
+          if model.totalGlyphCount > 0 {
+            row("字形数") { Text(model.totalGlyphCount.formatted()) }
+          }
+          if !model.languageSummary.isEmpty {
+            row("対応言語") { Text(model.languageSummary) }
+          }
+        }
+
         if let url = model.selectedStyle.fileURL {
           Section("ファイル") {
-            row("場所") {
+            row("パス") {
               Text(url.path(percentEncoded: false))
                 .textSelection(.enabled)
+            }
+            if let fileSizeText = model.fileSizeText {
+              row("サイズ") { Text(fileSizeText) }
             }
             Button("Finder で表示") { model.revealInFinder() }
           }

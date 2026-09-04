@@ -14,6 +14,8 @@ final class FontDetailModel {
     static let background = "detailBackground"
   }
 
+  private static let notableLanguages = ["ja", "en", "zh-Hans", "zh-Hant", "ko"]
+
   static let defaultSampleText = """
     あのイーハトーヴォのすきとおった風、
     夏でも底に冷たさをもつ青いそら。
@@ -27,6 +29,9 @@ final class FontDetailModel {
   private var glyphTask: Task<Void, Never>?
 
   private(set) var nameRecords: [FontNameRecord] = []
+  private(set) var totalGlyphCount = 0
+  private(set) var languages: [String] = []
+  private(set) var fileSize: Int?
   private(set) var axes: [FontVariationAxis] = []
   private(set) var blocks: [UnicodeBlockGlyphs] = []
   private(set) var isLoadingGlyphs = false
@@ -108,6 +113,22 @@ final class FontDetailModel {
     blocks.reduce(0) { $0 + $1.glyphs.count }
   }
 
+  var languageSummary: String {
+    guard !languages.isEmpty else { return "" }
+    let available = Set(languages)
+    let leading = Self.notableLanguages.filter(available.contains)
+      .compactMap { Locale.current.localizedString(forIdentifier: $0) }
+    let rest = languages.count - leading.count
+    guard !leading.isEmpty else { return "\(languages.count) 言語" }
+    return rest > 0
+      ? "\(leading.joined(separator: "、"))ほか \(rest) 言語"
+      : leading.joined(separator: "、")
+  }
+
+  var fileSizeText: String? {
+    fileSize.map { ByteCountFormatter.string(fromByteCount: Int64($0), countStyle: .file) }
+  }
+
   func load() {
     loadStyle()
   }
@@ -147,6 +168,9 @@ final class FontDetailModel {
   private func loadStyle() {
     let postScriptName = selectedStyle.postScriptName
     nameRecords = FontDetails.nameRecords(forPostScriptName: postScriptName)
+    totalGlyphCount = FontDetails.glyphCount(forPostScriptName: postScriptName)
+    languages = FontDetails.languages(forPostScriptName: postScriptName)
+    fileSize = selectedStyle.fileURL.flatMap { FontDetails.fileSize(at: $0) }
     axes = FontDetails.variationAxes(forPostScriptName: postScriptName)
     resetAxes()
     copiedGlyph = nil
