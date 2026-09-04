@@ -32,6 +32,21 @@ struct FontInfoView: View {
           }
         }
 
+        if model.isLoadingCoverage || model.hasJapaneseCoverage {
+          Section("日本語の文字集合") {
+            if model.isLoadingCoverage {
+              ProgressView()
+                .controlSize(.small)
+            } else {
+              ForEach(model.coverages) { coverage in
+                row(coverage.characterSet.name) {
+                  coverageBar(coverage)
+                }
+              }
+            }
+          }
+        }
+
         if let url = model.selectedStyle.fileURL {
           Section("ファイル") {
             row("パス") {
@@ -46,6 +61,21 @@ struct FontInfoView: View {
         }
       }
       .formStyle(.grouped)
+    }
+  }
+
+  private func coverageBar(_ coverage: FontCharacterSetCoverage) -> some View {
+    HStack(spacing: 12) {
+      ProgressView(value: coverage.ratio)
+        .frame(maxWidth: 180)
+
+      Text(coverage.ratio.formatted(.percent.precision(.fractionLength(0))))
+        .monospacedDigit()
+        .frame(width: 44, alignment: .trailing)
+
+      Text("\(coverage.coveredCount.formatted()) / \(coverage.characterSet.count.formatted()) 字")
+        .font(.caption)
+        .foregroundStyle(.secondary)
     }
   }
 
