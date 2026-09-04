@@ -3,6 +3,7 @@ import SwiftUI
 struct FontSelectionMenu: View {
   let model: FontBrowserModel
   let printModel: FontPrintModel
+  @Binding var path: NavigationPath
   let ids: Set<FontFamily.ID>
 
   var body: some View {
@@ -23,6 +24,12 @@ struct FontSelectionMenu: View {
         printModel.prepare(families, weight: model.weight, isItalic: model.isItalic)
         printModel.isPresented = true
       }
+
+      Button("並べて比較") {
+        path.append(model.comparison(for: families))
+      }
+      .disabled(!model.canCompare(families))
+      .help("2 書体以上を選ぶと比較できます")
 
       Divider()
 

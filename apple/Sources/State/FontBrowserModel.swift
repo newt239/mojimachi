@@ -34,6 +34,7 @@ final class FontBrowserModel {
     static let orientation = "orientation"
     static let showsSystemDuplicates = "showsSystemDuplicates"
     static let coverageQuery = "coverageQuery"
+    static let comparisonMode = "comparisonMode"
   }
 
   private let catalog = FontCatalog()
@@ -98,6 +99,10 @@ final class FontBrowserModel {
   private(set) var coverageScalars: [Unicode.Scalar] = []
   private(set) var isExporting = false
 
+  var comparisonMode: FontComparisonMode {
+    didSet { defaults.set(comparisonMode.rawValue, forKey: Key.comparisonMode) }
+  }
+
   var showsSystemDuplicates: Bool {
     didSet { defaults.set(showsSystemDuplicates, forKey: Key.showsSystemDuplicates) }
   }
@@ -121,6 +126,8 @@ final class FontBrowserModel {
     japaneseOnly = defaults.bool(forKey: Key.japaneseOnly)
     showsSystemDuplicates = defaults.bool(forKey: Key.showsSystemDuplicates)
     coverageQuery = defaults.string(forKey: Key.coverageQuery) ?? ""
+    comparisonMode =
+      FontComparisonMode(rawValue: defaults.string(forKey: Key.comparisonMode) ?? "") ?? .stacked
     orientation =
       PreviewOrientation(rawValue: defaults.string(forKey: Key.orientation) ?? "") ?? .horizontal
     coverageScalars = Self.scalars(in: coverageQuery)
@@ -231,6 +238,20 @@ final class FontBrowserModel {
 
   func families(for ids: Set<FontFamily.ID>) -> [FontFamily] {
     visibleFamilies.filter { ids.contains($0.id) }
+  }
+
+  static let comparisonLimit = 4
+
+  func canCompare(_ families: [FontFamily]) -> Bool {
+    families.count >= 2
+  }
+
+  func comparison(for families: [FontFamily]) -> FontComparison {
+    FontComparison(familyNames: families.prefix(Self.comparisonLimit).map(\.name))
+  }
+
+  func families(named names: [String]) -> [FontFamily] {
+    names.compactMap { name in families.first { $0.name == name } }
   }
 
   func prepareExport(_ families: [FontFamily]) {
