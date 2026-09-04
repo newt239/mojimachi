@@ -1,21 +1,8 @@
 pre-commit:
   parallel: true
   commands:
-    lint:
-      run: pnpm run lint:fix
-      stage_fixed: true
-      fail_text: リントエラーがあります
-    format:
-      run: pnpm run format:fix
-      stage_fixed: true
-      fail_text: フォーマットエラーがあります
     swift-format:
       glob: "apple/**/*.swift"
       run: xcrun swift-format format --in-place {staged_files}
       stage_fixed: true
       fail_text: Swift のフォーマットエラーがあります
-    rust-fmt:
-      glob: "src-tauri/**/*.rs"
-      run: cargo fmt --manifest-path src-tauri/Cargo.toml
-      stage_fixed: true
-      fail_text: Rust のフォーマットエラーがあります
