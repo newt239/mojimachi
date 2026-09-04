@@ -62,6 +62,25 @@ enum FontDetails {
     }
   }
 
+  static func glyphCount(forPostScriptName postScriptName: String) -> Int {
+    guard let font = makeFont(postScriptName: postScriptName) else {
+      return 0
+    }
+    return CTFontGetGlyphCount(font)
+  }
+
+  static func languages(forPostScriptName postScriptName: String) -> [String] {
+    guard let font = makeFont(postScriptName: postScriptName) else {
+      return []
+    }
+    let descriptor = CTFontCopyFontDescriptor(font)
+    return CTFontDescriptorCopyAttribute(descriptor, kCTFontLanguagesAttribute) as? [String] ?? []
+  }
+
+  static func fileSize(at url: URL) -> Int? {
+    try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize
+  }
+
   static func tag(for identifier: Int) -> String {
     let bytes = (0..<4).reversed().map { UInt8((identifier >> ($0 * 8)) & 0xff) }
     return String(decoding: bytes, as: UTF8.self)

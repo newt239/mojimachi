@@ -4,6 +4,10 @@ import Foundation
 actor FontCatalog {
   private var cachedFamilies: [FontFamily]?
 
+  func invalidate() {
+    cachedFamilies = nil
+  }
+
   func families() throws -> [FontFamily] {
     if let cachedFamilies {
       return cachedFamilies
@@ -57,7 +61,10 @@ extension FontCatalog {
           weight: traits?[kCTFontWeightTrait as String] as? Double ?? 0,
           isItalic: symbolicTraits & CTFontSymbolicTraits.traitItalic.rawValue != 0,
           isMonospaced: symbolicTraits & CTFontSymbolicTraits.traitMonoSpace.rawValue != 0,
-          fileURL: attribute(descriptor, kCTFontURLAttribute) as? URL
+          fileURL: attribute(descriptor, kCTFontURLAttribute) as? URL,
+          format: FontFormat(rawValue: attribute(descriptor, kCTFontFormatAttribute) as? Int ?? 0),
+          location: FontLocation(
+            priority: attribute(descriptor, kCTFontPriorityAttribute) as? Int ?? 0)
         )
       )
 
@@ -91,11 +98,16 @@ extension FontCatalog {
     return japaneseProbes.contains { characterSet.contains($0) }
   }
 
-  private static func deduplicated(_ styles: [FontStyle]) -> [FontStyle] {
+  static func deduplicated(_ styles: [FontStyle]) -> [FontStyle] {
     var seen: Set<String> = []
     return
       styles
+      .sorted { resolutionOrder($0) < resolutionOrder($1) }
       .filter { seen.insert($0.postScriptName).inserted }
       .sorted { $0.postScriptName.localizedStandardCompare($1.postScriptName) == .orderedAscending }
+  }
+
+  private static func resolutionOrder(_ style: FontStyle) -> (Int, String) {
+    (-style.location.priority, style.fileURL?.path(percentEncoded: false) ?? "")
   }
 }

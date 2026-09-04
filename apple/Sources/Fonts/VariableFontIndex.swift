@@ -7,6 +7,12 @@ final class VariableFontIndex: @unchecked Sendable {
   private let lock = NSLock()
   private var descriptors: [String: CTFontDescriptor]?
 
+  func invalidate() {
+    lock.lock()
+    defer { lock.unlock() }
+    descriptors = nil
+  }
+
   func descriptor(forPostScriptName postScriptName: String) -> CTFontDescriptor? {
     lock.lock()
     defer { lock.unlock() }

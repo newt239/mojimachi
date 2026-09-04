@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 
 @testable import Mojimachi
@@ -82,6 +83,36 @@ struct FontCatalogTests {
     #expect(!japanese.isEmpty)
     #expect(japanese.count < all.count)
     #expect(japanese.allSatisfy { $0.supportsJapanese })
+  }
+
+  @Test("重複した PostScript 名の解決結果が毎回同じになる")
+  func resolvesDuplicatesDeterministically() async throws {
+    let first = try FontCatalog.enumerateFamilies()
+    let second = try FontCatalog.enumerateFamilies()
+
+    #expect(first.map(\.name) == second.map(\.name))
+    #expect(first.flatMap(\.styles) == second.flatMap(\.styles))
+  }
+
+  @Test("重複した PostScript 名は優先度の高いファイルを採用する")
+  func prefersHigherPriorityFile() throws {
+    let styles = [
+      FontStyle(
+        postScriptName: "Sample-Regular", styleName: "Regular", weight: 0, isItalic: false,
+        isMonospaced: false, fileURL: URL(filePath: "/System/Library/Fonts/Sample.ttf"),
+        location: .system),
+      FontStyle(
+        postScriptName: "Sample-Regular", styleName: "Regular", weight: 0, isItalic: false,
+        isMonospaced: false, fileURL: URL(filePath: "/Users/me/Library/Fonts/Sample.ttf"),
+        location: .user),
+    ]
+
+    let resolved = FontCatalog.deduplicated(styles)
+    let reversed = FontCatalog.deduplicated(styles.reversed())
+
+    #expect(resolved.count == 1)
+    #expect(resolved.first?.location == .user)
+    #expect(resolved == reversed)
   }
 
   @Test("2 回目の取得が同じ結果を返す")
