@@ -27,6 +27,7 @@ final class FontDetailModel {
   private let glyphCatalog = GlyphCatalog()
   private let defaults: UserDefaults
   private var glyphTask: Task<Void, Never>?
+  private var coverageTask: Task<Void, Never>?
 
   private(set) var nameRecords: [FontNameRecord] = []
   private(set) var totalGlyphCount = 0
@@ -34,6 +35,8 @@ final class FontDetailModel {
   private(set) var fileSize: Int?
   private(set) var axes: [FontVariationAxis] = []
   private(set) var blocks: [UnicodeBlockGlyphs] = []
+  private(set) var coverages: [FontCharacterSetCoverage] = []
+  private(set) var isLoadingCoverage = false
   private(set) var isLoadingGlyphs = false
 
   var axisValues: [Int: Double] = [:]
@@ -133,6 +136,10 @@ final class FontDetailModel {
     loadStyle()
   }
 
+  var hasJapaneseCoverage: Bool {
+    coverages.contains { $0.coveredCount > 0 }
+  }
+
   var usesCustomAxisValues: Bool {
     axes.contains { axisValues[$0.identifier] != $0.defaultValue }
   }
@@ -176,6 +183,8 @@ final class FontDetailModel {
     copiedGlyph = nil
     blocks = []
     isLoadingGlyphs = true
+    coverages = []
+    isLoadingCoverage = true
 
     glyphTask?.cancel()
     glyphTask = Task { [weak self, glyphCatalog] in
@@ -183,6 +192,19 @@ final class FontDetailModel {
       guard !Task.isCancelled else { return }
       self?.apply(loaded)
     }
+
+    coverageTask?.cancel()
+    coverageTask = Task { [weak self, glyphCatalog] in
+      let loaded = await glyphCatalog.coverage(
+        forPostScriptName: postScriptName, in: JapaneseCharacterSetCatalog.all)
+      guard !Task.isCancelled else { return }
+      self?.apply(loaded)
+    }
+  }
+
+  private func apply(_ loaded: [FontCharacterSetCoverage]) {
+    coverages = loaded
+    isLoadingCoverage = false
   }
 
   private func apply(_ loaded: [UnicodeBlockGlyphs]) {
