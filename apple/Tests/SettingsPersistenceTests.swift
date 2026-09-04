@@ -27,6 +27,31 @@ struct SettingsPersistenceTests {
     #expect(model.favorites.isEmpty)
     #expect(!model.isItalic)
     #expect(!model.japaneseOnly)
+    #expect(model.coverageQuery.isEmpty)
+    #expect(!model.showsSystemDuplicates)
+  }
+
+  @Test("絞り込みの入力が再起動後も保持される")
+  func restoresCoverageQuery() throws {
+    let defaults = try makeDefaults("coverage-query")
+
+    let first = FontBrowserModel(defaults: defaults)
+    first.coverageQuery = "森鷗外"
+
+    let second = FontBrowserModel(defaults: defaults)
+
+    #expect(second.coverageQuery == "森鷗外")
+    #expect(second.coverageScalars.count == 3)
+  }
+
+  @Test("絞り込みを空にすると解除される")
+  func clearsCoverageFilter() throws {
+    let model = FontBrowserModel(defaults: try makeDefaults("coverage-clear"))
+
+    model.coverageQuery = "森"
+    model.coverageQuery = ""
+
+    #expect(model.coverageScalars.isEmpty)
   }
 
   @Test("表示設定が再起動後も保持される")

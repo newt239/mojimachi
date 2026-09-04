@@ -15,6 +15,21 @@ struct SidebarView: View {
 
       Section("フィルタ") {
         Toggle("日本語のみ", isOn: $model.japaneseOnly)
+
+        TextField("この文字が使えるフォント", text: $model.coverageQuery)
+          .textFieldStyle(.roundedBorder)
+
+        if !model.coverageScalars.isEmpty {
+          Text("\(model.coverageScalars.count) 字で絞り込み中")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+
+          if !model.unsupportedScalars.isEmpty {
+            Text("どのフォントにもない: \(model.unsupportedScalars.map(String.init).joined())")
+              .font(.caption)
+              .foregroundStyle(.orange)
+          }
+        }
       }
 
       if !model.favoriteFamilies.isEmpty {

@@ -33,6 +33,7 @@ final class FontBrowserModel {
     static let japaneseOnly = "japaneseOnly"
     static let orientation = "orientation"
     static let showsSystemDuplicates = "showsSystemDuplicates"
+    static let coverageQuery = "coverageQuery"
   }
 
   private let catalog = FontCatalog()
@@ -84,6 +85,15 @@ final class FontBrowserModel {
     }
   }
 
+  var coverageQuery: String {
+    didSet {
+      defaults.set(coverageQuery, forKey: Key.coverageQuery)
+      coverageScalars = Self.scalars(in: coverageQuery)
+    }
+  }
+
+  private(set) var coverageScalars: [Unicode.Scalar] = []
+
   var showsSystemDuplicates: Bool {
     didSet { defaults.set(showsSystemDuplicates, forKey: Key.showsSystemDuplicates) }
   }
@@ -106,15 +116,34 @@ final class FontBrowserModel {
     isItalic = defaults.bool(forKey: Key.isItalic)
     japaneseOnly = defaults.bool(forKey: Key.japaneseOnly)
     showsSystemDuplicates = defaults.bool(forKey: Key.showsSystemDuplicates)
+    coverageQuery = defaults.string(forKey: Key.coverageQuery) ?? ""
     orientation =
       PreviewOrientation(rawValue: defaults.string(forKey: Key.orientation) ?? "") ?? .horizontal
+    coverageScalars = Self.scalars(in: coverageQuery)
+  }
+
+  nonisolated static func scalars(in text: String) -> [Unicode.Scalar] {
+    var seen: Set<Unicode.Scalar> = []
+    return
+      text.unicodeScalars
+      .filter { !$0.properties.isWhitespace && seen.insert($0).inserted }
+      .sorted { $0.value < $1.value }
   }
 
   var visibleFamilies: [FontFamily] {
+    let base: [FontFamily]
     switch scope {
-    case .all: families
-    case .favorites: families.filter { favorites.contains($0.name) }
-    case .duplicates: []
+    case .all: base = families
+    case .favorites: base = families.filter { favorites.contains($0.name) }
+    case .duplicates: return []
+    }
+    guard !coverageScalars.isEmpty else { return base }
+    return base.filter { $0.covers(coverageScalars) }
+  }
+
+  var unsupportedScalars: [Unicode.Scalar] {
+    coverageScalars.filter { scalar in
+      !families.contains { $0.characterSet?.contains(scalar) == true }
     }
   }
 
@@ -130,7 +159,7 @@ final class FontBrowserModel {
     visibleFamilies.filter { selection.contains($0.id) }
   }
 
-  static func retained(
+  nonisolated static func retained(
     _ selection: Set<FontFamily.ID>,
     in families: [FontFamily]
   ) -> Set<FontFamily.ID> {
