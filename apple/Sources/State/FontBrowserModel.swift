@@ -13,6 +13,7 @@ final class FontBrowserModel {
   enum Scope: Hashable {
     case all
     case favorites
+    case duplicates
   }
 
   static let presetTexts = [
@@ -31,6 +32,7 @@ final class FontBrowserModel {
     static let isItalic = "isItalic"
     static let japaneseOnly = "japaneseOnly"
     static let orientation = "orientation"
+    static let showsSystemDuplicates = "showsSystemDuplicates"
   }
 
   private let catalog = FontCatalog()
@@ -40,6 +42,7 @@ final class FontBrowserModel {
   private var monitorTask: Task<Void, Never>?
 
   private(set) var families: [FontFamily] = []
+  private(set) var duplicates: [FontDuplicate] = []
   private(set) var loadState: LoadState = .loading
 
   var scope: Scope = .all
@@ -81,6 +84,10 @@ final class FontBrowserModel {
     }
   }
 
+  var showsSystemDuplicates: Bool {
+    didSet { defaults.set(showsSystemDuplicates, forKey: Key.showsSystemDuplicates) }
+  }
+
   var japaneseOnly: Bool {
     didSet {
       defaults.set(japaneseOnly, forKey: Key.japaneseOnly)
@@ -98,6 +105,7 @@ final class FontBrowserModel {
     weight = PreviewWeight(rawValue: defaults.double(forKey: Key.weight)) ?? .regular
     isItalic = defaults.bool(forKey: Key.isItalic)
     japaneseOnly = defaults.bool(forKey: Key.japaneseOnly)
+    showsSystemDuplicates = defaults.bool(forKey: Key.showsSystemDuplicates)
     orientation =
       PreviewOrientation(rawValue: defaults.string(forKey: Key.orientation) ?? "") ?? .horizontal
   }
@@ -106,7 +114,12 @@ final class FontBrowserModel {
     switch scope {
     case .all: families
     case .favorites: families.filter { favorites.contains($0.name) }
+    case .duplicates: []
     }
+  }
+
+  var visibleDuplicates: [FontDuplicate] {
+    showsSystemDuplicates ? duplicates : duplicates.filter { !$0.isSystemOnly }
   }
 
   var favoriteFamilies: [FontFamily] {
@@ -173,6 +186,10 @@ final class FontBrowserModel {
     NSPasteboard.general.setString(names.joined(separator: "\n"), forType: .string)
   }
 
+  func revealInFinder(_ url: URL) {
+    NSWorkspace.shared.activateFileViewerSelecting([url])
+  }
+
   func revealInFinder(_ families: [FontFamily]) {
     let urls = families.compactMap { style(for: $0)?.fileURL }
     guard !urls.isEmpty else { return }
@@ -197,6 +214,7 @@ final class FontBrowserModel {
   private func reload() async {
     do {
       families = try await catalog.families(matching: searchText, japaneseOnly: japaneseOnly)
+      duplicates = try await catalog.duplicates()
       selection = Self.retained(selection, in: families)
       loadState = .loaded
     } catch {

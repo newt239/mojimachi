@@ -6,10 +6,14 @@ struct FontListView: View {
 
   var body: some View {
     content
-      .safeAreaInset(edge: .bottom, spacing: 0) { PreviewBar(model: model) }
+      .safeAreaInset(edge: .bottom, spacing: 0) {
+        if model.scope != .duplicates {
+          PreviewBar(model: model)
+        }
+      }
       .searchable(text: $model.searchText, prompt: "フォントを検索")
       .toolbar { PreviewControls(model: model) }
-      .navigationTitle(model.scope == .favorites ? "お気に入り" : "すべてのフォント")
+      .navigationTitle(title)
       .navigationSubtitle(subtitle)
   }
 
@@ -26,7 +30,9 @@ struct FontListView: View {
         Text(message)
       }
     case .loaded:
-      if model.visibleFamilies.isEmpty {
+      if model.scope == .duplicates {
+        FontDuplicateListView(model: model)
+      } else if model.visibleFamilies.isEmpty {
         ContentUnavailableView {
           Label("該当するフォントがありません", systemImage: "magnifyingglass")
         } description: {
@@ -40,7 +46,18 @@ struct FontListView: View {
     }
   }
 
+  private var title: String {
+    switch model.scope {
+    case .all: "すべてのフォント"
+    case .favorites: "お気に入り"
+    case .duplicates: "重複"
+    }
+  }
+
   private var subtitle: String {
+    guard model.scope != .duplicates else {
+      return "\(model.visibleDuplicates.count) 件の重複"
+    }
     let families = "\(model.visibleFamilies.count) ファミリー"
     guard !model.selection.isEmpty else { return families }
     return "\(families)・\(model.selection.count) 件選択"

@@ -12,6 +12,10 @@ struct FontStyle: Hashable, Sendable, Identifiable {
 
   var id: String { postScriptName }
 
+  var isSystemFont: Bool {
+    fileURL?.path(percentEncoded: false).hasPrefix("/System/") == true
+  }
+
   init(
     postScriptName: String,
     styleName: String,

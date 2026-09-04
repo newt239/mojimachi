@@ -9,6 +9,8 @@ struct SidebarView: View {
         scopeRow(.all, title: "すべてのフォント", symbol: "textformat", count: model.families.count)
         scopeRow(
           .favorites, title: "お気に入り", symbol: "star", count: model.favoriteFamilies.count)
+        scopeRow(
+          .duplicates, title: "重複", symbol: "doc.on.doc", count: model.visibleDuplicates.count)
       }
 
       Section("フィルタ") {
