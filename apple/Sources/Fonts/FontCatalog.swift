@@ -57,7 +57,10 @@ extension FontCatalog {
           weight: traits?[kCTFontWeightTrait as String] as? Double ?? 0,
           isItalic: symbolicTraits & CTFontSymbolicTraits.traitItalic.rawValue != 0,
           isMonospaced: symbolicTraits & CTFontSymbolicTraits.traitMonoSpace.rawValue != 0,
-          fileURL: attribute(descriptor, kCTFontURLAttribute) as? URL
+          fileURL: attribute(descriptor, kCTFontURLAttribute) as? URL,
+          format: FontFormat(rawValue: attribute(descriptor, kCTFontFormatAttribute) as? Int ?? 0),
+          location: FontLocation(
+            priority: attribute(descriptor, kCTFontPriorityAttribute) as? Int ?? 0)
         )
       )
 
