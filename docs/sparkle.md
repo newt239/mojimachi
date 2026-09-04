@@ -4,9 +4,11 @@
 
 ## 現状
 
-**まだ有効になっていません。** `apple/project.yml` の `SUPublicEDKey` が空のあいだ、アプリは「アップデートを確認…」メニューを表示せず、Sparkle の updater も起動しません。リリースワークフローも `SPARKLE_PRIVATE_KEY` が未設定なら appcast を生成しません。
+**有効です。** 公開鍵は `apple/project.yml` の `SUPublicEDKey` に、秘密鍵は GitHub Secrets の `SPARKLE_PRIVATE_KEY` に登録済みです。タグを push すると appcast が生成され、アプリの「アップデートを確認…」メニューから更新できます。
 
-有効にするには以下の 2 つの作業が必要です。どちらも鍵を扱うため、リポジトリの管理者が行ってください。
+`SUPublicEDKey` を空にすると自動アップデートは無効に戻ります。このときメニュー項目は表示されず、Sparkle の updater も起動しません。リリースワークフローも `SPARKLE_PRIVATE_KEY` が未設定なら appcast を生成せず、`.dmg` だけを添付します。
+
+以下は鍵を作り直すときの手順です。**鍵を差し替えると、古い鍵で署名した更新は検証できなくなります。**
 
 ## 1. 鍵を生成する
 
