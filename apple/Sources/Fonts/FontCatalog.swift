@@ -4,6 +4,10 @@ import Foundation
 actor FontCatalog {
   private var cachedFamilies: [FontFamily]?
 
+  func invalidate() {
+    cachedFamilies = nil
+  }
+
   func families() throws -> [FontFamily] {
     if let cachedFamilies {
       return cachedFamilies

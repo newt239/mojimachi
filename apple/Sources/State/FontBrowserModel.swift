@@ -33,8 +33,10 @@ final class FontBrowserModel {
   }
 
   private let catalog = FontCatalog()
+  private let monitor: FontChangeMonitor
   private let defaults: UserDefaults
   private var reloadTask: Task<Void, Never>?
+  private var monitorTask: Task<Void, Never>?
 
   private(set) var families: [FontFamily] = []
   private(set) var loadState: LoadState = .loading
@@ -80,8 +82,9 @@ final class FontBrowserModel {
     }
   }
 
-  init(defaults: UserDefaults = .standard) {
+  init(defaults: UserDefaults = .standard, monitor: FontChangeMonitor = FontChangeMonitor()) {
     self.defaults = defaults
+    self.monitor = monitor
     favorites = Set(defaults.stringArray(forKey: Key.favorites) ?? [])
     previewText = defaults.string(forKey: Key.previewText) ?? Self.presetTexts[0]
     fontSize = defaults.object(forKey: Key.fontSize) as? Double ?? 28
@@ -105,6 +108,15 @@ final class FontBrowserModel {
 
   func load() {
     scheduleReload(debounce: .zero)
+    guard monitorTask == nil else { return }
+    monitorTask = Task { [weak self, monitor] in
+      for await _ in monitor.changes {
+        guard let self else { return }
+        await catalog.invalidate()
+        VariableFontIndex.shared.invalidate()
+        scheduleReload(debounce: .milliseconds(300))
+      }
+    }
   }
 
   func isFavorite(_ family: FontFamily) -> Bool {
