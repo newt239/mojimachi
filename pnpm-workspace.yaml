@@ -1,7 +1,0 @@
-packages:
-  - "./"
-allowBuilds:
-  esbuild: true
-  lefthook: true
-saveExact: true
-minimumReleaseAge: 10080
