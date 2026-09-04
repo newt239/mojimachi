@@ -53,7 +53,8 @@ extension FontCatalog {
     }
 
     var stylesByFamily: [String: [FontStyle]] = [:]
-    var japaneseByFamily: [String: Bool] = [:]
+    var characterSetByFamily: [String: CharacterSet] = [:]
+    var scannedFamilies: Set<String> = []
     var candidates: [FontDuplicateCandidate] = []
 
     for descriptor in descriptors {
@@ -85,19 +86,21 @@ extension FontCatalog {
 
       stylesByFamily[familyName, default: []].append(style)
 
-      if japaneseByFamily[familyName] == nil {
-        japaneseByFamily[familyName] = supportsJapanese(descriptor)
+      if scannedFamilies.insert(familyName).inserted {
+        characterSetByFamily[familyName] = characterSet(descriptor)
       }
     }
 
     let families =
       stylesByFamily
-      .map { familyName, styles in
-        FontFamily(
+      .map { familyName, styles -> FontFamily in
+        let characterSet = characterSetByFamily[familyName]
+        return FontFamily(
           name: familyName,
           styles: deduplicated(styles),
-          supportsJapanese: japaneseByFamily[familyName] ?? false,
-          searchKey: familyName.lowercased()
+          supportsJapanese: characterSet.map { supportsJapanese($0) } ?? false,
+          searchKey: familyName.lowercased(),
+          characterSet: characterSet
         )
       }
       .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
@@ -138,12 +141,12 @@ extension FontCatalog {
     CTFontDescriptorCopyAttribute(descriptor, key)
   }
 
-  private static func supportsJapanese(_ descriptor: CTFontDescriptor) -> Bool {
-    guard let characterSet = attribute(descriptor, kCTFontCharacterSetAttribute) as? CharacterSet
-    else {
-      return false
-    }
-    return japaneseProbes.contains { characterSet.contains($0) }
+  private static func characterSet(_ descriptor: CTFontDescriptor) -> CharacterSet? {
+    attribute(descriptor, kCTFontCharacterSetAttribute) as? CharacterSet
+  }
+
+  private static func supportsJapanese(_ characterSet: CharacterSet) -> Bool {
+    japaneseProbes.contains { characterSet.contains($0) }
   }
 
   static func deduplicated(_ styles: [FontStyle]) -> [FontStyle] {

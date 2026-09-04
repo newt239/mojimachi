@@ -64,7 +64,10 @@ struct FontListView: View {
   }
 
   private var emptyDescription: String {
-    model.scope == .favorites
+    if !model.coverageScalars.isEmpty {
+      return "「\(model.coverageQuery)」をすべて収録するフォントが見つかりませんでした。"
+    }
+    return model.scope == .favorites
       ? "行の左にある星を押すとお気に入りに追加できます。"
       : "検索条件を変えてみてください。"
   }
