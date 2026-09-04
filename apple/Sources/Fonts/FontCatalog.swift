@@ -94,11 +94,16 @@ extension FontCatalog {
     return japaneseProbes.contains { characterSet.contains($0) }
   }
 
-  private static func deduplicated(_ styles: [FontStyle]) -> [FontStyle] {
+  static func deduplicated(_ styles: [FontStyle]) -> [FontStyle] {
     var seen: Set<String> = []
     return
       styles
+      .sorted { resolutionOrder($0) < resolutionOrder($1) }
       .filter { seen.insert($0.postScriptName).inserted }
       .sorted { $0.postScriptName.localizedStandardCompare($1.postScriptName) == .orderedAscending }
+  }
+
+  private static func resolutionOrder(_ style: FontStyle) -> (Int, String) {
+    (-style.location.priority, style.fileURL?.path(percentEncoded: false) ?? "")
   }
 }
