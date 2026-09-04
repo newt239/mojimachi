@@ -39,9 +39,7 @@ targets:
         NSHumanReadableCopyright: Copyright © newt239
         SUFeedURL: https://github.com/newt239/mojimachi/releases/latest/download/appcast.xml
         SUEnableAutomaticChecks: true
-        # Sparkle の EdDSA 公開鍵。空のあいだは自動アップデートを無効にする
-        # 生成手順は docs/sparkle.md を参照
-        SUPublicEDKey: ""
+        SUPublicEDKey: "rY9LEr5Aqz3pZd/D8/OPokRaBRT/pmEsE67A702ofN4="
     settings:
       base:
         PRODUCT_NAME: mojimachi
