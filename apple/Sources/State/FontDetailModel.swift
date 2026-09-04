@@ -35,11 +35,13 @@ final class FontDetailModel {
   private(set) var fileSize: Int?
   private(set) var axes: [FontVariationAxis] = []
   private(set) var blocks: [UnicodeBlockGlyphs] = []
+  private(set) var features: [FontFeature] = []
   private(set) var coverages: [FontCharacterSetCoverage] = []
   private(set) var isLoadingCoverage = false
   private(set) var isLoadingGlyphs = false
 
   var axisValues: [Int: Double] = [:]
+  var featureSelections: [Int: Int] = [:]
   var selectedBlockID: UnicodeBlock.ID?
   var glyphSearchText = ""
   var copiedGlyph: FontGlyph?
@@ -136,6 +138,10 @@ final class FontDetailModel {
     loadStyle()
   }
 
+  var usesCustomFeatures: Bool {
+    features.contains { featureSelections[$0.identifier] != $0.defaultSelector?.identifier }
+  }
+
   var hasJapaneseCoverage: Bool {
     coverages.contains { $0.coveredCount > 0 }
   }
@@ -149,7 +155,8 @@ final class FontDetailModel {
       let ctFont = FontDetails.font(
         postScriptName: selectedStyle.postScriptName,
         size: size,
-        variations: usesCustomAxisValues ? axisValues : [:]
+        variations: usesCustomAxisValues ? axisValues : [:],
+        features: usesCustomFeatures ? featureSelections : [:]
       )
     else {
       return .system(size: size)
@@ -172,6 +179,14 @@ final class FontDetailModel {
     axisValues = Dictionary(uniqueKeysWithValues: axes.map { ($0.identifier, $0.defaultValue) })
   }
 
+  func resetFeatures() {
+    featureSelections = Dictionary(
+      uniqueKeysWithValues: features.compactMap { feature in
+        feature.defaultSelector.map { (feature.identifier, $0.identifier) }
+      }
+    )
+  }
+
   private func loadStyle() {
     let postScriptName = selectedStyle.postScriptName
     nameRecords = FontDetails.nameRecords(forPostScriptName: postScriptName)
@@ -179,7 +194,9 @@ final class FontDetailModel {
     languages = FontDetails.languages(forPostScriptName: postScriptName)
     fileSize = selectedStyle.fileURL.flatMap { FontDetails.fileSize(at: $0) }
     axes = FontDetails.variationAxes(forPostScriptName: postScriptName)
+    features = FontDetails.features(forPostScriptName: postScriptName)
     resetAxes()
+    resetFeatures()
     copiedGlyph = nil
     blocks = []
     isLoadingGlyphs = true

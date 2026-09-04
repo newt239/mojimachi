@@ -62,6 +62,50 @@ enum FontDetails {
     }
   }
 
+  static func features(forPostScriptName postScriptName: String) -> [FontFeature] {
+    guard let font = makeFont(postScriptName: postScriptName),
+      let features = CTFontCopyFeatures(font) as? [[String: Any]]
+    else {
+      return []
+    }
+
+    return features.compactMap { feature in
+      guard let identifier = feature[kCTFontFeatureTypeIdentifierKey as String] as? Int,
+        let rawSelectors = feature[kCTFontFeatureTypeSelectorsKey as String] as? [[String: Any]]
+      else {
+        return nil
+      }
+
+      let selectors = rawSelectors.compactMap { selector -> FontFeatureSelector? in
+        guard
+          let selectorID = selector[kCTFontFeatureSelectorIdentifierKey as String] as? Int,
+          let name = selector[kCTFontFeatureSelectorNameKey as String] as? String
+        else {
+          return nil
+        }
+        return FontFeatureSelector(
+          identifier: selectorID,
+          name: name,
+          isDefault: selector[kCTFontFeatureSelectorDefaultKey as String] as? Bool ?? false
+        )
+      }
+
+      guard identifier >= 0, selectors.count > 1 else {
+        return nil
+      }
+
+      return FontFeature(
+        identifier: identifier,
+        // 機能の識別子は 4 文字タグではなく AAT の連番なのでタグに変換しない
+        name: feature[kCTFontFeatureTypeNameKey as String] as? String ?? "機能 \(identifier)",
+        isExclusive: feature[kCTFontFeatureTypeExclusiveKey as String] as? Bool ?? false,
+        selectors: selectors,
+        sampleText: feature[kCTFontFeatureSampleTextKey as String] as? String,
+        tooltip: feature[kCTFontFeatureTooltipTextKey as String] as? String
+      )
+    }
+  }
+
   static func glyphCount(forPostScriptName postScriptName: String) -> Int {
     guard let font = makeFont(postScriptName: postScriptName) else {
       return 0
@@ -89,9 +133,10 @@ enum FontDetails {
   static func font(
     postScriptName: String,
     size: CGFloat,
-    variations: [Int: Double] = [:]
+    variations: [Int: Double] = [:],
+    features: [Int: Int] = [:]
   ) -> CTFont? {
-    guard !variations.isEmpty else {
+    guard !variations.isEmpty || !features.isEmpty else {
       return registeredFont(postScriptName: postScriptName, size: size)
     }
     guard
@@ -100,13 +145,26 @@ enum FontDetails {
     else {
       return nil
     }
-    let settings = Dictionary(
-      uniqueKeysWithValues: variations.map { (NSNumber(value: $0.key), $0.value) }
-    )
-    let varied = CTFontDescriptorCreateWithAttributes(
-      [kCTFontVariationAttribute: settings] as CFDictionary
-    )
-    return CTFontCreateCopyWithAttributes(font, size, nil, varied)
+
+    var attributes: [CFString: Any] = [:]
+
+    if !variations.isEmpty {
+      attributes[kCTFontVariationAttribute] = Dictionary(
+        uniqueKeysWithValues: variations.map { (NSNumber(value: $0.key), $0.value) }
+      )
+    }
+
+    if !features.isEmpty {
+      attributes[kCTFontFeatureSettingsAttribute] = features.map {
+        [
+          kCTFontFeatureTypeIdentifierKey as String: $0.key,
+          kCTFontFeatureSelectorIdentifierKey as String: $0.value,
+        ]
+      }
+    }
+
+    let descriptor = CTFontDescriptorCreateWithAttributes(attributes as CFDictionary)
+    return CTFontCreateCopyWithAttributes(font, size, nil, descriptor)
   }
 
   private static func registeredFont(postScriptName: String, size: CGFloat) -> CTFont? {

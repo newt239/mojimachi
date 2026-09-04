@@ -16,9 +16,16 @@ struct FontDetailView: View {
     VStack(spacing: 0) {
       header
       Divider()
-      if !model.axes.isEmpty, model.tab != .info {
-        VariationAxesView(model: model)
-          .padding(12)
+      if model.tab != .info, !model.axes.isEmpty || !model.features.isEmpty {
+        VStack(spacing: 8) {
+          if !model.axes.isEmpty {
+            VariationAxesView(model: model)
+          }
+          if !model.features.isEmpty {
+            FontFeaturesView(model: model)
+          }
+        }
+        .padding(12)
         Divider()
       }
       content
