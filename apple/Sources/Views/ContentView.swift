@@ -21,6 +21,27 @@ struct ContentView: View {
     .background(
       WindowFrameRestorer(key: "windowFrame", defaultSize: NSSize(width: 1200, height: 800))
     )
+    .sheet(
+      isPresented: Binding(
+        get: { model.exportPlan != nil },
+        set: { if !$0 { model.cancelExport() } }
+      )
+    ) {
+      if let plan = model.exportPlan {
+        FontExportSheet(model: model, plan: plan)
+      }
+    }
+    .alert(
+      "フォントの書き出し",
+      isPresented: Binding(
+        get: { model.exportMessage != nil },
+        set: { if !$0 { model.exportMessage = nil } }
+      )
+    ) {
+      Button("OK") { model.exportMessage = nil }
+    } message: {
+      Text(model.exportMessage ?? "")
+    }
     .task { model.load() }
   }
 }

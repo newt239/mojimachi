@@ -14,6 +14,12 @@ struct FontSelectionMenu: View {
 
       Divider()
 
+      Button("書き出す…") {
+        model.prepareExport(families)
+      }
+
+      Divider()
+
       Button("PostScript 名をコピー") {
         model.copyPostScriptNames(families)
       }
