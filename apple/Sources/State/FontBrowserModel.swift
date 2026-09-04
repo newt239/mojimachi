@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 
 @MainActor
@@ -43,6 +44,7 @@ final class FontBrowserModel {
 
   var scope: Scope = .all
   var scrollTarget: FontFamily.ID?
+  var selection: Set<FontFamily.ID> = []
   var searchText = "" {
     didSet {
       guard searchText != oldValue else { return }
@@ -71,7 +73,12 @@ final class FontBrowserModel {
   }
 
   var orientation: PreviewOrientation {
-    didSet { defaults.set(orientation.rawValue, forKey: Key.orientation) }
+    didSet {
+      defaults.set(orientation.rawValue, forKey: Key.orientation)
+      if orientation == .vertical {
+        selection.removeAll()
+      }
+    }
   }
 
   var japaneseOnly: Bool {
@@ -106,6 +113,17 @@ final class FontBrowserModel {
     families.filter { favorites.contains($0.name) }
   }
 
+  var selectedFamilies: [FontFamily] {
+    visibleFamilies.filter { selection.contains($0.id) }
+  }
+
+  static func retained(
+    _ selection: Set<FontFamily.ID>,
+    in families: [FontFamily]
+  ) -> Set<FontFamily.ID> {
+    selection.intersection(families.map(\.id))
+  }
+
   func load() {
     scheduleReload(debounce: .zero)
     guard monitorTask == nil else { return }
@@ -135,6 +153,36 @@ final class FontBrowserModel {
     family.style(nearestWeight: weight.rawValue, italic: isItalic)
   }
 
+  func toggleFavorites(_ families: [FontFamily]) {
+    let names = families.map(\.name)
+    if names.allSatisfy(favorites.contains) {
+      favorites.subtract(names)
+    } else {
+      favorites.formUnion(names)
+    }
+  }
+
+  func areAllFavorites(_ families: [FontFamily]) -> Bool {
+    !families.isEmpty && families.allSatisfy { favorites.contains($0.name) }
+  }
+
+  func copyPostScriptNames(_ families: [FontFamily]) {
+    let names = families.compactMap { style(for: $0)?.postScriptName }
+    guard !names.isEmpty else { return }
+    NSPasteboard.general.clearContents()
+    NSPasteboard.general.setString(names.joined(separator: "\n"), forType: .string)
+  }
+
+  func revealInFinder(_ families: [FontFamily]) {
+    let urls = families.compactMap { style(for: $0)?.fileURL }
+    guard !urls.isEmpty else { return }
+    NSWorkspace.shared.activateFileViewerSelecting(urls)
+  }
+
+  func families(for ids: Set<FontFamily.ID>) -> [FontFamily] {
+    visibleFamilies.filter { ids.contains($0.id) }
+  }
+
   private func scheduleReload(debounce: Duration) {
     reloadTask?.cancel()
     reloadTask = Task { [weak self] in
@@ -149,6 +197,7 @@ final class FontBrowserModel {
   private func reload() async {
     do {
       families = try await catalog.families(matching: searchText, japaneseOnly: japaneseOnly)
+      selection = Self.retained(selection, in: families)
       loadState = .loaded
     } catch {
       loadState = .failed(error.localizedDescription)

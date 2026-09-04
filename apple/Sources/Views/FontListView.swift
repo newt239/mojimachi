@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FontListView: View {
   @Bindable var model: FontBrowserModel
+  @Binding var path: NavigationPath
 
   var body: some View {
     content
@@ -9,7 +10,7 @@ struct FontListView: View {
       .searchable(text: $model.searchText, prompt: "フォントを検索")
       .toolbar { PreviewControls(model: model) }
       .navigationTitle(model.scope == .favorites ? "お気に入り" : "すべてのフォント")
-      .navigationSubtitle("\(model.visibleFamilies.count) ファミリー")
+      .navigationSubtitle(subtitle)
   }
 
   @ViewBuilder
@@ -39,6 +40,12 @@ struct FontListView: View {
     }
   }
 
+  private var subtitle: String {
+    let families = "\(model.visibleFamilies.count) ファミリー"
+    guard !model.selection.isEmpty else { return families }
+    return "\(families)・\(model.selection.count) 件選択"
+  }
+
   private var emptyDescription: String {
     model.scope == .favorites
       ? "行の左にある星を押すとお気に入りに追加できます。"
@@ -47,9 +54,19 @@ struct FontListView: View {
 
   private var horizontalList: some View {
     ScrollViewReader { proxy in
-      List(model.visibleFamilies) { family in
+      List(model.visibleFamilies, selection: $model.selection) { family in
         FontRowView(model: model, family: family)
           .id(family.id)
+      }
+      .contextMenu(forSelectionType: FontFamily.ID.self) { ids in
+        FontSelectionMenu(model: model, ids: ids)
+      } primaryAction: { ids in
+        guard ids.count == 1, let id = ids.first,
+          let family = model.visibleFamilies.first(where: { $0.id == id })
+        else {
+          return
+        }
+        path.append(family)
       }
       .onChange(of: model.scrollTarget) { _, target in
         guard let target else { return }

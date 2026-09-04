@@ -1,16 +1,17 @@
-import AppKit
 import SwiftUI
 
 struct ContentView: View {
-  @State private var model = FontBrowserModel()
+  let model: FontBrowserModel
+
+  @State private var path = NavigationPath()
 
   var body: some View {
     NavigationSplitView {
       SidebarView(model: model)
         .navigationSplitViewColumnWidth(min: 200, ideal: 240, max: 320)
     } detail: {
-      NavigationStack {
-        FontListView(model: model)
+      NavigationStack(path: $path) {
+        FontListView(model: model, path: $path)
           .navigationDestination(for: FontFamily.self) { family in
             FontDetailView(browser: model, family: family)
           }

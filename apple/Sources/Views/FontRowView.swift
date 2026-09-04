@@ -17,6 +17,7 @@ struct FontRowView: View {
         }
         .buttonStyle(.plain)
         .help(model.isFavorite(family) ? "お気に入りから外す" : "お気に入りに追加")
+        .accessibilityLabel(model.isFavorite(family) ? "お気に入りから外す" : "お気に入りに追加")
 
         Text(family.name)
           .font(.headline)
