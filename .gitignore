@@ -36,3 +36,6 @@ apple/Mojimachi.xcodeproj/
 DerivedData/
 *.xcworkspace/
 xcuserdata/
+
+# XcodeGen が生成する
+apple/Info.plist
