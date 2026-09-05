@@ -152,7 +152,7 @@ final class FontDetailModel {
 
   func font(size: Double) -> Font {
     guard
-      let ctFont = FontDetails.font(
+      let ctFont = PreviewFont.make(
         postScriptName: selectedStyle.postScriptName,
         size: size,
         variations: usesCustomAxisValues ? axisValues : [:],

@@ -38,7 +38,9 @@ enum FontPrintRenderer {
       draw(target.label, font: .systemFont(ofSize: 9), at: CGPoint(x: rect.minX + margin, y: y))
       y += 14
 
-      if let font = NSFont(name: target.postScriptName, size: sampleSize) {
+      if let font = PreviewFont.make(postScriptName: target.postScriptName, size: sampleSize)
+        as NSFont?
+      {
         draw(sampleText, font: font, at: CGPoint(x: rect.minX + margin, y: y), width: width)
       }
       y += catalogRowHeight - 14
@@ -55,7 +57,10 @@ enum FontPrintRenderer {
       target.label, font: .boldSystemFont(ofSize: 11),
       at: CGPoint(x: rect.minX + margin, y: rect.minY + margin))
 
-    guard let font = NSFont(name: target.postScriptName, size: glyphSize) else { return }
+    guard
+      let font = PreviewFont.make(postScriptName: target.postScriptName, size: glyphSize)
+        as NSFont?
+    else { return }
     let cell = FontPrintLayout.cellSize(forGlyphSize: glyphSize)
     let origin = CGPoint(x: rect.minX + margin, y: rect.minY + margin + headerHeight)
 
@@ -89,7 +94,7 @@ enum FontPrintRenderer {
         at: CGPoint(x: rect.minX + margin, y: y))
       y += 10
 
-      if let font = NSFont(name: target.postScriptName, size: size) {
+      if let font = PreviewFont.make(postScriptName: target.postScriptName, size: size) as NSFont? {
         draw(sampleText, font: font, at: CGPoint(x: rect.minX + margin, y: y), width: width)
       }
       y += size * 1.4 + 12

@@ -20,7 +20,7 @@ struct VerticalTextView: NSViewRepresentable {
 
   func updateNSView(_ textView: NSTextView, context: Context) {
     textView.string = text
-    textView.font = NSFont(name: fontName, size: fontSize)
+    textView.font = PreviewFont.make(postScriptName: fontName, size: fontSize) as NSFont?
     textView.textColor = .labelColor
   }
 }
