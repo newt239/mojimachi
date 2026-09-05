@@ -6,11 +6,18 @@ struct FontPreviewText: View {
   let fontSize: Double
   let orientation: PreviewOrientation
 
+  private var font: Font {
+    guard let ctFont = PreviewFont.make(postScriptName: fontName, size: fontSize) else {
+      return .system(size: fontSize)
+    }
+    return Font(ctFont)
+  }
+
   var body: some View {
     switch orientation {
     case .horizontal:
       Text(text)
-        .font(.custom(fontName, fixedSize: fontSize))
+        .font(font)
         .lineLimit(1)
         .truncationMode(.tail)
     case .vertical:

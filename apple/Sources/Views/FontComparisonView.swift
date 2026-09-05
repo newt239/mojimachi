@@ -92,9 +92,12 @@ struct FontComparisonView: View {
       ScrollView([.horizontal, .vertical]) {
         ZStack(alignment: Alignment(horizontal: .leading, vertical: .firstTextBaseline)) {
           ForEach(Array(families.enumerated()), id: \.element.id) { index, family in
-            if let style = model.style(for: family) {
+            if let style = model.style(for: family),
+              let ctFont = PreviewFont.make(
+                postScriptName: style.postScriptName, size: model.fontSize)
+            {
               Text(model.previewText)
-                .font(.custom(style.postScriptName, fixedSize: model.fontSize))
+                .font(Font(ctFont))
                 .lineLimit(1)
                 .fixedSize()
                 .foregroundStyle(Self.tints[index % Self.tints.count])
