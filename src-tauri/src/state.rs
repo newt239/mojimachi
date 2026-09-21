@@ -37,18 +37,46 @@ impl SfntCache {
 pub struct AppState {
     pub catalog: RwLock<Catalog>,
     pub cache_path: PathBuf,
+    pub search_paths_file: PathBuf,
     pub extra_roots: RwLock<Vec<PathBuf>>,
     sfnt_cache: Mutex<SfntCache>,
 }
 
 impl AppState {
-    pub fn new(cache_path: PathBuf) -> Self {
+    pub fn new(cache_path: PathBuf, search_paths_file: PathBuf) -> Self {
+        let saved = std::fs::read_to_string(&search_paths_file)
+            .ok()
+            .and_then(|text| serde_json::from_str::<Vec<PathBuf>>(&text).ok())
+            .unwrap_or_default();
+
         Self {
             catalog: RwLock::new(Catalog::default()),
             cache_path,
-            extra_roots: RwLock::new(Vec::new()),
+            search_paths_file,
+            extra_roots: RwLock::new(saved),
             sfnt_cache: Mutex::new(SfntCache::default()),
         }
+    }
+
+    pub fn search_paths(&self) -> Vec<PathBuf> {
+        self.extra_roots
+            .read()
+            .map(|paths| paths.clone())
+            .unwrap_or_default()
+    }
+
+    pub fn set_search_paths(&self, paths: Vec<PathBuf>) -> AppResult<Vec<PathBuf>> {
+        if let Some(parent) = self.search_paths_file.parent() {
+            std::fs::create_dir_all(parent)?;
+        }
+        let text =
+            serde_json::to_string(&paths).map_err(|err| AppError::Storage(err.to_string()))?;
+        std::fs::write(&self.search_paths_file, text)?;
+        *self
+            .extra_roots
+            .write()
+            .map_err(|_| AppError::FaceNotFound)? = paths.clone();
+        Ok(paths)
     }
 
     pub fn roots(&self) -> Vec<(PathBuf, FontSource)> {

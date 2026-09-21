@@ -90,5 +90,3 @@ export const resetFaces = () => {
   pinned.clear();
   recency.length = 0;
 };
-
-export const loadedCount = () => loaded.size;

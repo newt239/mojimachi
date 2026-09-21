@@ -28,3 +28,45 @@ body {
   font-synthesis: none;
   font-kerning: normal;
 }
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+.print-page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  padding: 12mm;
+  overflow: hidden;
+  break-after: page;
+  background: white;
+  color: black;
+}
+
+.print-page:last-child {
+  break-after: auto;
+}
+
+.print-footer {
+  position: absolute;
+  right: 12mm;
+  bottom: 5mm;
+}
+
+@media screen {
+  .print-root {
+    display: none;
+  }
+}
+
+@media print {
+  body > *:not(.print-root) {
+    display: none;
+  }
+
+  body {
+    overflow: visible;
+  }
+}

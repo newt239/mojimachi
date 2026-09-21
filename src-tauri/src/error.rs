@@ -10,6 +10,12 @@ pub enum AppError {
 
     #[error("指定されたフォントが見つかりません")]
     FaceNotFound,
+
+    #[error("この場所のフォントは操作できません")]
+    ProtectedLocation,
+
+    #[error("保存先を用意できませんでした: {0}")]
+    Storage(String),
 }
 
 impl Serialize for AppError {

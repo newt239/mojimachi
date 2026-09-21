@@ -32,6 +32,3 @@ export const nearestStyle = (
   });
   return sorted[0];
 };
-
-export const representativeStyle = (family: FamilySummary) =>
-  nearestStyle(family, "regular", false);

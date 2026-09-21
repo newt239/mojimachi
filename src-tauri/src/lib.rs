@@ -1,6 +1,7 @@
 mod commands;
 mod error;
 mod font;
+mod manage;
 mod menu;
 mod protocol;
 mod state;
@@ -30,7 +31,15 @@ pub fn run() {
         .register_asynchronous_uri_scheme_protocol(protocol::SCHEME, protocol::handle)
         .setup(|app| {
             let cache_dir = app.path().app_cache_dir()?;
-            app.manage(AppState::new(cache_dir.join("catalog.bin")));
+            let config_dir = app.path().app_config_dir()?;
+            app.manage(AppState::new(
+                cache_dir.join("catalog.bin"),
+                config_dir.join("search-paths.json"),
+            ));
+
+            let state = app.state::<AppState>();
+            let directories = state.roots().into_iter().map(|(path, _)| path).collect();
+            font::watch::start(app.handle().clone(), directories);
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -39,7 +48,16 @@ pub fn run() {
             commands::get_face_detail,
             commands::get_face_coverage,
             commands::get_face_blocks,
-            commands::filter_families_by_chars
+            commands::filter_families_by_chars,
+            commands::list_duplicates,
+            commands::plan_export,
+            commands::run_export,
+            commands::reveal_path,
+            commands::install_fonts,
+            commands::uninstall_faces,
+            commands::list_search_paths,
+            commands::add_search_path,
+            commands::remove_search_path
         ])
         .menu(menu::build)
         .run(tauri::generate_context!())

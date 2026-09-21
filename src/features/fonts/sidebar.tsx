@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 
-import { ArrowsClockwiseIcon, StarIcon } from "@phosphor-icons/react";
+import { ArrowsClockwiseIcon, PlusIcon, StarIcon, XIcon } from "@phosphor-icons/react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import { IconButton } from "~/components/icon-button";
 import { Switch } from "~/components/switch";
+import { collectionScopeId, collectionsAtom } from "~/features/collections/atoms";
+import { SearchPaths } from "~/features/manage/search-paths";
 import { cx } from "~/lib/cx";
 import { filterFamiliesByChars } from "~/lib/ipc";
 
@@ -37,6 +39,7 @@ export const Sidebar = ({
   const [japaneseOnly, setJapaneseOnly] = useAtom(japaneseOnlyAtom);
   const [coverageQuery, setCoverageQuery] = useAtom(coverageQueryAtom);
   const [coverage, setCoverage] = useAtom(coverageResultAtom);
+  const [collections, setCollections] = useAtom(collectionsAtom);
   const favorites = useAtomValue(favoritesAtom);
   const setRoute = useSetAtom(routeAtom);
 
@@ -54,6 +57,22 @@ export const Sidebar = ({
     return () => clearTimeout(timer);
   }, [coverageQuery, setCoverage]);
 
+  const select = (id: string) => {
+    setScope(id);
+    setRoute({ name: "list" });
+  };
+
+  const createCollection = () => {
+    setCollections([
+      ...collections,
+      {
+        id: crypto.randomUUID(),
+        name: `コレクション ${collections.length + 1}`,
+        familyNames: [],
+      },
+    ]);
+  };
+
   return (
     <aside className="flex w-60 shrink-0 flex-col gap-4 overflow-y-auto border-r border-neutral-200 p-3 dark:border-neutral-800">
       <div className="flex items-center justify-between">
@@ -68,10 +87,7 @@ export const Sidebar = ({
           <button
             key={item.id}
             type="button"
-            onClick={() => {
-              setScope(item.id);
-              setRoute({ name: "list" });
-            }}
+            onClick={() => select(item.id)}
             className={cx(
               "flex items-center justify-between rounded-md px-2 py-1.5 text-sm",
               scope === item.id
@@ -84,6 +100,43 @@ export const Sidebar = ({
           </button>
         ))}
       </nav>
+
+      <div className="flex flex-col gap-0.5 border-t border-neutral-200 pt-3 dark:border-neutral-800">
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-medium text-neutral-500">コレクション</p>
+          <IconButton label="コレクションを作る" onClick={createCollection}>
+            <PlusIcon size={14} />
+          </IconButton>
+        </div>
+        {collections.map((collection) => (
+          <div key={collection.id} className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => select(collectionScopeId(collection.id))}
+              className={cx(
+                "flex min-w-0 flex-1 items-center justify-between rounded-md px-2 py-1.5 text-sm",
+                scope === collectionScopeId(collection.id)
+                  ? "bg-neutral-200 dark:bg-neutral-700"
+                  : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
+              )}
+            >
+              <span className="truncate">{collection.name}</span>
+              <span className="text-xs text-neutral-500">{collection.familyNames.length}</span>
+            </button>
+            <IconButton
+              label={`${collection.name} を削除`}
+              onClick={() => {
+                setCollections(collections.filter((item) => item.id !== collection.id));
+                if (scope === collectionScopeId(collection.id)) {
+                  select("all");
+                }
+              }}
+            >
+              <XIcon size={12} />
+            </IconButton>
+          </div>
+        ))}
+      </div>
 
       <div className="flex flex-col gap-2 border-t border-neutral-200 pt-3 dark:border-neutral-800">
         <p className="text-xs font-medium text-neutral-500">絞り込み</p>
@@ -125,6 +178,7 @@ export const Sidebar = ({
           ))}
         </div>
       )}
+      <SearchPaths onChanged={onReload} />
     </aside>
   );
 };

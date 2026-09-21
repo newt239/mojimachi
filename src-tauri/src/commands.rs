@@ -5,8 +5,11 @@ use crate::error::{AppError, AppResult};
 use crate::font::charset::CharsetCoverage;
 use crate::font::coverage::{self, BlockGlyphs};
 use crate::font::detail::{self, FaceDetail};
+use crate::font::duplicate::{self, DuplicateGroup};
+use crate::font::export::{self, ExportPlan, ExportResult};
 use crate::font::model::{FamilySummary, ScanSummary};
 use crate::font::scan;
+use crate::manage::{self, InstallReport};
 use crate::state::AppState;
 
 #[derive(Debug, Serialize)]
@@ -125,4 +128,100 @@ pub fn filter_families_by_chars(
             .map(|(ch, _)| ch.to_string())
             .collect(),
     })
+}
+
+#[tauri::command]
+pub fn list_duplicates(
+    include_system_only: bool,
+    state: State<'_, AppState>,
+) -> AppResult<Vec<DuplicateGroup>> {
+    let catalog = state.catalog.read().map_err(|_| AppError::FaceNotFound)?;
+    Ok(duplicate::detect(&catalog.faces, include_system_only))
+}
+
+#[tauri::command]
+pub fn plan_export(face_ids: Vec<String>, state: State<'_, AppState>) -> AppResult<ExportPlan> {
+    let catalog = state.catalog.read().map_err(|_| AppError::FaceNotFound)?;
+    let faces: Vec<_> = face_ids.iter().filter_map(|id| catalog.face(id)).collect();
+    Ok(export::plan(&faces))
+}
+
+#[tauri::command]
+pub async fn run_export(plan: ExportPlan, destination: String) -> AppResult<ExportResult> {
+    tauri::async_runtime::spawn_blocking(move || {
+        export::run(&plan, std::path::Path::new(&destination))
+    })
+    .await
+    .map_err(|err| AppError::Font(err.to_string()))
+}
+
+#[tauri::command]
+pub fn reveal_path(path: String) -> AppResult<()> {
+    tauri_plugin_opener::reveal_item_in_dir(&path).map_err(|err| AppError::Io(err.to_string()))
+}
+
+#[tauri::command]
+pub async fn install_fonts(paths: Vec<String>) -> AppResult<InstallReport> {
+    tauri::async_runtime::spawn_blocking(move || {
+        manage::install(
+            &paths
+                .into_iter()
+                .map(std::path::PathBuf::from)
+                .collect::<Vec<_>>(),
+        )
+    })
+    .await
+    .map_err(|err| AppError::Font(err.to_string()))
+}
+
+#[tauri::command]
+pub fn uninstall_faces(
+    face_ids: Vec<String>,
+    state: State<'_, AppState>,
+) -> AppResult<InstallReport> {
+    let catalog = state.catalog.read().map_err(|_| AppError::FaceNotFound)?;
+    let faces: Vec<_> = face_ids.iter().filter_map(|id| catalog.face(id)).collect();
+    manage::uninstall(&faces)
+}
+
+#[tauri::command]
+pub fn list_search_paths(state: State<'_, AppState>) -> AppResult<Vec<String>> {
+    Ok(state
+        .search_paths()
+        .iter()
+        .map(|path| path.to_string_lossy().into_owned())
+        .collect())
+}
+
+#[tauri::command]
+pub fn add_search_path(path: String, state: State<'_, AppState>) -> AppResult<Vec<String>> {
+    let mut paths = state.search_paths();
+    let added = std::path::PathBuf::from(path);
+    if !added.is_dir() {
+        return Err(AppError::Storage("フォルダが見つかりません".into()));
+    }
+    if !paths.contains(&added) {
+        paths.push(added);
+    }
+    paths.sort();
+    Ok(state
+        .set_search_paths(paths)?
+        .iter()
+        .map(|path| path.to_string_lossy().into_owned())
+        .collect())
+}
+
+#[tauri::command]
+pub fn remove_search_path(path: String, state: State<'_, AppState>) -> AppResult<Vec<String>> {
+    let removed = std::path::PathBuf::from(path);
+    let paths = state
+        .search_paths()
+        .into_iter()
+        .filter(|item| *item != removed)
+        .collect();
+    Ok(state
+        .set_search_paths(paths)?
+        .iter()
+        .map(|path| path.to_string_lossy().into_owned())
+        .collect())
 }
