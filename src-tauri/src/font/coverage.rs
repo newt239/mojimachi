@@ -3,8 +3,6 @@ use roaring::RoaringBitmap;
 use serde::Serialize;
 use skrifa::MetadataProvider;
 
-use super::charset::{self, CharsetCoverage};
-
 pub struct UnicodeBlock {
     pub name: &'static str,
     pub start: u32,
@@ -258,13 +256,6 @@ pub fn decode(bytes: &[u8]) -> RoaringBitmap {
     RoaringBitmap::deserialize_from(bytes).unwrap_or_default()
 }
 
-pub fn covered_chars(bitmap: &RoaringBitmap, chars: &[char]) -> usize {
-    chars
-        .iter()
-        .filter(|ch| bitmap.contains(**ch as u32))
-        .count()
-}
-
 pub fn blocks(bitmap: &RoaringBitmap) -> Vec<BlockGlyphs> {
     BLOCKS
         .iter()
@@ -278,18 +269,6 @@ pub fn blocks(bitmap: &RoaringBitmap) -> Vec<BlockGlyphs> {
                 name: block.name,
                 code_points,
             })
-        })
-        .collect()
-}
-
-pub fn charset_coverage(bitmap: &RoaringBitmap) -> Vec<CharsetCoverage> {
-    charset::all()
-        .iter()
-        .map(|set| CharsetCoverage {
-            id: set.id,
-            name: set.name,
-            covered: covered_chars(bitmap, &set.chars),
-            total: set.chars.len(),
         })
         .collect()
 }
@@ -332,15 +311,6 @@ mod tests {
         let restored = decode(&encode(&bitmap));
         assert_eq!(restored, bitmap);
         assert_eq!(decode(b"broken"), RoaringBitmap::new());
-    }
-
-    // 文字セットの収録数を数える
-    #[test]
-    fn counts_covered_chars() {
-        let mut bitmap = RoaringBitmap::new();
-        bitmap.insert('あ' as u32);
-        assert_eq!(covered_chars(&bitmap, &['あ', 'い']), 1);
-        assert_eq!(covered_chars(&bitmap, &[]), 0);
     }
 
     // 収録のないブロックは結果に出さない

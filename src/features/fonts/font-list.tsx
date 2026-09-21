@@ -1,12 +1,13 @@
 import { useEffect, useRef } from "react";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import { Empty } from "~/components/empty";
 
 import { fontSizeAtom, orientationAtom, selectionAtom } from "./atoms";
 import { FontRow } from "./font-row";
+import { routeAtom } from "./route";
 import { pruneSelection, toggleSelection } from "./selectors";
 import { VerticalColumns } from "./vertical-columns";
 
@@ -16,6 +17,7 @@ export const FontList = ({ families }: { families: FamilySummary[] }) => {
   const orientation = useAtomValue(orientationAtom);
   const size = useAtomValue(fontSizeAtom);
   const [selection, setSelection] = useAtom(selectionAtom);
+  const setRoute = useSetAtom(routeAtom);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const rowHeight = Math.round(size * 1.4) + 34;
@@ -61,11 +63,11 @@ export const FontList = ({ families }: { families: FamilySummary[] }) => {
                 family={family}
                 selected={selection.includes(family.name)}
                 onSelect={(event) => {
-                  setSelection(
-                    event.metaKey || event.ctrlKey || event.shiftKey
-                      ? toggleSelection(selection, family.name)
-                      : [family.name],
-                  );
+                  if (event.metaKey || event.ctrlKey || event.shiftKey) {
+                    setSelection(toggleSelection(selection, family.name));
+                    return;
+                  }
+                  setRoute({ name: "detail", familyName: family.name });
                 }}
               />
             </div>

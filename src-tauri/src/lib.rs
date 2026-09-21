@@ -46,7 +46,6 @@ pub fn run() {
             commands::scan_fonts,
             commands::list_families,
             commands::get_face_detail,
-            commands::get_face_coverage,
             commands::get_face_blocks,
             commands::filter_families_by_chars,
             commands::list_duplicates,

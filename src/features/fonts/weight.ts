@@ -1,12 +1,12 @@
 import type { FamilySummary, StyleSummary } from "~/lib/types";
 
 export const WEIGHTS = [
-  { id: "thin", label: "極細", value: 100 },
-  { id: "light", label: "細字", value: 300 },
-  { id: "regular", label: "標準", value: 400 },
-  { id: "medium", label: "中字", value: 500 },
-  { id: "bold", label: "太字", value: 700 },
-  { id: "black", label: "極太", value: 900 },
+  { id: "thin", label: "Thin", value: 100 },
+  { id: "light", label: "Light", value: 300 },
+  { id: "regular", label: "Regular", value: 400 },
+  { id: "medium", label: "Medium", value: 500 },
+  { id: "bold", label: "Bold", value: 700 },
+  { id: "black", label: "Black", value: 900 },
 ] as const;
 
 export type WeightId = (typeof WEIGHTS)[number]["id"];

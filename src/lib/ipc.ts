@@ -2,7 +2,6 @@ import { invoke } from "@tauri-apps/api/core";
 
 import type {
   BlockGlyphs,
-  CharsetCoverage,
   CoverageFilter,
   DuplicateGroup,
   ExportPlan,
@@ -18,9 +17,6 @@ export const scanFonts = (force: boolean) => invoke<ScanSummary>("scan_fonts", {
 export const listFamilies = () => invoke<FamilySummary[]>("list_families");
 
 export const getFaceDetail = (faceId: string) => invoke<FaceDetail>("get_face_detail", { faceId });
-
-export const getFaceCoverage = (faceId: string) =>
-  invoke<CharsetCoverage[]>("get_face_coverage", { faceId });
 
 export const getFaceBlocks = (faceId: string) =>
   invoke<BlockGlyphs[]>("get_face_blocks", { faceId });

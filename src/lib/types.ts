@@ -68,13 +68,6 @@ export type FaceDetail = {
   canUninstall: boolean;
 };
 
-export type CharsetCoverage = {
-  id: string;
-  name: string;
-  covered: number;
-  total: number;
-};
-
 export type BlockGlyphs = { id: number; name: string; codePoints: number[] };
 
 export type CoverageFilter = { familyNames: string[]; unsupported: string[] };

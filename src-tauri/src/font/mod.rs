@@ -1,5 +1,4 @@
 pub mod cache;
-pub mod charset;
 pub mod coverage;
 pub mod detail;
 pub mod duplicate;

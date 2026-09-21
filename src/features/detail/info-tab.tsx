@@ -3,9 +3,7 @@ import { FolderOpenIcon } from "@phosphor-icons/react";
 import { Button } from "~/components/button";
 import { revealPath } from "~/lib/ipc";
 
-import { CoverageBar } from "./coverage-bar";
-
-import type { CharsetCoverage, FaceDetail } from "~/lib/types";
+import type { FaceDetail } from "~/lib/types";
 
 const formatSize = (bytes: number) => {
   if (bytes < 1024) {
@@ -21,13 +19,7 @@ const formatSize = (bytes: number) => {
   return `${value.toFixed(1)} ${units[unit]}`;
 };
 
-export const InfoTab = ({
-  detail,
-  coverage,
-}: {
-  detail: FaceDetail;
-  coverage: CharsetCoverage[];
-}) => (
+export const InfoTab = ({ detail }: { detail: FaceDetail }) => (
   <div className="flex flex-col gap-6 p-4">
     <section className="flex flex-col gap-2">
       <h2 className="text-xs font-medium text-neutral-500">基本情報</h2>
@@ -53,15 +45,6 @@ export const InfoTab = ({
           </Button>
         </dd>
       </dl>
-    </section>
-
-    <section className="flex flex-col gap-2">
-      <h2 className="text-xs font-medium text-neutral-500">日本語の文字セットカバレッジ</h2>
-      <div className="flex flex-col gap-2.5">
-        {coverage.map((item) => (
-          <CoverageBar key={item.id} item={item} />
-        ))}
-      </div>
     </section>
 
     <section className="flex flex-col gap-2">

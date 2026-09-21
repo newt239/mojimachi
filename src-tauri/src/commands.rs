@@ -2,7 +2,6 @@ use serde::Serialize;
 use tauri::State;
 
 use crate::error::{AppError, AppResult};
-use crate::font::charset::CharsetCoverage;
 use crate::font::coverage::{self, BlockGlyphs};
 use crate::font::detail::{self, FaceDetail};
 use crate::font::duplicate::{self, DuplicateGroup};
@@ -53,18 +52,6 @@ pub fn get_face_detail(face_id: String, state: State<'_, AppState>) -> AppResult
     let record = catalog.face(&face_id).ok_or(AppError::FaceNotFound)?;
     let data = std::fs::read(&record.path)?;
     detail::build(record, &data).ok_or(AppError::FaceNotFound)
-}
-
-#[tauri::command]
-pub fn get_face_coverage(
-    face_id: String,
-    state: State<'_, AppState>,
-) -> AppResult<Vec<CharsetCoverage>> {
-    let catalog = state.catalog.read().map_err(|_| AppError::FaceNotFound)?;
-    let bitmap = catalog
-        .coverage_of(&face_id)
-        .ok_or(AppError::FaceNotFound)?;
-    Ok(coverage::charset_coverage(bitmap))
 }
 
 #[tauri::command]

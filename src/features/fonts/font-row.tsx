@@ -1,5 +1,5 @@
-import { CaretRightIcon, StarIcon } from "@phosphor-icons/react";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { StarIcon } from "@phosphor-icons/react";
+import { useAtom, useAtomValue } from "jotai";
 
 import { IconButton } from "~/components/icon-button";
 import { PreviewText } from "~/features/preview/preview-text";
@@ -13,7 +13,6 @@ import {
   previewTextAtom,
   weightAtom,
 } from "./atoms";
-import { routeAtom } from "./route";
 import { toggleFavorite } from "./selectors";
 import { nearestStyle } from "./weight";
 
@@ -26,7 +25,7 @@ export const FontRow = ({
 }: {
   family: FamilySummary;
   selected: boolean;
-  onSelect: (event: React.MouseEvent) => void;
+  onSelect: (event: { metaKey: boolean; ctrlKey: boolean; shiftKey: boolean }) => void;
 }) => {
   const [favorites, setFavorites] = useAtom(favoritesAtom);
   const text = useAtomValue(previewTextAtom);
@@ -34,7 +33,6 @@ export const FontRow = ({
   const weight = useAtomValue(weightAtom);
   const isItalic = useAtomValue(isItalicAtom);
   const orientation = useAtomValue(orientationAtom);
-  const setRoute = useSetAtom(routeAtom);
 
   const style = nearestStyle(family, weight, isItalic);
   const isFavorite = favorites.includes(family.name);
@@ -47,7 +45,7 @@ export const FontRow = ({
       onClick={onSelect}
       onKeyDown={(event) => {
         if (event.key === "Enter") {
-          setRoute({ name: "detail", familyName: family.name });
+          onSelect(event);
         }
       }}
       className={cx(
@@ -81,17 +79,6 @@ export const FontRow = ({
             可変
           </span>
         )}
-        <span className="ml-auto flex items-center">
-          <IconButton
-            label={`${family.name} の詳細を開く`}
-            onClick={(event) => {
-              event.stopPropagation();
-              setRoute({ name: "detail", familyName: family.name });
-            }}
-          >
-            <CaretRightIcon size={14} />
-          </IconButton>
-        </span>
       </div>
       <PreviewText
         faceId={style?.faceId}

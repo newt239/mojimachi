@@ -3,12 +3,12 @@ import { useState } from "react";
 import { ArrowLeftIcon, FolderOpenIcon, StarIcon } from "@phosphor-icons/react";
 import { useAtom, useSetAtom } from "jotai";
 
-import { Button } from "~/components/button";
 import { Empty } from "~/components/empty";
 import { IconButton } from "~/components/icon-button";
 import { DETAIL_TABS, detailTabAtom, favoritesAtom } from "~/features/fonts/atoms";
 import { routeAtom } from "~/features/fonts/route";
 import { toggleFavorite } from "~/features/fonts/selectors";
+import { cx } from "~/lib/cx";
 import { revealPath } from "~/lib/ipc";
 
 import { AxesPanel } from "./axes-panel";
@@ -34,7 +34,7 @@ export const DetailView = ({ family }: { family: FamilySummary }) => {
   const [axisValues, setAxisValues] = useState<Record<string, number>>({});
   const [featureValues, setFeatureValues] = useState<Record<string, number>>({});
 
-  const { detail, coverage, blocks, error } = useFaceDetail(faceId);
+  const { detail, blocks, error } = useFaceDetail(faceId);
 
   const isFavorite = favorites.includes(family.name);
 
@@ -44,13 +44,7 @@ export const DetailView = ({ family }: { family: FamilySummary }) => {
         <IconButton label="一覧に戻る" onClick={() => setRoute({ name: "list" })}>
           <ArrowLeftIcon size={16} />
         </IconButton>
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium">{family.name}</p>
-          <p className="text-xs text-neutral-500">
-            {family.styles.length} スタイル
-            {detail !== null && ` ・ ${detail.glyphCount.toLocaleString("ja-JP")} 字`}
-          </p>
-        </div>
+        <p className="min-w-0 truncate text-sm font-medium">{family.name}</p>
 
         <select
           aria-label="スタイル"
@@ -86,17 +80,21 @@ export const DetailView = ({ family }: { family: FamilySummary }) => {
         </div>
       </div>
 
-      <div className="flex gap-1 border-b border-neutral-200 px-4 dark:border-neutral-800">
+      <div className="flex gap-5 border-b border-neutral-200 px-4 dark:border-neutral-800">
         {DETAIL_TABS.map((item) => (
-          <Button
+          <button
             key={item}
+            type="button"
             onClick={() => setTab(item)}
-            className={
-              tab === item ? "border-b-2 border-neutral-800 dark:border-neutral-200" : undefined
-            }
+            className={cx(
+              "-mb-px border-b-2 px-0.5 py-2 text-sm transition-colors",
+              tab === item
+                ? "border-neutral-800 text-neutral-900 dark:border-neutral-100 dark:text-neutral-100"
+                : "border-transparent text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200",
+            )}
           >
             {TAB_LABELS[item]}
-          </Button>
+          </button>
         ))}
       </div>
 
@@ -123,7 +121,7 @@ export const DetailView = ({ family }: { family: FamilySummary }) => {
         {error === null && detail === null && <Empty title="読み込んでいます" />}
         {error === null && detail !== null && tab === "info" && (
           <div className="h-full overflow-y-auto">
-            <InfoTab detail={detail} coverage={coverage} />
+            <InfoTab detail={detail} />
           </div>
         )}
         {error === null && detail !== null && tab === "glyphs" && (
