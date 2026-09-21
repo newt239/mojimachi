@@ -1,0 +1,72 @@
+@import "tailwindcss";
+@import "./tofu.css";
+
+@theme {
+  --font-sans: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* プレビュー領域は face を直接指定し、未収録文字は Tofu に落とす */
+.mj-preview {
+  font-family: var(--mj-face, inherit), Tofu;
+  font-synthesis: none;
+  font-kerning: normal;
+}
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+.print-page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  padding: 12mm;
+  overflow: hidden;
+  break-after: page;
+  background: white;
+  color: black;
+}
+
+.print-page:last-child {
+  break-after: auto;
+}
+
+.print-footer {
+  position: absolute;
+  right: 12mm;
+  bottom: 5mm;
+}
+
+@media screen {
+  .print-root {
+    display: none;
+  }
+}
+
+@media print {
+  body > *:not(.print-root) {
+    display: none;
+  }
+
+  body {
+    overflow: visible;
+  }
+}

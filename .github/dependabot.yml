@@ -1,7 +1,21 @@
 version: 2
 updates:
-  - package-ecosystem: "swift"
-    directory: "/apple"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "quarterly"
+      timezone: "Asia/Tokyo"
+      time: "08:00"
+    target-branch: "main"
+    cooldown:
+      default-days: 7
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "cargo"
+    directory: "/src-tauri"
     schedule:
       interval: "quarterly"
       timezone: "Asia/Tokyo"
