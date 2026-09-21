@@ -100,6 +100,8 @@ git tag v2.0.0
 git push origin v2.0.0
 ```
 
+自動アップデートの設定は[docs/updater.md](docs/updater.md)、署名を行う場合は[docs/code-signing.md](docs/code-signing.md)を参照してください。
+
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [oxc](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)

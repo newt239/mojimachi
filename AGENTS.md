@@ -137,7 +137,8 @@ src-tauri/                 バックエンド
 
 - `v`から始まるタグを push すると、GitHub Actions が macOS（universal）・Windows・Linux の配布物を作ってドラフトリリースを用意します。
 - **署名と公証は行っていません**。macOS の利用者は初回起動時に Gatekeeper の回避が必要で、Windows では SmartScreen の警告が出ます。
-- 自動アップデートは`tauri-plugin-updater`です。`TAURI_PRIVATE_KEY`が未設定のあいだは署名済み成果物が作られません。
+- 自動アップデートは`tauri-plugin-updater`です。手順は[docs/updater.md](docs/updater.md)を参照してください。`TAURI_PRIVATE_KEY`が未設定のあいだは署名済み成果物が作られません。
+- 署名を行う場合は[docs/code-signing.md](docs/code-signing.md)を参照してください。
 
 ## Git 運用
 
