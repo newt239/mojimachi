@@ -6,7 +6,7 @@ mod menu;
 mod protocol;
 mod state;
 
-use tauri::Manager;
+use tauri::{Emitter, Manager};
 
 use crate::state::AppState;
 
@@ -60,6 +60,17 @@ pub fn run() {
             commands::remove_search_path
         ])
         .menu(menu::build)
+        .on_menu_event(|app, event| match event.id().as_ref() {
+            menu::GITHUB_ID => {
+                let _ = tauri_plugin_opener::open_url(
+                    "https://github.com/newt239/mojimachi",
+                    None::<&str>,
+                );
+            }
+            id => {
+                let _ = app.emit(id, ());
+            }
+        })
         .run(tauri::generate_context!())
         .expect("アプリの起動に失敗しました");
 }

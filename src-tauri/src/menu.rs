@@ -1,5 +1,9 @@
-use tauri::menu::{AboutMetadata, Menu, PredefinedMenuItem, Submenu};
+use tauri::menu::{AboutMetadata, Menu, MenuItem, PredefinedMenuItem, Submenu};
 use tauri::{AppHandle, Runtime};
+
+pub const PRINT_ID: &str = "menu://print";
+pub const CHECK_UPDATE_ID: &str = "menu://check-update";
+pub const GITHUB_ID: &str = "menu://github";
 
 pub fn build<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
     let about_metadata = AboutMetadata {
@@ -10,6 +14,17 @@ pub fn build<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
         website_label: Some("GitHub".to_string()),
         ..Default::default()
     };
+
+    let print_item = MenuItem::with_id(app, PRINT_ID, "プリント…", true, Some("CmdOrCtrl+P"))?;
+    let update_item = MenuItem::with_id(
+        app,
+        CHECK_UPDATE_ID,
+        "アップデートを確認…",
+        true,
+        None::<&str>,
+    )?;
+    let github_item = MenuItem::with_id(app, GITHUB_ID, "GitHub で開く", true, None::<&str>)?;
+    let help_menu = Submenu::with_items(app, "ヘルプ", true, &[&github_item])?;
 
     let edit_menu = Submenu::with_items(
         app,
@@ -47,6 +62,7 @@ pub fn build<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
             true,
             &[
                 &PredefinedMenuItem::about(app, Some("もじまち について"), Some(about_metadata))?,
+                &update_item,
                 &PredefinedMenuItem::separator(app)?,
                 &PredefinedMenuItem::services(app, Some("サービス"))?,
                 &PredefinedMenuItem::separator(app)?,
@@ -58,7 +74,11 @@ pub fn build<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
             ],
         )?;
 
-        Menu::with_items(app, &[&app_menu, &edit_menu, &window_menu])
+        let file_menu = Submenu::with_items(app, "ファイル", true, &[&print_item])?;
+        Menu::with_items(
+            app,
+            &[&app_menu, &file_menu, &edit_menu, &window_menu, &help_menu],
+        )
     }
 
     #[cfg(not(target_os = "macos"))]
@@ -68,12 +88,15 @@ pub fn build<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
             "ファイル",
             true,
             &[
+                &print_item,
+                &PredefinedMenuItem::separator(app)?,
                 &PredefinedMenuItem::about(app, Some("もじまち について"), Some(about_metadata))?,
+                &update_item,
                 &PredefinedMenuItem::separator(app)?,
                 &PredefinedMenuItem::quit(app, Some("終了"))?,
             ],
         )?;
 
-        Menu::with_items(app, &[&file_menu, &edit_menu, &window_menu])
+        Menu::with_items(app, &[&file_menu, &edit_menu, &window_menu, &help_menu])
     }
 }

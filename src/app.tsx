@@ -31,6 +31,7 @@ import { Sidebar } from "./features/fonts/sidebar";
 import { useCatalog } from "./features/fonts/use-catalog";
 import { nearestStyle } from "./features/fonts/weight";
 import { useInstall } from "./features/manage/use-install";
+import { useUpdater } from "./features/manage/use-updater";
 import { PreviewBar } from "./features/preview/preview-bar";
 import { PrintSheet } from "./features/print/print-sheet";
 import { getFaceDetail } from "./lib/ipc";
@@ -51,13 +52,20 @@ export const App = () => {
   const [exporting, setExporting] = useState(false);
   const [printing, setPrinting] = useState(false);
   const { report, dropping, pick, dismiss } = useInstall(() => void reload(true));
+  const updater = useUpdater();
 
   useEffect(() => {
-    const unlisten = listen("fonts://changed", () => void reload(true));
+    const listeners = [
+      listen("fonts://changed", () => void reload(true)),
+      listen("menu://print", () => setPrinting(true)),
+      listen("menu://check-update", () => void updater.checkForUpdate()),
+    ];
     return () => {
-      void unlisten.then((stop) => stop());
+      for (const listener of listeners) {
+        void listener.then((stop) => stop());
+      }
     };
-  }, [reload]);
+  }, [reload, updater]);
 
   const activeCollection = useMemo(
     () => collections.find((item) => item.id === scopeCollectionId(scope)),
@@ -191,6 +199,27 @@ export const App = () => {
             {report.failed.length > 0 && ` ・ ${report.failed.length} 件は失敗しました`}
           </span>
           <Button onClick={dismiss}>閉じる</Button>
+        </div>
+      )}
+
+      {updater.state.kind !== "idle" && (
+        <div className="fixed bottom-4 left-4 z-30 flex items-center gap-3 rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
+          <span>
+            {updater.state.kind === "checking" && "アップデートを確認しています"}
+            {updater.state.kind === "none" && "最新版を使っています"}
+            {updater.state.kind === "downloading" &&
+              `v${updater.state.version} をダウンロードしています`}
+            {updater.state.kind === "ready" &&
+              `v${updater.state.version} の準備ができました。再起動すると適用されます`}
+            {updater.state.kind === "failed" &&
+              `アップデートを確認できませんでした: ${updater.state.message}`}
+          </span>
+          {updater.state.kind === "ready" && (
+            <Button variant="solid" onClick={() => void updater.restart()}>
+              再起動
+            </Button>
+          )}
+          <Button onClick={() => updater.dismiss()}>閉じる</Button>
         </div>
       )}
 
