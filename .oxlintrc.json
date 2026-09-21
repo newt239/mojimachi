@@ -107,7 +107,9 @@
     "unicorn/prefer-export-from": "off",
     "unicorn/prefer-global-this": "off",
     "unicorn/prefer-top-level-await": "off",
-    "sort-keys": "off"
+    "sort-keys": "off",
+    "react/todo": "off",
+    "react/incompatible-library": "off"
   },
   "overrides": [
     {
