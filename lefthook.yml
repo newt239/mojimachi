@@ -1,8 +1,18 @@
 pre-commit:
   parallel: true
   commands:
-    swift-format:
-      glob: "apple/**/*.swift"
-      run: xcrun swift-format format --in-place {staged_files}
+    oxfmt:
+      glob: "*.{ts,tsx,js,json,css}"
+      run: pnpm exec oxfmt {staged_files}
       stage_fixed: true
-      fail_text: Swift のフォーマットエラーがあります
+      fail_text: TypeScript のフォーマットエラーがあります
+    oxlint:
+      glob: "*.{ts,tsx}"
+      run: pnpm exec oxlint --fix {staged_files}
+      stage_fixed: true
+      fail_text: oxlint のエラーがあります
+    rustfmt:
+      glob: "src-tauri/**/*.rs"
+      run: cargo fmt --manifest-path src-tauri/Cargo.toml
+      stage_fixed: true
+      fail_text: Rust のフォーマットエラーがあります

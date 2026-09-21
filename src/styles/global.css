@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import "./tofu.css";
+
+@theme {
+  --font-sans: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* プレビュー領域は face を直接指定し、未収録文字は Tofu に落とす */
+.mj-preview {
+  font-family: var(--mj-face, inherit), Tofu;
+  font-synthesis: none;
+  font-kerning: normal;
+}
