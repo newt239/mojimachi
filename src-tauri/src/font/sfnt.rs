@@ -101,6 +101,54 @@ mod tests {
         assert_eq!(single_face_sfnt(&font, 0).expect("そのまま返る"), font);
     }
 
+    // 実機の .ttc をすべて取り出して単体 sfnt として読み直せるか確認する
+    #[test]
+    #[ignore = "実機のフォント構成に依存する"]
+    fn extracts_every_installed_collection() {
+        let mut collections = 0;
+        let mut faces = 0;
+        let mut failures = Vec::new();
+
+        for (root, _) in crate::font::source::default_roots() {
+            for entry in walkdir::WalkDir::new(root)
+                .into_iter()
+                .filter_map(Result::ok)
+            {
+                let path = entry.path();
+                if !path
+                    .extension()
+                    .is_some_and(|ext| ext.eq_ignore_ascii_case("ttc"))
+                {
+                    continue;
+                }
+                let Ok(data) = std::fs::read(path) else {
+                    continue;
+                };
+                collections += 1;
+                for index in 0..crate::font::parse::face_count(&data) {
+                    match single_face_sfnt(&data, index).and_then(|bytes| {
+                        FontRef::new(&bytes)
+                            .map(|_| ())
+                            .map_err(|err| AppError::Font(err.to_string()))
+                    }) {
+                        Ok(()) => faces += 1,
+                        Err(err) => failures.push(format!("{}#{index}: {err}", path.display())),
+                    }
+                }
+            }
+        }
+
+        println!(
+            ".ttc {collections} 件 / face {faces} 件を再パッケージ、失敗 {}",
+            failures.len()
+        );
+        for failure in failures.iter().take(10) {
+            println!("  失敗: {failure}");
+        }
+        assert!(collections > 0, "実機に .ttc が見つからない");
+        assert!(failures.is_empty(), "再パッケージに失敗した face がある");
+    }
+
     // 範囲外の index はエラーになる
     #[test]
     fn rejects_out_of_range_index() {
