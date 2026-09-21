@@ -56,7 +56,7 @@ pub fn register(path: &Path, data: &[u8]) -> AppResult<()> {
     let key = windows_registry::CURRENT_USER
         .create(FONTS_KEY)
         .map_err(|err| AppError::Io(err.to_string()))?;
-    key.set_string(&name, &path.to_string_lossy())
+    key.set_string(&name, path.to_string_lossy())
         .map_err(|err| AppError::Io(err.to_string()))
 }
 
